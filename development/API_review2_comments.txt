@@ -1,0 +1,105 @@
+Review API
+==========
+
+Obecne poznamky
+---------------
+
+- pokud uz pisu zdrojaky/komentare v cestine s diakritikou, mel bych zachovavat
+  kodovani UTF-8 u vsech souboru! Mit kazdy soubor v jinem kodovani urcite neni
+  dobre. (== poresit, nepouzivat diakritiku v komentarich)
+- chtelo by to zkusit alespon trosku zalamovat radky, hlavne u komentaru.
+  Netrval bych na striktnim dodrzovani 80 znaku, ale pokud se mi i na FullHD
+  monitoru pri zobrazeni na celou obrazovku zalamuji radky, tak je asi neco
+  spatne. (== jasny)
+- konkretni priklad v popisu je prilis dlouhy a neukazuje vsechny zajimave veci,
+  ktere by knihovna mela umet. Uvital bych kratsi priklad, ktery bude podrobne
+  okomentovany a ukaze velkou cast moznosti knihovny. U prikladu se nemusi
+  jednat o uplny program, spis jsou zajimave utrzky kodu pro ruzne situace
+  pouziti. (== jasny)
+- uchovavani veskere konfigurace jako stringu a konvertovani na cilovy typ pouze
+  na vyzadani muze byt pomale pri vicenasobnem cteni typovanych konfiguracnich
+  hodnot. Pricemz vicenasobnemu parsovani stringu se nelze vyhnout - jednou je
+  treba provest parsovani pri validaci a podruhe pri vlastnim ziskavani hodnoty
+  programem, ktery pouziva tuto knihovnu. Lepsi, avsak o kus slozitejsi pristup
+  je snazit se uchovavat validovana data jiz typovane spravne (pomoci sablon,
+  dedicnosti, dynamic_cast a type_traits). (== ukladame ziskanou hodnotu, konverze jenom jednou)
+- zvazil bych prehodnoceni pojmenovavaci konvence. Pokud pouzivam na nazvy trid
+  a metod CamelCase, tak bych pojmenovaval i jmena parametru jako camelCase (s
+  pocatecnim malym pismenem). Ale me osobne nevadi pouziti underscore notace pro
+  parametry, privatni a lokalni promenne. (== kaslem na to)
+
+Trida Configuration
+-------------------
+
+- Flush neni dobry nazev metody pro ukladani. Flush spise znamena vyprazdnit,
+  ale z popisu tridy Configuration spise chapu chovani jako Save/Store, protoze
+  obsah konfigurace pravdepodobne zustane nacten i po ulozeni. (== prejmenovat)
+- metodu SetOutputFile bych take prejmenoval. Verze prijimajici vystupni stream
+  nemusi mit se soubory nic spolecneho. Reseni je zavest novou metodu
+  SetOutputStream nebo najit vhodnejsi nazev pro obe pretizeni puvodni metody. (== prejmenovat, nebo lip zdokumentovat)
+- rozdeleni nastavovani souboru pro ukladani a samotne ulozeni neni stastne.
+  Pokud ukladam metodou Flush, pak by ona sama mela prijimat destinaci k
+  ulozeni. Drobna vyjimka muze napriklad byt prave nactena konfigurace, kterou
+  chci explicitne prepsat (ale to asi nebyva nejcastejsi pouziti). Zde by davalo
+  drobny smysl uchovavat si jmeno vstupniho souboru (pripadne nejaky stream). (== v druhem rezimu to tak udelame)
+- ukladani konfigurace do souboru v destruktoru je zlo. Schovany side effect,
+  ktery nejde kontrolovat a zmenit. V naproste vetsine pripadu chci konfiguraci
+  pouze cist a jeji nechtene prepsani muze mit velmi neprijemne dusledky. Toto
+  bych rozhodne zrusil! (==  ??? dva rezimy)
+- tato trida by podle sveho nazvu mela uchovavat nactenou konfiguraci a
+  zpristupnovat ji pomoci nejakych svych metod. Jedina metoda, ktera by se k
+  necemu takovemu dala pouzit je SpecifySection, ktera ale svymi argumenty
+  vypada spise jako nastavovani schematu pro overovani. Pro snadne pouziti bych
+  chtel mit napriklad moznost ziskat referenci na konkretni sekci s volbami ve
+  vychozi stringove reprezentaci napriklad pomoci operatoru [], pripadne nejakou
+  jinou snadnou cestou. Urcite bych byl pro pridani iteratoru pres jednotlive
+  sekce. Pokud bych chtel nyni pouzivat tuto knihovnu bez specifikace schematu
+  pro overeni, tak nyni nemam moznost ziskat jednotlive volby. (== nedorozumneni, lip sdokumentovat + pristup ke stringu..)
+
+Trida Section
+-------------
+
+- opet bych uvital moznost ziskani jednotlivych voleb bez nutnosti specifikovat
+  nejake dalsi argumenty (zda je volitelny nebo ne, atd.). Uvazoval bych o
+  operatoru [] nebo metode get(), pripadne by potesily i iteratory pro
+  prochazeni jednotlivych voleb treba cyklem typu for(auto &i : sections).
+
+Tridy Option a ListOption
+-------------------------
+
+- tyto tridy by navzdory dodanemu zduvodneni mely specifikovat svoji povinnost a
+  sve jmeno. Tyto udaje logicky patri k dane volbe, proto je navrhove cistsi je
+  udrzovat pohromade. (== pridame dostupnost pomoci getName a getOptionality nebo tak neco)
+- v AbstractOption se mi nelibi nazvy RegenerateValueData, ProcessValueData,
+  atd. Spojeni ValueData je divne, obe slova v tomto kontextu znamenaji
+  prakticky to same. (== zmeni na RawValue )
+- nechapu pouziti metod AssignValueData a AssignLink berouci jako argumenty
+  cisla from_index a count. Dle meho nazoru zpristupnuji navenek neco, co by
+  melo byt schovano za nejakou abstrakci. Rozhodne nechci pri pouzivani knihovny
+  nejake indexy jako pozice do nejakeho stringu uvnitr. Zde bych zvazil tyto
+  metody odebrat, zvolit lepsi uroven abstrakce nebo dukladneji okomentovat
+  jejich pouziti. (== zakazat linky uvnitr  )
+
+Tridy TypeSpecifier
+-------------------
+
+- celkem se mi libi rozdeleni specifikatoru typu. Tento pristup je modularni a
+  umoznuje lehce pridavat nove typy. Bohuzel neumoznuje dost flexibilne
+  specifikovat, ze napriklad nactene cislo ma byt liche. Ale patrne je mozne
+  napsat vlastni specifier tridu, kde si kazdy muze dodelat kyzenou
+  funkcionalitu, proto v tom nevidim vetsi problem. (== )
+- poznamky k implementaci:
+  - lepsi je pouzit ciselne typy jako int64_t nebo uint64_t
+  - vyhazovane vyjimky se v modernim C++ nepisi do deklarace (nastesti nejsme v
+	Jave). Pro popis vyjimek je v doxygenu direktiva "\throws" (== odstranime throws..)
+
+Ostatni
+-------
+
+- libi se mi pouziti vyjimek pro hlaseni chybovych stavu. Jejich predpripravene
+  typy se zdaji dobre vymyslene, ale to ukaze az implementace.
+- enum InputFilePolicy bych prejmenoval treba na ValidatingMode a jednotlive
+  volby bych nechal jako RELAXED/STRICT. NONE a IGNORE_NONEXISTANT nic samy o
+  sobe nerikaji a pro jejich spravne pouziti je treba hledat dokumentaci. (== chyba v dokumentaci, zadas soubor a otazka je jestli ma program spadnout kdyz to neexistuje atd.. )
+
+
