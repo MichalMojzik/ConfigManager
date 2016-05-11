@@ -1,0 +1,233 @@
+﻿Zdůvodnění návrhu: ConfigManager
+================================
+
+Martin Franců, Michal Mojzík
+
+Předpokládáme, že knihovna ConfigManager bude použita ve větším projektu k pohodlnému skladování nastavení programu na disku v době, kdy program neběží. Účelem byl zejména co nejpřirozeněji přejít od stavu, kdy je konfigurace určena proměnnými rozhozenými po celém programu (vždy u odpovídající struktury/třídy, ke které patří), které se v průběhu programu mění nebo nějak nejjednotně načítají ze souborů. Od toho se odvozuje návrh, který předpokládá, že v programu je pro každou konfigurační hodnotu (nebo nejspíš i celou sekci) jedno místo, které ji má na starost a jako jediné ji spravuje (ostatní ji samozřejmě mohou číst nebo měnit, ale pouze pomocí ukazatelů nebo referencí). Tento naznačovaný „původní stav“ má zejména tu výhodu, že mají jednotlivé položky již při kompilaci známou typovou hodnotu. To bychom chtěli zachovat.
+  
+Centrální třídou konfigurace je „Configuration“. Ta má hlavně za úkol načítat a ukládat textová data v .ini formátu z/do souborů nebo jiných zdrojů (obecně streamy). Třída sama o sobě však dále neinterpretuje typy hodnot nebo nekontroluje přítomnost platných či neplatných parametrů -- pouze umožňuje přistupovat k hodnotám jakožto řetězce a měnit je. Očekáváme, že objem dat voleb programu bude mít rozumnou velikost a proto jsou prostředky na uchovávání i textové verze zanedbatelné. To také napomáhá k tomu, aby byla následně při implementaci „Configuration“ napsána tak, aby zachovávala původní formát a hodnoty souboru, pokud nejsou explicitně změněny. „Configuration“ také samo o sobě řeší reference -- všechny ostatní části programu, které s hodnotami v konfiguraci pracují, je již nevidí. Provedené změny lze zapsat přímo pomocí „Flush“ (případně lze pomocí této metody i vynutit vypsání defaultů), nebo pouze počkat na destruktor, který jsme takto využili vzhledem k očekávaném využívání „Configuration“ jakožto třídy, která žije po celou dobu programu a až po jeho konci by měla uložit upravenou konfiguraci.
+
+Třída „Configuration“ však může být svázanou s řadou tříd „AbstractOption“, které slouží pro interpretaci textových hodnot a zpřístupování těchto hodnot uživateli v odpovídajícím typu. Existují dvě konkrétní implementace (potomci): „Option“, pro jednoduchou volbu, a „ListOption“, pro seznam voleb, které jsou obě šablonované a přijímají jako parametr typ, který identifikuje o jaký typ se jedná, případně další omezení, tzv. TypeSpecifier (více později). Vzhledem k předpokladu, který jsme zmínili, je „Option“ pouze „movable“, tedy jedna konkrétní instance (která nějak vznikne) existuje pouze v jedné proměnné, nelze ji nijak klonovat, pouze přesouvat. „AbstractOption“ se dá nejlépe chápat jako to místo, kde ta odpovídající konfigurační hodnota opravdu žije. Zejména to tedy znamená, že je možné úpravou (typových) hodnot v „Option“ a „ListOption“ upravovat (textové) hodnoty v „Configuration“. K této variantě jsme přistoupili kvůli očekávánému přístupu použití nastíněném v prvním odstavci. Důvod pro použití dědičnosti zde je ten, že „AbstractOption“ v sobě bude mít implementaci komunikace s „Configuration“, kterou poté zveřejní svým potomkům (naznačeno konkrétními protected metodami). Navíc „Configuration“ sama potřebuje komunikovat jak s „Option“, tak s „ListOption“ bez jejich rozlišování (zvlášť, když jsou šablonované). Navíc je také možné tímto způsobem vytvořit nové druhy „Optionů“, které se k textové hodnotě chovají složitěji.
+  
+„Option“ samy přímo nespecifikují své jméno, svoji povinnost (povinná/nepovinná) apod., k tomu slouží třída „Section“. Zdálo se nám rozumné předpokládat, že dělení souboru na sekce bude dobře odrážet logickou granularitu voleb, „Section“ tedy slouží jako organizační jednotka pro předávání informací ven z „Configuration“. „Configuration“ je schopna „Section“ vytvořit pomocí „SpecifySection“ a „Section“ dále vytváří „Option“ (jakožto jediný způsob, jak může vziknout jejich nová platná instance) pomocí „SpecifyOption“ a „SpecifyListOption“ pro „Option“ a „ListOption“ resp.
+
+Konkrétní možné typy hodnot jsou implementované jakožto typy „TypeSpecifier“ (ale žádný takový rodič neexistuje), které mají metody FromString a ToString pro převod mezi typy. Navíc v sobě také definují typ „ValueType“, který lépe identifikuje pro „Option“ a „ListOption“ jaký typ že to tedy specifikuje. TypeSpecifiery navíc mohou klást další obor hodnot, např. omezení rozsahu apod. Jsou to také třídy, které se předávají do „SpecifyOption“ pro popis jak zkonstruovat „Option“. Převod z řetězce na hodnotu samozřejmě může selhat. O tom více v sekci o ošetřování chyb.
+
+Relativní časové pořadí mezi tím, kdy se načte soubor a kdy se definují „Section“ a „Optiony“ není důležitý. Mělo by být možné specifikovat formát i když už jsou data načteno, v kterémžto případě se data okamžitě interpretují, nebo nejprve specifikovat formát a poté přečíst soubor, v kterémžto případě se všechny hodnoty interpretují zároveň (v rámci jednoho příkazu). To umožňuje jak přístup, kdy je soubor stanoven na začátku a jedná se o hlavní konfigurační soubor, který bude měněn (k čemuž slouží konstruktor, který nastavuje jak vstupní, tak výstupní soubor zároveň), tak nejprve nerušeně specifikovat formát a následně v závilosti na existenci/neexistenci souborů jednat.
+  
+Nástin použítí: Uživatel vytvoří „Configuration“ a předá ji jméno souboru. Uživatel vytvoří „Section“ se specifikovanými volbami (instance „Option“, či „ListOption“), které si uloží do vlastních proměnných/atributů. Třída „Configuration“ a „Option“ poté po dobu své životnosti spolu komunikují. Na konci programu se při destruktoru „Configuration“ upravená textová data uložít do souboru.
+  
+Konkrétní příklady
+------------------
+Předpoklad: Bylo použito using namespace ConfigManager. Pro jednoduchost nevyplňujeme dokumentační položky u „Option“ a „Section“ (jeden další parametr)
+  
+Příklad jednoduché hry:
+/******************************************/
+/* Hra hadani nahodneho cisla v urcitem rozsahu. */
+class Game
+{
+	const int MAX_GUESSING_NUMBER = 10000;
+	const int STANDARD_RANGE_START = 0;
+	const int STANDARD_RANGE_END = 100;
+public:
+	Game(Configuration& configuration)
+	{
+		Section gameSection = configuration.SpecifySection("Game", Requirement::OPTIONAL);
+		// Nacteni rozsahu.
+		rangeStart_ = gameSection.SpecifyOption(
+			"RangeStart",
+			IntegerSpecifier(1, MAX_GUESSING_NUMBER),
+			STANDARD_RANGE_START,
+			Requirement::MANDATORY);
+		rangeEnd_ = gameSection.SpecifyOption(
+			"RangeEnd",
+			IntegerSpecifier(1, MAX_GUESSING_NUMBER), // zde neni pouzit rangeStart_.Get() jako dolni mez, protoze 1) v zavislosti na volajicim v nem jeste nemusi byt spravna hodnota, 2) pri jeji zmene (v programu) by spodni rozsah neaktualizoval
+			STANDARD_RANGE_END,
+			Requirement::MANDATORY);
+		// Nacteni zprav vypisovanych uzivateli (v podstate lokalizace).
+		higher_ = gameSection.SpecifyOption(
+			"Higher",
+			StringSpecifier(),
+			"Guess too low.");
+		lower_ = gameSection.SpecifyOption(
+			"Lower",
+			StringSpecifier(),
+			"Guess too high.");
+		outOfBounds_ = gameSection.SpecifyOption(
+			"OutOfBounds",
+			StringSpecifier(),
+			"Guess is not within the allowed bounds.");
+		victoryMessage_ = gameSection.SpecifyOption(
+			"VictoryMessage",
+			StringSpecifier(),
+			"Victory!");
+		defeatMessage_ = gameSection.SpecifyOption(
+			"DefeatMessage",
+			StringSpecifier(),
+			"Defeat...");
+	}
+
+	bool Guess(int value)
+	{
+		// Kontrola rozsahu
+		if (value < rangeStart_.Get() || value > rangeEnd_.Get())
+		{
+			std::cout << outOfBounds_.Get() << std::endl;
+			return false;
+		}
+
+		/* ... */
+	}
+
+	void SetRange(int start, int end)
+	{
+		// Nastaveni rozsahu v konfiguraci.
+		rangeStart_.Set(start);
+		rangeEnd_.Set(end);
+	}
+
+	void ReportResult(bool win)
+	{
+		// Vyhral nebo prohral.
+		std::cout << (win ? victoryMessage_.Get() : defeatMessage_.Get()) << std::endl;
+	}
+
+private:
+	Option<IntegerSpecifier> rangeStart_;
+	Option<IntegerSpecifier> rangeEnd_;
+	Option<StringSpecifier> higher_;
+	Option<StringSpecifier> lower_;
+	Option<StringSpecifier> outOfBounds_;
+	Option<StringSpecifier> victoryMessage_;
+	Option<StringSpecifier> defeatMessage_;
+};
+
+class Sound
+{
+public:
+	Sound(Configuration& configuration)
+	{
+		Section soundSection = configuration.SpecifySection("Sound"); // implicitne optional 
+		IntegerSpecifier volumeSpecifier = IntegerSpecifier(0, 100);
+		// Nabindovani hlasitosti.
+		musicVolume_ = soundSection.SpecifyOption("Music", volumeSpecifier, 100);
+		voiceVolume_ = soundSection.SpecifyOption("Voice", volumeSpecifier, 100);
+		effectVolume_ = soundSection.SpecifyOption("Effects", volumeSpecifier, 100);
+	}
+
+	// Primy pristup k nastavovani hlasitostem volajicim.
+	Option<IntegerSpecifier>& MusicVolume()
+	{
+		return musicVolume_;
+	}
+	Option<IntegerSpecifier>& VoiceVolume()
+	{
+		return voiceVolume_;
+	}
+	Option<IntegerSpecifier>& EffectVolume()
+	{
+		return effectVolume_;
+	}
+
+	// Nastaveni jednotne hlasitosti pomoci linku.
+	void SetMasterVolume(int volume)
+	{
+		musicVolume_.Set(volume);
+		voiceVolume_.Link(musicVolume_);
+		effectVolume_.Link(musicVolume_);
+	}
+
+private:
+	Option<IntegerSpecifier> musicVolume_;
+	Option<IntegerSpecifier> voiceVolume_;
+	Option<IntegerSpecifier> effectVolume_;
+};
+
+// Metoda pro hrani zvuku
+void PlayMusic(int volume) {}
+
+int main()
+{
+	Configuration configuration("game.ini", InputFilePolicy::IGNORE_NONEXISTANT);
+
+	Game game(configuration);
+	/* ... prace s vnejsim interfacem Game ... */
+
+	Sound sound(configuration);
+	PlayMusic(sound.MusicVolume().Get());
+	sound.SetMasterVolume(75);
+}
+/*******************************************/
+
+
+Příklad rendereru:
+/*******************************************************/
+class Upbp
+{
+public:
+	Upbp(Configuration& configuration)
+	{
+		Section sectionUpbp = configuration.SpecifySection("UPBP", Requirement::MANDATORY);
+		beamDensity_ = sectionUpbp.SpecifyOption("BeamDensity", FloatSpecifier(), 15.f);
+	}
+	/* ... */
+};
+class Vcm
+{
+public:
+	Vcm(Configuration& configuration)
+	{
+		Section sectionVcm = configuration.SpecifySection("VCM", Requirement::MANDATORY);
+		radius_ = sectionVcm.SpecifyOption("Radius", FloatSpecifier(), 15.f);
+	}
+	/* ... */
+};
+
+enum AlgorithmType
+{
+	UPBP,
+	VCM
+}
+
+/* ------------ */
+
+Configuration configuration("render.ini", InputFilePolicy::IGNORE_NONEXISTANT);
+
+Section mainSection = configuration.SpecifySection("Main", Requirement::MANDATORY);
+auto algorithmType = mainSection.SpecifyOption("Algorithm", EnumSpecifier<AlgorithmType>({ { "VCM", VCM }, { "UPBP", UPBP } }), AlgorithmType::VCM);
+switch (algorithmType.Get())
+{
+case VCM: renderer = new Vcm(configuration); break;
+case UPBP: renderer = new Upbp(configuration); break;
+}
+
+/*******************************************************/
+ 
+ 
+ 
+  
+Konkrétní detaily
+-----------------
+
+Chování našeho programu přirozeně odpovídá režimu “relaxed” při ověřování zadaného formátu. Proto jsme jej zvolili jako základní režim. Režim “strict” je možné realizovat zavoláním zavírající metody po vyspecifikovaných všech požadovaných sekcí.
+
+Chování volby s jednou hodnotou a volby s více hodnotami je natolik rozdílné, že jsme se rozhodli je rozdělit do různých tříd, zmiňované „Option“ a „ListOption“. Obě třídy jsou šablony závislé na typu příslušných hodnot, což u třídy „ListOption“ přirozeně zaručuje, že všechny elementy budou stejného typu. K datům třídy „Option“ se přistupuje přes metody „Get“ a „Set“. Přístup k datům ve třídě „ListOption“ je řešen pomocí operátoru “[]” s návratovou třídou “Item” která umožní pouze přístup přes správné metody “Get” a “Set” zajišťující zachování předpokládaných invariantů.
+
+Rozhodli jsme se od uživatele vyžadovat specifikaci přednastavené (“default”) hodnoty v každém případě. K tomu nás přiměla možnost nepovinných sekcí s povinnými volbami. Pokud sekce není povinná, nemusí být uživatelem specifikována a očekává se tedy nějaké přednastavené doplnění voleb v ní obsažených. Problém by vznikl, pokud by nepovinná sekce obsahovala povinný údaj (bez přednastavené hodnoty). Přičemž bude vynuceno vyplnění povinné volby v případě libovolné specifikace v dané nepovinné sekci.  
+
+Třída “EnumSpecifier” je šablonou, čímž umožňuje převod přímo do daného výčtového typu -- mapováním mezi řetězci a hodnotami nějakého typu.
+
+Odkazy na jiné volby jsou z hlediska čtení řešeny v rámci „Configuration“, ale „Option“ a „ListOption“ navíc umožňují tyto reference i vytvářet pomocí metod „Link“.
+
+  
+Ošetřování chyb
+---------------
+K ošetření chyb jsme se rozhodli použít vyjímky, protože explicitně nenavazujeme na projekt nepoužívající vyjímky a přitom předpokládáme použítí standardních nástrojů které vyjímky používají. Také to zpřehledňuje řadu funkcí, u kterých bychom v opačném případě (použití chybových kódů/struktur) museli zkomplikovat způsob vracení dat.
+  
+  
+Rozšiřitelnost
+--------------
+  
+Třída typu „Configuration“ by nemusela pracovat pouze s .ini formátem -- tak, jak je navržena, by mohly existovat různé její varianty (nejspíše potomky) pro různé konfigurační formáty, ve kterých existuje podobný koncept sekcí a dvojic název=hodnota, které jsou uvedeny textově. Již definované „Option“ třídy by pak mohly pracovat s libovolnou takovou „Configuration“.
+
+TypeSpecifier je jakožto typ využívaný v šablonách, od které se požadují pouze metody pro před mezi řetězcem a nějakým typem, je skvělé místo pro rozšiřování. Např. by mělo být pohodlně možné vytvořit ColorSpecifier, který interpretuje řetezec jako barvu.
