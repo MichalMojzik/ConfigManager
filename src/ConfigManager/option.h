@@ -7,56 +7,56 @@
 namespace ConfigManager
 {
 	/** 
-	* Spolecny predek trid Option a ListOption. Virtualni trida. Zastresuje spolecne chovani trid Option a ListOption. 
+	* Spolecny predek trid OptionProxy a ListOptionProxy. Virtualni trida. Zastresuje spolecne chovani trid OptionProxy a ListOptionProxy. 
 	* Specialni konstruktory zajistuji pouze "non-copyable" chovani. 
 	*/
-	class AbstractOption
+	class AbstractOptionProxy
 	{
 	protected:
 		/** Zakladní konstruktor.
 		*
 		*/
-		AbstractOption() {}
+		AbstractOptionProxy() {}
 		/** Neni povoleno kopirovani instanci teto tridy. 
 		*
 		*/
-		AbstractOption(const AbstractOption& other) = delete;
+		AbstractOptionProxy(const AbstractOptionProxy& other) = delete;
 		/** Neni povoleno kopirovani instanci teto tridy.
 		*
 		*/
-		AbstractOption& operator=(const AbstractOption& other) = delete;
+		AbstractOptionProxy& operator=(const AbstractOptionProxy& other) = delete;
 		/** Je povoleno pouze "movable" chovani. 
 		*
 		*/
-		AbstractOption(AbstractOption&& other) {}
-		/** \copydoc AbstractOption(AbstractOption&& other)
+		AbstractOptionProxy(AbstractOptionProxy&& other) {}
+		/** \copydoc AbstractOptionProxy(AbstractOptionProxy&& other)
 		*
 		*/
-		AbstractOption& operator=(AbstractOption&& other) {}
+		AbstractOptionProxy& operator=(AbstractOptionProxy&& other) {}
 		/** Zakladni destruktor. 
 		*
 		*/
-		~AbstractOption() {}
+		~AbstractOptionProxy() {}
 
 		/**
-		* Metoda pro komunikaci s Configuration slouzici pro vyvolani prepsani aktualni hodnoty v Configuration retezcovou reprezentaci hodnoty v Optionu (lze tim zapsat default), iniciovane v Configuration.
+		* Metoda pro komunikaci s Configuration slouzici pro vyvolani prepsani aktualni hodnoty v Configuration retezcovou reprezentaci hodnoty v OptionProxyu (lze tim zapsat default), iniciovane v Configuration.
 		* Muze vyhodit WrongFormat vyjimku.
 		*/
 		virtual void RegenerateValueData() = 0;
 		/**
-		* Metoda pro komunikaci s Configuration slouzici k aktualizaci hodnoty v Optionu dle retezcove hodnoty v Configuration, iniciovane v Configuration (pripadne Section).
+		* Metoda pro komunikaci s Configuration slouzici k aktualizaci hodnoty v OptionProxyu dle retezcove hodnoty v Configuration, iniciovane v Configuration (pripadne Section).
 		* Muze vyhodit WrongFormat vyjimku.
 		* \param data Text ze ktereho ma byt hodnota prectena.
 		*/
 		virtual void ProcessValueData(const std::string& data) = 0;
 		/**
-		* Metoda pro komunikaci s Configuration slouzici k nastaveni hodnoty z Optionu do retezcove hodnoty v Configuration, iniciovane v potomcich Optionu.
+		* Metoda pro komunikaci s Configuration slouzici k nastaveni hodnoty z OptionProxyu do retezcove hodnoty v Configuration, iniciovane v potomcich OptionProxyu.
 		* Muze vyhodit WrongFormat vyjimku (kvuli existenci referenci).
 		* \param Textova data ktera maji prepsat retezcove hodnoty v Configuration.
 		*/
 		void AssignValueData(const std::string& data) {}
 		/**
-		* Metoda pro komunikaci s Configuration slouzici k nastaveni hodnoty z Optionu do konkretniho mista v retezcove hodnote v Configuration, iniciovane v potomcich Optionu.
+		* Metoda pro komunikaci s Configuration slouzici k nastaveni hodnoty z OptionProxyu do konkretniho mista v retezcove hodnote v Configuration, iniciovane v potomcich OptionProxyu.
 		* Muze vyhodit WrongFormat vyjimku (kvuli existenci referenci).
 		* \param data nova hodnota
 		* \param from_index pocatecni index
@@ -64,19 +64,19 @@ namespace ConfigManager
 		*/
 		void AssignValueData(const std::string& data, int from_index, int count) {}
 		/**
-		* Metoda pro komunikaci s Configuration slouzici k nastaveni reference na jiny Option do retezcove hodnoty v Configuration, iniciovane v potomcich Optionu.
+		* Metoda pro komunikaci s Configuration slouzici k nastaveni reference na jiny OptionProxy do retezcove hodnoty v Configuration, iniciovane v potomcich OptionProxyu.
 		* Muze vyhodit WrongFormat vyjimku (kvuli existenci referenci).
-		* \param data novy Option
+		* \param data novy OptionProxy
 		*/
-		void AssignLink(const AbstractOption& data) {}
+		void AssignLink(const AbstractOptionProxy& data) {}
 		/**
-		* Metoda pro komunikaci s Configuration slouzici k nastaveni reference na jiny Option do konkretniho mista v retezcove hodnote v Configuration, iniciovane v potomcich Optionu.
+		* Metoda pro komunikaci s Configuration slouzici k nastaveni reference na jiny OptionProxy do konkretniho mista v retezcove hodnote v Configuration, iniciovane v potomcich OptionProxyu.
 		* Muze vyhodit WrongFormat vyjimku (kvuli existenci referenci).
-		* \param data  novy option
+		* \param data  novy OptionProxy
 		* \param from_index pocatecni index
 		* \param count delka nahrazovaneho useku
 		*/
-		void AssignLink(const AbstractOption& data, int from_index, int count) {}
+		void AssignLink(const AbstractOptionProxy& data, int from_index, int count) {}
 
 	private:
 		friend class Section;
@@ -87,28 +87,28 @@ namespace ConfigManager
 	*
 	*/
 	template<typename TypeSpecifier>
-	class Option : public AbstractOption
+	class OptionProxy : public AbstractOptionProxy
 	{
 		typedef typename TypeSpecifier::ValueType ValueType;
 	public:
-    Option() {}
+    OptionProxy() {}
     
 		/** Hlavni kontruktor, specifikujici format dane volby. 
 		* \param default_value Prednastavena hodnota.
 		* \param type_specifier Trida prirazena pro preklad z retezcove reprezentace.
 		* \param comments Komentare. 
 		*/
-		Option(const ValueType& default_value,
+		OptionProxy(const ValueType& default_value,
 			   TypeSpecifier type_specifier = TypeSpecifier(), 
 			   const std::string comments = "" ) { }
-		/** \copydoc AbstractOption::operator=(const AbstractOption& other)
+		/** \copydoc AbstractOptionProxy::operator=(const AbstractOptionProxy& other)
 		*
 		*/
-		Option(Option&& other) {}
-		/** \copydoc AbstractOption::operator=(const AbstractOption& other)
+		OptionProxy(OptionProxy&& other) {}
+		/** \copydoc AbstractOptionProxy::operator=(const AbstractOptionProxy& other)
 		*
 		*/
-		Option& operator=(Option&& other) {}
+		OptionProxy& operator=(OptionProxy&& other) {}
 		/** Metoda vracejici nastavenou hodnotu. 
 		*
 		*/
@@ -123,13 +123,13 @@ namespace ConfigManager
 		* Muze vyhodit WrongFormat vyjimku (kvuli existenci referenci).
 		* \param option Volba ke ktere odkaz vede.
 		*/
-		void Link(const AbstractOption& option) { }
+		void Link(const AbstractOptionProxy& option) { }
 	protected:
-		/** \copydoc AbstractOption::RegenerateValueData()
+		/** \copydoc AbstractOptionProxy::RegenerateValueData()
 		* 
 		*/
 		virtual void RegenerateValueData() override {}
-		/** \copydoc AbstractOption::ProcessValueData()
+		/** \copydoc AbstractOptionProxy::ProcessValueData()
 		*
 		*/
 		virtual void ProcessValueData(const std::string& data) override {}
@@ -139,7 +139,7 @@ namespace ConfigManager
 	*
 	*/
 	template<typename TypeSpecifier>
-	class ListOption : public AbstractOption
+	class ListOptionProxy : public AbstractOptionProxy
 	{
 		typedef typename TypeSpecifier::ValueType ValueType;
 	public:
@@ -148,17 +148,17 @@ namespace ConfigManager
 		* \param type_specifier Trida prirazena pro preklad z retezcove reprezentace.
 		* \param comments Komentare.
 		*/
-		ListOption(const std::vector<ValueType>& default_value, 
+		ListOptionProxy(const std::vector<ValueType>& default_value, 
 			       TypeSpecifier type_specifier = TypeSpecifier(),
 			       const std::string comments = "") { }
-		/** \copydoc AbstractOption::operator=(const AbstractOption& other)
+		/** \copydoc AbstractOptionProxy::operator=(const AbstractOptionProxy& other)
 		*
 		*/
-		ListOption(ListOption&& other) {}
-		/** \copydoc AbstractOption::operator=(const AbstractOption& other)
+		ListOptionProxy(ListOptionProxy&& other) {}
+		/** \copydoc AbstractOptionProxy::operator=(const AbstractOptionProxy& other)
 		*
 		*/
-		ListOption& operator=(ListOption&& other) {}
+		ListOptionProxy& operator=(ListOptionProxy&& other) {}
 
 		/**
 		* Trida pro navrat z operatoru [] v pripade konstantniho pristupu, ekvivalent metody get.
@@ -170,14 +170,14 @@ namespace ConfigManager
 			* \param parent Seznam ze ktereho prvek pochazi.
 			* \param index Pozice v seznamu. 
 			*/
-			ConstItem(const ListOption<TypeSpecifier>& parent, int index) : parent_(parent), index_(index) {}
+			ConstItem(const ListOptionProxy<TypeSpecifier>& parent, int index) : parent_(parent), index_(index) {}
 
 			/**
 			* Metoda pro pristup k hodnote. 
 			*/
 			const ValueType& Get() const { return ValueType(); }
 		private:
-			const ListOption<TypeSpecifier>& parent_;
+			const ListOptionProxy<TypeSpecifier>& parent_;
 			int index_;
 		};
 
@@ -187,10 +187,10 @@ namespace ConfigManager
 		class Item
 		{
 		public:
-			/** \copydoc ConstItem::ConstItem(const ListOption<TypeSpecifier>& parent, int index) 
+			/** \copydoc ConstItem::ConstItem(const ListOptionProxy<TypeSpecifier>& parent, int index) 
 			* 
 			*/
-			Item(ListOption<TypeSpecifier>& parent, int index) : parent_(parent), index_(index) {}
+			Item(ListOptionProxy<TypeSpecifier>& parent, int index) : parent_(parent), index_(index) {}
 			/**
 			* Metoda pro pristup k hodne.
 			*/
@@ -204,13 +204,13 @@ namespace ConfigManager
 			* Muze vyhodit WrongFormat vyjimku (kvuli existenci referenci).
 			* \param option Volba na kterou vede odkaz.
 			*/
-			void Link(AbstractOption& option) { }
+			void Link(AbstractOptionProxy& option) { }
 			/**Metoda pro odstraneni volby ze seznamu.
 			* Muze vyhodit WrongFormat vyjimku (kvuli existenci referenci).
 			*/
 			void Remove() {}
 		private:
-			ListOption<TypeSpecifier>& parent_;
+			ListOptionProxy<TypeSpecifier>& parent_;
 			int index_;
 		};
 		/** Metoda vracejici pocet voleb v seznamu.
@@ -236,11 +236,11 @@ namespace ConfigManager
 
 	protected:
 		
-		/** \copydoc AbstractOption::RegenerateValueData()
+		/** \copydoc AbstractOptionProxy::RegenerateValueData()
 		* Muze vyhodit WrongFormat vyjimku (kvuli existenci referenci).
 		*/
 		virtual void RegenerateValueData() override { }
-		/** \copydoc AbstractOption::RegenerateValueData()
+		/** \copydoc AbstractOptionProxy::RegenerateValueData()
 		*
 		*/
 		virtual void ProcessValueData(const std::string& data) override { }

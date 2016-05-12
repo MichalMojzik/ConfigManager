@@ -22,7 +22,7 @@ namespace ConfigManager
 		*   \param comments Komentar. 
 		*/
 		template<typename TypeSpecifier>
-		Option<TypeSpecifier> SpecifyOption(
+		OptionProxy<TypeSpecifier> SpecifyOption(
 			std::string name,
 			const TypeSpecifier& type_specifier,
 			const typename TypeSpecifier::ValueType& default_value,
@@ -30,14 +30,14 @@ namespace ConfigManager
 			const std::string comments = ""
 			)
 		{
-			return Option<TypeSpecifier>(default_value, type_specifier);
+			return OptionProxy<TypeSpecifier>(default_value, type_specifier);
 		}
 
 		/** \copydoc Section::SpecifyOption(std::string name, const TypeSpecifier& type_specifier, const typename TypeSpecifier::ValueType& default_value, Requirement optional = Requirement::OPTIONAL, const std::string comments = "")
 		* Muze vyhodit WrongFormat, MandatoryMissing vyjimky.
 		*/
 		template<typename TypeSpecifier>
-		ListOption<TypeSpecifier> SpecifyListOption(
+		ListOptionProxy<TypeSpecifier> SpecifyListOption(
 			std::string name,
 			const TypeSpecifier& type_specifier,
 			const std::vector<typename TypeSpecifier::ValueType>& default_value,
@@ -45,7 +45,7 @@ namespace ConfigManager
 			const std::string comments = ""
 			)
 		{
-			return ListOption<TypeSpecifier>(default_value, type_specifier);
+			return ListOptionProxy<TypeSpecifier>(default_value, type_specifier);
 		}
 		/** Metoda pro pristup k jmenu sekce. 
 		*
