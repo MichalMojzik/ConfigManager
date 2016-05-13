@@ -6,7 +6,7 @@ namespace ConfigManager
   {
   }
   
-  Configuration::Configuration(std::string filename, InputFilePolicy policy = InputFilePolicy::NONE)
+  Configuration::Configuration(std::string filename, InputFilePolicy policy)
   {
   }
   
@@ -14,7 +14,7 @@ namespace ConfigManager
   {
   }
   
-  void Configuration::SetConfigFile(std::string filename, InputFilePolicy policy = InputFilePolicy::NONE)
+  void Configuration::SetConfigFile(std::string filename, InputFilePolicy policy) 
   {
   }
 
@@ -38,11 +38,11 @@ namespace ConfigManager
   {
   }
   
-  void Configuration::Flush(OutputMethod output_method = OutputMethod::NORMAL)
+  void Configuration::Flush(OutputMethod output_method)
   {
   }
   
-  Section Configuration::SpecifySection(std::string section_name, Requirement requirement = Requirement::OPTIONAL, const std::string comments = "")
+  Section Configuration::SpecifySection(std::string section_name, Requirement requirement, const std::string comments)
   {
     return Section(section_name);
   }

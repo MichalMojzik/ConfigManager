@@ -66,7 +66,7 @@ namespace ConfigManager
 		* Muze vyhodit MalformedInput, IoException, WrongFormat, MandatoryMissing vyjimky.
 		* \param output_stream Vystupni istream.
 		*/
-		void SetOutputFile(std::ostream& output_stream);
+		void SetOutputStream(std::ostream& output_stream);
 
 		/** Metoda vynucijici zapis zmenenych voleb na disk. 
 		* Muze vyhodit IoException vyjimku (v pøipadì selhání otevøení souboru pro zápis).
