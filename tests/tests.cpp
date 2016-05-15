@@ -2,18 +2,10 @@
 
 
 
-tests::tests()
-{
-}
-
-
-tests::~tests()
-{
-}
-
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
+#include <sstream>
 
 #ifdef _MSC_VER
 #pragma warning (disable: 4290)
@@ -21,8 +13,10 @@ tests::~tests()
 
 //#include "..\..\..\src\cpptest.h" //"../src/cpptest.h"
 #include "../lib/cpptest-1.1.2/src/cpptest.h"
+#include "../src/configmanager.h"
 
 using namespace std;
+using namespace ConfigManager;
 
 // Tests unconditional fail asserts
 //
@@ -155,6 +149,8 @@ cmdline(int argc, char* argv[])
 	if (argc > 2)
 		usage(); // will not return
 
+	
+
 	Test::Output* output = 0;
 
 	if (argc == 1)
@@ -182,9 +178,23 @@ cmdline(int argc, char* argv[])
 
 // Main test program
 //
-int
-main(int argc, char* argv[])
+int main(int argc, char* argv[])
 {
+	std::cout << "Starting test of ConfigManager library. \n";
+	try
+	{
+		ConfigurationTestSuite configSuite;
+		Test::TextOutput simpleOutput(Test::TextOutput::Mode::Verbose);
+		configSuite.run(simpleOutput);
+	}
+	catch (...)
+	{
+		cout << "unexpected exception encountered\n";
+		return EXIT_FAILURE;
+	}
+	cin.get();
+	/*
+	std::cout << "Hi by tests..\n";
 	try
 	{
 		// Demonstrates the ability to use multiple test suites
@@ -208,6 +218,84 @@ main(int argc, char* argv[])
 		cout << "unexpected exception encountered\n";
 		return EXIT_FAILURE;
 	}
-	return EXIT_SUCCESS;
+	return EXIT_SUCCESS;*/
+	return 0;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+ConfigurationTestSuite::ConfigurationTestSuite()
+{
+	TEST_ADD(ConfigurationTestSuite::FormatReadingTest)
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void ConfigurationTestSuite::FormatReadingTest()
+{
+	// 
+	{// funguji komentare ? (= jsou ignorovany ?  ) 
+		ConfigManager::Configuration config;
+		stringstream commentFileText;
+		commentFileText << "; this is comment.. the following should be ignored: ~@#$%^&*()_+{}:\"|<>?\n";
+		commentFileText << ";[commentedSection]\n";
+		commentFileText << ";commentedOption=what\n";
+		commentFileText << "[section] ;comment.. \n";
+		commentFileText << "option=value;comment\n";
+		// takovy vstup by mel byt korektni. 
+		try 
+		{
+			config.SetInputStream(commentFileText);
+		}
+		catch(ConfigManager::IoException & e)
+		{
+			TEST_FAIL("FormatReadingTest: testing comments: IoException.")
+		}
+		catch (ConfigManager::ConfigurationException & e)
+		{	
+			TEST_FAIL("FormatReadingTest: testing comments: exception thrown.")
+		}
+		catch (...)
+		{
+			TEST_FAIL("FormatReadingTest: testing comments: unexpected exception, while reading input stream.")
+		}
+		
+		try
+		{
+			Section dummySection = config.SpecifySection("section", Requirement::MANDATORY, "this section should be there");
+			// pokud tam tato sekce neni, nepujde ji specifikovat jako MANDATORY..
+			OptionProxy<StringSpecifier> dummyOpt =  
+				dummySection.SpecifyOption<StringSpecifier>("option", StringSpecifier() , "default", OPTIONAL,"this option should be there");
+			// pokud nebude mit hodnotu "value, tak je to spatne..
+
+			/// string dummyValue = dummyOpt.Get();
+
+			TEST_ASSERT(dummyValue == "value");
+		}
+		catch (MandatoryMissing & e)
+		{
+			TEST_FAIL("FormatReadingTest: testing comments: '[section];comment' did not create a section.")
+		}
+		catch (...)
+		{
+			TEST_FAIL("FormatReadingTest: testing comments: unexpected exception, specifying section.")
+		}	
+
+		// TODO:  test that there are not commented options and sections...
+	}
+
+	
+	//	config.SetInputStream();
+
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+ConfigurationTestSuite::~ConfigurationTestSuite()
+{
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

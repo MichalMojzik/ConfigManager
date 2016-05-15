@@ -47,7 +47,7 @@ namespace ConfigManager
 		void SetInputFile(std::string filename);
 		
 		/** Metoda pro nastaveni vstupniho streamu. 
-		* Muze vyhodit MalformedInput, IoException, WrongFormat, MandatoryMissing vyjimky.
+		* Muze vyhodit MalformedInput, IoException, WrongFormat, MandatoryMissing vyjimky. !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! tady asi zatim trida nevi, ze neco je mandatory - to prijde az u specify, ne?	
 		* \param input_stream Vstupni istream.
 		*/
 		void SetInputStream(std::istream& input_stream);
