@@ -273,7 +273,7 @@ void ConfigurationTestSuite::FormatReadingTest()
 			string dummyValue = dummyOpt.Get();
 			TEST_ASSERT_EQUALS("value", dummyValue);
 		}
-		catch (MandatoryMissing & e)
+		catch (MandatoryMissingException & e)
 		{
 			TEST_FAIL("FormatReadingTest: testing comments: '[section];comment' did not create a section.")
 		}
@@ -297,4 +297,24 @@ ConfigurationTestSuite::~ConfigurationTestSuite()
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+TypeSpecifiersTestSuite::TypeSpecifiersTestSuite()
+{
+	TEST_ADD(BooleanSpecifierTest)
+}
+
+
+TypeSpecifiersTestSuite::~TypeSpecifiersTestSuite()
+{
+}
+
+
+void TypeSpecifiersTestSuite::BooleanSpecifierTest()
+{
+	BooleanSpecifier bs;
+	vector<string> falseStrings;
+	falseStrings << "0";
+	falseStrings << "f"; 
+}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

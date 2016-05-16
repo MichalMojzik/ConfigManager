@@ -40,24 +40,24 @@ namespace ConfigManager
 
 		/**
 		* Metoda pro komunikaci s Configuration slouzici pro vyvolani prepsani aktualni hodnoty v Configuration retezcovou reprezentaci hodnoty v OptionProxyu (lze tim zapsat default), iniciovane v Configuration.
-		* Muze vyhodit WrongFormat vyjimku.
+		* Muze vyhodit WrongFormatException vyjimku.
 		*/
 		virtual void RegenerateValueData() = 0;
 		/**
 		* Metoda pro komunikaci s Configuration slouzici k aktualizaci hodnoty v OptionProxyu dle retezcove hodnoty v Configuration, iniciovane v Configuration (pripadne Section).
-		* Muze vyhodit WrongFormat vyjimku.
+		* Muze vyhodit WrongFormatException vyjimku.
 		* \param data Text ze ktereho ma byt hodnota prectena.
 		*/
 		virtual void ProcessValueData(const std::string& data) = 0;
 		/**
 		* Metoda pro komunikaci s Configuration slouzici k nastaveni hodnoty z OptionProxyu do retezcove hodnoty v Configuration, iniciovane v potomcich OptionProxyu.
-		* Muze vyhodit WrongFormat vyjimku (kvuli existenci referenci).
+		* Muze vyhodit WrongFormatException vyjimku (kvuli existenci referenci).
 		* \param Textova data ktera maji prepsat retezcove hodnoty v Configuration.
 		*/
 		void AssignValueData(const std::string& data);
 		/**
 		* Metoda pro komunikaci s Configuration slouzici k nastaveni hodnoty z OptionProxyu do konkretniho mista v retezcove hodnote v Configuration, iniciovane v potomcich OptionProxyu.
-		* Muze vyhodit WrongFormat vyjimku (kvuli existenci referenci).
+		* Muze vyhodit WrongFormatException vyjimku (kvuli existenci referenci).
 		* \param data nova hodnota
 		* \param from_index pocatecni index
 		* \param count delka nahrazovaneho useku
@@ -65,22 +65,37 @@ namespace ConfigManager
 		void AssignValueData(const std::string& data, int from_index, int count);
 		/**
 		* Metoda pro komunikaci s Configuration slouzici k nastaveni reference na jiny OptionProxy do retezcove hodnoty v Configuration, iniciovane v potomcich OptionProxyu.
-		* Muze vyhodit WrongFormat vyjimku (kvuli existenci referenci).
+		* Muze vyhodit WrongFormatException vyjimku (kvuli existenci referenci).
 		* \param data novy OptionProxy
 		*/
 		void AssignLink(const AbstractOptionProxy& data);
 		/**
 		* Metoda pro komunikaci s Configuration slouzici k nastaveni reference na jiny OptionProxy do konkretniho mista v retezcove hodnote v Configuration, iniciovane v potomcich OptionProxyu.
-		* Muze vyhodit WrongFormat vyjimku (kvuli existenci referenci).
+		* Muze vyhodit WrongFormatException vyjimku (kvuli existenci referenci).
 		* \param data  novy OptionProxy
 		* \param from_index pocatecni index
 		* \param count delka nahrazovaneho useku
 		*/
 		void AssignLink(const AbstractOptionProxy& data, int from_index, int count);
 
+		/**
+		* Tato metoda vraci nazev optionu.
+		*/
+		std::string getOptionName();
+		/**
+		* Metoda zpristupnujici jmeno sekce do ktere tento option prislusi.
+ 		*/
+		std::string getSectionName();
+
+		// /**
+		// * Vraci objekt Configuration do ktereho option prislusi. 
+		// */
+		///Configuration& getConfiguration();
+
 	private:
 		friend class Section;
 		friend class Configuration;
+		//Configuration& parentConfiguration_;
 	};
 
 	/** 
@@ -118,13 +133,13 @@ namespace ConfigManager
 		const ValueType& Get() const { return value; }
 		/**
 		* Metoda pro nastaveni nove hodnoty volby.
-		* Muze vyhodit WrongFormat vyjimku (kvuli existenci referenci).
+		* Muze vyhodit WrongFormatException vyjimku (kvuli existenci referenci).
 		* \param value nova hodnota.
 		*/
 		void Set(ValueType value) { }
 		/** 
 		* Tato metoda realizuje volbu odkazem (ve vstupnim souboru uvedene znakem $).
-		* Muze vyhodit WrongFormat vyjimku (kvuli existenci referenci).
+		* Muze vyhodit WrongFormatException vyjimku (kvuli existenci referenci).
 		* \param option Volba ke ktere odkaz vede.
 		*/
 		void Link(const AbstractOptionProxy& option) { }
@@ -211,19 +226,19 @@ namespace ConfigManager
 			const ValueType& Get() const { return ValueType(); }
 			/**
 			* Metoda pro nastavovani nove hodnoty.
-			* Muze vyhodit WrongFormat vyjimku (kvuli existenci referenci).
+			* Muze vyhodit WrongFormatException vyjimku (kvuli existenci referenci).
 			* \param value Nova hodnota.
 			*/
 			void Set(const ValueType& value) {}
 			/**
 			* Metoda pro realizaci hodnoty odkazem.
-			* Muze vyhodit WrongFormat vyjimku (kvuli existenci referenci).
+			* Muze vyhodit WrongFormatException vyjimku (kvuli existenci referenci).
 			* \param option Volba na kterou vede odkaz.
 			*/
 			void Link(AbstractOptionProxy& option) { }
 			/**
 			* Metoda pro odstraneni volby ze seznamu.
-			* Muze vyhodit WrongFormat vyjimku (kvuli existenci referenci).
+			* Muze vyhodit WrongFormatException vyjimku (kvuli existenci referenci).
 			*/
 			void Remove() {}
 		private:
@@ -237,20 +252,20 @@ namespace ConfigManager
 		int Count() { return 0; }
 		/**
 		* Operator pro pristup k jednotlivym volbam ze seznamu.
-		* Muze vyhodit OutOfBounds vyjimku.
+		* Muze vyhodit OutOfBoundsException vyjimku.
 		* \param index Pozice pozadovane volby.
 		*/
 		Item operator[] (int index) { return Item(*this, index); }
 		/**
 		* Operator pro konstantni pristup k jednotlivym volbam ze seznamu.
-		* Muze vyhodit OutOfBounds vyjimku.
+		* Muze vyhodit OutOfBoundsException vyjimku.
 		* \param index Pozice pozadovane volby.
 		*/
 		ConstItem operator[] (int index) const { return ConstItem(*this, index); }
 
 		/**
 		* Metoda pro pridani nove volby do seznamu.
-		* Muze vyhodit WrongFormat vyjimku (kvuli existenci referenci).
+		* Muze vyhodit WrongFormatException vyjimku (kvuli existenci referenci).
 		* \param value Nova volba.
 		*/
 		Item Add(const ValueType& value) { return Item(*this, 0); }
@@ -259,7 +274,7 @@ namespace ConfigManager
 		
 		/**
 		* \copydoc AbstractOptionProxy::RegenerateValueData()
-		* Muze vyhodit WrongFormat vyjimku (kvuli existenci referenci).
+		* Muze vyhodit WrongFormatException vyjimku (kvuli existenci referenci).
 		*/
 		virtual void RegenerateValueData() override { }
 		/**
