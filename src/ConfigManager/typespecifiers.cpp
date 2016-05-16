@@ -9,12 +9,40 @@ namespace ConfigManager
 
 	BooleanSpecifier::ValueType ConfigManager::BooleanSpecifier::FromString(const std::string & data)
 	{
-		return false; 
+		if(
+			data == "0" ||
+			data == "f" ||
+			data == "n" ||
+			data == "off" ||
+			data == "no" ||
+			data == "disable"
+			)
+		{
+			return false;
+		}
+		else if(
+			data == "1" ||
+			data == "t" ||
+			data == "y" ||
+			data == "on" ||
+			data == "yes" ||
+			data == "enabled"
+			)
+		{
+			return true;
+		}
+		else
+		{
+			throw WrongFormat();
+		}
 	}
 
 	std::string BooleanSpecifier::ToString(const BooleanSpecifier::ValueType & value)
 	{
-		return std::string();
+		if(value)
+			return "on";
+		else
+			return "off";
 	}
 
 
@@ -23,7 +51,7 @@ namespace ConfigManager
 	{
 	}
 
-	IntegerSpecifier::IntegerSpecifier(int64 range_start, int64 range_end)
+	IntegerSpecifier::IntegerSpecifier(int64_t range_start, int64_t range_end)
 	{
 	}
 
@@ -34,7 +62,7 @@ namespace ConfigManager
 
 	std::string IntegerSpecifier::ToString(const IntegerSpecifier::ValueType & value)
 	{
-		return std::string();
+		return std::to_string(value);
 	}
 
 
@@ -43,7 +71,7 @@ namespace ConfigManager
 	{
 	}
 
-	UnsignedSpecifier::UnsignedSpecifier(uint64 range_start, uint64 range_end)
+	UnsignedSpecifier::UnsignedSpecifier(uint64_t range_start, uint64_t range_end)
 	{
 	}
 
@@ -54,7 +82,7 @@ namespace ConfigManager
 
 	std::string UnsignedSpecifier::ToString(const UnsignedSpecifier::ValueType & value)
 	{
-		return std::string();
+		return std::to_string(value);
 	}
 
 
@@ -63,14 +91,14 @@ namespace ConfigManager
 	{
 	}
 
-	StringSpecifier::ValueType StringSpecifier::FromString(const std::string & data)
+	const StringSpecifier::ValueType& StringSpecifier::FromString(const std::string & data)
 	{
-		return StringSpecifier::ValueType();
+		return data;
 	}
 
-	std::string StringSpecifier::ToString(const StringSpecifier::ValueType & value)
+	const std::string& StringSpecifier::ToString(const StringSpecifier::ValueType & value)
 	{
-		return std::string();
+		return value;
 	}
 
 }
