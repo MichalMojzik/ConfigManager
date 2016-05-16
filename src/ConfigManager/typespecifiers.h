@@ -205,7 +205,7 @@ namespace ConfigManager
 	{
 		auto valueIt = mapping_.find(data);
 		if(valieIt == mapping_.end())
-			throw WrongFormat();
+			throw WrongFormatException();
 		return valueIt->second;
 	}
 
@@ -219,7 +219,7 @@ namespace ConfigManager
 				return it->first;
 			}
 		}
-		throw WrongFormat();
+		throw WrongFormatException();
 	}
 }
 

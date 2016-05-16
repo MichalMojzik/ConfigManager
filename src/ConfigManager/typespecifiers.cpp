@@ -33,7 +33,7 @@ namespace ConfigManager
 		}
 		else
 		{
-			throw WrongFormat();
+			throw WrongFormatException();
 		}
 	}
 
