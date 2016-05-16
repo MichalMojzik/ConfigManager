@@ -10,8 +10,7 @@ namespace ConfigManager
 
 
 	/** 
-	* Trida realizujici prevod z textu do typu boolean a zpet.
-	* 
+	* Trida realizujici prevod z textu do typu boolean a zpet. 
 	*/
 	class BooleanSpecifier
 	{
@@ -28,14 +27,14 @@ namespace ConfigManager
 
 		/**
 		* Metoda prevadejici text na vyslednou hodnotu.
-		* Muze vyhodit WrongFormat vyjimku.
+		* Muze vyhodit WrongFormatException vyjimku.
 		* \param data Vstupni data.
 		*/
 		ValueType FromString(const std::string& data); 
 		
 		/**
 		* Metoda prevadejici nastavenou/zmenenou hodnotu zpet do textoveho formatu.
-		* Muze vyhodit WrongFormat vyjimku.
+		* Muze vyhodit WrongFormatException vyjimku.
 		* \param Hodnota preveditelna na string.
 		*/
 		std::string ToString(const ValueType& value); 
@@ -185,7 +184,7 @@ namespace ConfigManager
 		/** 
 		* \copydoc BooleanSpecifier::ToString(const ValueType& value)
 		*/
-		std::string ToString(const ValueType& value); // { return ""; }
+		std::string ToString(const ValueType& value); 
 	};
 };
 

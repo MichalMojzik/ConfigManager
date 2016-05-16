@@ -25,7 +25,7 @@ namespace ConfigManager
 		Configuration();
 		/**
 		* Konstruktor nacitajici nastaveni ze zvoleneho souboru. 
-		* Muze vyhodit MalformedInput, IoException vyjimky.
+		* Muze vyhodit MalformedInputException, IoException vyjimky.
 		* \param filename Jmeno souboru. (Ocekavany format ".ini")
 		* \param policy Spefikuje pristup k vstupnimu souboru (relaxed/strict).
 		*/
@@ -46,14 +46,14 @@ namespace ConfigManager
 
 		/**
 		* Nastavuje jmeno vstupniho souboru. Zakladni pristup je IGNORE_NONEXISTANT(relaxed).
-		* Muze vyhodit MalformedInput, IoException, WrongFormat, MandatoryMissing vyjimky.
+		* Muze vyhodit MalformedInputException, IoException, WrongFormatException, MandatoryMissingException vyjimky.
 		* \param filename Jmeno souboru. (Ocekavany format ".ini")
 		*/
 		void SetInputFile(std::string filename);
 		
 		/**
 		* Metoda pro nastaveni vstupniho streamu. 
-		* Muze vyhodit MalformedInput, IoException, WrongFormat, MandatoryMissing vyjimky. 	
+		* Muze vyhodit MalformedInputException, IoException, WrongFormatException, MandatoryMissingException vyjimky. 	
 		* \param input_stream Vstupni istream.
 		*/
 		void SetInputStream(std::istream& input_stream);
@@ -72,7 +72,7 @@ namespace ConfigManager
 		void SetOutputFile(std::string filename);
 		/**
 		* Metoda pro nastaveni vystupniho streamu.
-		* Muze vyhodit MalformedInput, IoException, WrongFormat, MandatoryMissing vyjimky.
+		* Muze vyhodit MalformedInputException, IoException, WrongFormatException, MandatoryMissingException vyjimky.
 		* \param output_stream Vystupni istream.
 		*/
 		void SetOutputStream(std::ostream& output_stream);
@@ -86,7 +86,7 @@ namespace ConfigManager
 
 		/**
 		* Metoda specifikujici dalsi sekci. 
-		* Muze vyhodit MandatoryMissing vyjimku.
+		* Muze vyhodit MandatoryMissingException vyjimku.
 		* \param section_name Jmeno sekce. 
 		* \param requirement Povinnost dane sekce.
 		* \param comments Komentare k dane sekci. 
