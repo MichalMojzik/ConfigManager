@@ -112,7 +112,7 @@ namespace ConfigManager
 		/** Metoda vracejici nastavenou hodnotu. 
 		*
 		*/
-		const ValueType& Get() const { return ValueType(); }
+		const ValueType& Get() const { return value; }
 		/**
 		* Metoda pro nastaveni nove hodnoty volby.
 		* Muze vyhodit WrongFormat vyjimku (kvuli existenci referenci).
@@ -133,6 +133,8 @@ namespace ConfigManager
 		*
 		*/
 		virtual void ProcessValueData(const std::string& data) override {}
+	private:
+		ValueType value;
 	};
 
 	/** Tato trida realizuje volbu tvorenou seznamem elementu. 

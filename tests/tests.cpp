@@ -266,13 +266,12 @@ void ConfigurationTestSuite::FormatReadingTest()
 		{
 			Section dummySection = config.SpecifySection("section", Requirement::MANDATORY, "this section should be there");
 			// pokud tam tato sekce neni, nepujde ji specifikovat jako MANDATORY..
-			OptionProxy<StringSpecifier> dummyOpt =  
-				dummySection.SpecifyOption<StringSpecifier>("option", StringSpecifier() , "default", OPTIONAL,"this option should be there");
+			OptionProxy<StringSpecifier> dummyOpt =  dummySection.SpecifyOption<StringSpecifier>
+								("option", StringSpecifier() , "default", OPTIONAL,"this option should be there");
 			// pokud nebude mit hodnotu "value, tak je to spatne..
 
-			/// string dummyValue = dummyOpt.Get();
-
-			TEST_ASSERT(dummyValue == "value");
+			string dummyValue = dummyOpt.Get();
+			TEST_ASSERT(dummyValue == "value" );
 		}
 		catch (MandatoryMissing & e)
 		{
