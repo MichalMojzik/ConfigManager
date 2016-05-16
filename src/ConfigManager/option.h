@@ -16,7 +16,7 @@ namespace ConfigManager
 		/** Zakladní konstruktor.
 		*
 		*/
-		AbstractOptionProxy() {}
+		AbstractOptionProxy();
 		/** Neni povoleno kopirovani instanci teto tridy. 
 		*
 		*/
@@ -28,15 +28,15 @@ namespace ConfigManager
 		/** Je povoleno pouze "movable" chovani. 
 		*
 		*/
-		AbstractOptionProxy(AbstractOptionProxy&& other) {}
+		AbstractOptionProxy(AbstractOptionProxy&& other);
 		/** \copydoc AbstractOptionProxy(AbstractOptionProxy&& other)
 		*
 		*/
-		AbstractOptionProxy& operator=(AbstractOptionProxy&& other) {}
+		AbstractOptionProxy& operator=(AbstractOptionProxy&& other);
 		/** Zakladni destruktor. 
 		*
 		*/
-		~AbstractOptionProxy() {}
+		~AbstractOptionProxy();
 
 		/**
 		* Metoda pro komunikaci s Configuration slouzici pro vyvolani prepsani aktualni hodnoty v Configuration retezcovou reprezentaci hodnoty v OptionProxyu (lze tim zapsat default), iniciovane v Configuration.
@@ -54,7 +54,7 @@ namespace ConfigManager
 		* Muze vyhodit WrongFormat vyjimku (kvuli existenci referenci).
 		* \param Textova data ktera maji prepsat retezcove hodnoty v Configuration.
 		*/
-		void AssignValueData(const std::string& data) {}
+		void AssignValueData(const std::string& data);
 		/**
 		* Metoda pro komunikaci s Configuration slouzici k nastaveni hodnoty z OptionProxyu do konkretniho mista v retezcove hodnote v Configuration, iniciovane v potomcich OptionProxyu.
 		* Muze vyhodit WrongFormat vyjimku (kvuli existenci referenci).
@@ -62,13 +62,13 @@ namespace ConfigManager
 		* \param from_index pocatecni index
 		* \param count delka nahrazovaneho useku
 		*/
-		void AssignValueData(const std::string& data, int from_index, int count) {}
+		void AssignValueData(const std::string& data, int from_index, int count);
 		/**
 		* Metoda pro komunikaci s Configuration slouzici k nastaveni reference na jiny OptionProxy do retezcove hodnoty v Configuration, iniciovane v potomcich OptionProxyu.
 		* Muze vyhodit WrongFormat vyjimku (kvuli existenci referenci).
 		* \param data novy OptionProxy
 		*/
-		void AssignLink(const AbstractOptionProxy& data) {}
+		void AssignLink(const AbstractOptionProxy& data);
 		/**
 		* Metoda pro komunikaci s Configuration slouzici k nastaveni reference na jiny OptionProxy do konkretniho mista v retezcove hodnote v Configuration, iniciovane v potomcich OptionProxyu.
 		* Muze vyhodit WrongFormat vyjimku (kvuli existenci referenci).
@@ -76,7 +76,7 @@ namespace ConfigManager
 		* \param from_index pocatecni index
 		* \param count delka nahrazovaneho useku
 		*/
-		void AssignLink(const AbstractOptionProxy& data, int from_index, int count) {}
+		void AssignLink(const AbstractOptionProxy& data, int from_index, int count);
 
 	private:
 		friend class Section;
