@@ -37,7 +37,7 @@ namespace ConfigManager
 		* Muze vyhodit WrongFormatException vyjimku.
 		* \param Hodnota preveditelna na string.
 		*/
-		std::string ToString(const ValueType& value); 
+		std::string ToString(ValueType value); 
 	};
 
 	/**
@@ -69,7 +69,7 @@ namespace ConfigManager
 		/**
 		* \copydoc BooleanSpecifier::ToString(const ValueType& value)
 		*/
-		std::string ToString(const ValueType& value); 
+		std::string ToString(ValueType value); 
 	};
 
 	/**
@@ -98,7 +98,7 @@ namespace ConfigManager
 		/**
 		* \copydoc BooleanSpecifier::ToString(const ValueType& value)
 		*/
-		std::string ToString(const ValueType& value);
+		std::string ToString(ValueType value);
 	};
 
 	/**
@@ -115,22 +115,22 @@ namespace ConfigManager
 		/**
 		* \copydoc IntegerSpecifier::IntegerSpecifier()
 		*/
-		FloatSpecifier() { }
+		FloatSpecifier();
 		/**
 		* Konstruktor se specifikovanym rozsahem pro parametr.
 		* \param range_start Spodni meze rozsahu.
 		* \param range_end Horni meze rozsahu.
 		*/
-		FloatSpecifier(double range_start, double range_end) { }
+		FloatSpecifier(double range_start, double range_end);
 
 		/**
 		* \copydoc BooleanSpecifier::FromString(const std::string& data)
 		*/
-		ValueType FromString(const std::string& data) { return 0; }
+		ValueType FromString(const std::string& data);
 		/**
 		* \copydoc BooleanSpecifier::ToString(const ValueType& value)
 		*/
-		std::string ToString(const ValueType& value) { return ""; }
+		std::string ToString(ValueType value);
 	};
 
 	/**  

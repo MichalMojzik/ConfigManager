@@ -37,12 +37,16 @@ namespace ConfigManager
 		}
 	}
 
-	std::string BooleanSpecifier::ToString(const BooleanSpecifier::ValueType & value)
+	std::string BooleanSpecifier::ToString(BooleanSpecifier::ValueType value)
 	{
 		if(value)
+		{
 			return "on";
+		}
 		else
+		{
 			return "off";
+		}
 	}
 
 
@@ -55,12 +59,12 @@ namespace ConfigManager
 	{
 	}
 
-	IntegerSpecifier::ValueType IntegerSpecifier::FromString(const std::string & data)
+	IntegerSpecifier::ValueType IntegerSpecifier::FromString(const std::string& data)
 	{
-		return 0;
+		return std::stoll(data);
 	}
 
-	std::string IntegerSpecifier::ToString(const IntegerSpecifier::ValueType & value)
+	std::string IntegerSpecifier::ToString(IntegerSpecifier::ValueType value)
 	{
 		return std::to_string(value);
 	}
@@ -75,16 +79,42 @@ namespace ConfigManager
 	{
 	}
 
-	UnsignedSpecifier::ValueType UnsignedSpecifier::FromString(const std::string & data)
+	UnsignedSpecifier::ValueType UnsignedSpecifier::FromString(const std::string& data)
 	{
-		return 0;
+		try
+		{
+			return std::stoull(data);
+		}
+		catch(...)
+		{
+			throw WrongFormatException();
+		}
 	}
 
-	std::string UnsignedSpecifier::ToString(const UnsignedSpecifier::ValueType & value)
+	std::string UnsignedSpecifier::ToString(UnsignedSpecifier::ValueType value)
 	{
 		return std::to_string(value);
 	}
 
+
+
+	FloatSpecifier::FloatSpecifier()
+	{
+	}
+
+	FloatSpecifier::FloatSpecifier(double range_start, double range_end)
+	{
+	}
+
+	FloatSpecifier::ValueType FloatSpecifier::FromString(const std::string& data)
+	{
+		return std::stod(data);
+	}
+
+	std::string FloatSpecifier::ToString(ValueType value)
+	{
+		return std::to_string(value);
+	}
 
 
 	StringSpecifier::StringSpecifier()
