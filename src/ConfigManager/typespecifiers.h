@@ -45,12 +45,11 @@ namespace ConfigManager
 	*/
 	class IntegerSpecifier
 	{
-		typedef long long int64;
 	public:
 		/**
 		* \copydoc BooleanSpecifier::ValueType 
 		*/
-		typedef int64 ValueType;
+		typedef int64_t ValueType;
 		/**
 		* Konstruktor ktery neklade omezeni mezeni na rozsah hodnot.
 		* Rozsah hodnot je potom dan rozsahem zvoleneho typu. 
@@ -61,7 +60,7 @@ namespace ConfigManager
 		* \param ramge_start dolni mez rozsahu. 
 		* \param ramge_end horni mez rozsahu.
 		*/
-		IntegerSpecifier(int64 range_start, int64 range_end); 
+		IntegerSpecifier(int64_t range_start, int64_t range_end); 
 
 		/**
 		* \copydoc BooleanSpecifier::FromString(const std::string& data)
@@ -78,12 +77,11 @@ namespace ConfigManager
 	*/
 	class UnsignedSpecifier
 	{
-		typedef unsigned long long uint64;
 	public:
 		/**
 		*\copydoc BooleanSpecifier::ValueType
 		*/
-		typedef uint64 ValueType;
+		typedef uint64_t ValueType;
 		/**
 		* \copydoc IntegerSpecifier::IntegerSpecifier()
 		*/
@@ -91,7 +89,7 @@ namespace ConfigManager
 		/**
 		* \copydoc IntegerSpecifier::IntegerSpecifier(int64 range_start, int64 range_end)
 		*/
-		UnsignedSpecifier(uint64 range_start, uint64 range_end); 
+		UnsignedSpecifier(uint64_t range_start, uint64_t range_end); 
 
 		/**
 		* \copydoc BooleanSpecifier::FromString(const std::string& data)
@@ -157,7 +155,7 @@ namespace ConfigManager
 		/** \copydoc BooleanSpecifier::FromString(const std::string& data)
 		*
 		*/
-		ValueType FromString(const std::string& data);
+		const ValueType& FromString(const std::string& data);
 		/** \copydoc BooleanSpecifier::ToString(const ValueType& value)
 		*
 		*/
@@ -184,11 +182,11 @@ namespace ConfigManager
 		/**
 		* \copydoc BooleanSpecifier::FromString(const std::string& data)
 		*/
-		ValueType FromString(const std::string& data);
+		const ValueType& FromString(const std::string& data);
 		/** 
 		* \copydoc BooleanSpecifier::ToString(const ValueType& value)
 		*/
-		std::string ToString(const ValueType& value);
+		const std::string& ToString(const ValueType& value);
 	};
 };
 
@@ -203,11 +201,11 @@ namespace ConfigManager
 	}
 
 	template<typename TResult>
-	auto EnumSpecifier<TResult>::FromString(const std::string& data) -> ValueType
+	auto EnumSpecifier<TResult>::FromString(const std::string& data) -> const ValueType&
 	{
 		auto valueIt = mapping_.find(data);
 		if(valieIt == mapping_.end())
-			throw WrongFormat();
+			throw WrongFormatException();
 		return valueIt->second;
 	}
 
@@ -221,7 +219,7 @@ namespace ConfigManager
 				return it->first;
 			}
 		}
-		throw WrongFormat();
+		throw WrongFormatException();
 	}
 }
 
