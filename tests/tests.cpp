@@ -301,7 +301,7 @@ ConfigurationTestSuite::~ConfigurationTestSuite()
 
 TypeSpecifiersTestSuite::TypeSpecifiersTestSuite()
 {
-	TEST_ADD(BooleanSpecifierTest)
+	TEST_ADD(TypeSpecifiersTestSuite::BooleanSpecifierTest)
 }
 
 
@@ -312,9 +312,59 @@ TypeSpecifiersTestSuite::~TypeSpecifiersTestSuite()
 
 void TypeSpecifiersTestSuite::BooleanSpecifierTest()
 {
-	BooleanSpecifier bs;
-	vector<string> falseStrings;
-	falseStrings << "0";
-	falseStrings << "f"; 
+	BooleanSpecifier boolSpec;
+	// strings to be evaluated to false:
+	try {
+		vector<string> falseStrings;
+		falseStrings.push_back("0");
+		falseStrings.push_back("f");
+		falseStrings.push_back("n");
+		falseStrings.push_back("off");
+		falseStrings.push_back("disabled");
+		for (int i = 0; i < falseStrings.size(); i++)
+		{
+			bool value = boolSpec.FromString(falseStrings[i]);
+			TEST_ASSERT(value == false)
+		}
+		vector<string> trueStrings;
+		trueStrings.push_back("1");
+		trueStrings.push_back("t");
+		trueStrings.push_back("y");
+		trueStrings.push_back("on");
+		trueStrings.push_back("enabled");
+
+		for (int i = 0; i < trueStrings.size(); i++)
+		{
+			bool value = boolSpec.FromString(trueStrings[i]);
+			TEST_ASSERT(value == true)
+		}
+	}
+	catch (...)
+	{
+		TEST_FAIL("Exception thrown during valid convertion.");
+	}
+	vector<string> notBoolStrings;
+	notBoolStrings.push_back("asdf");
+	notBoolStrings.push_back("3");
+	notBoolStrings.push_back("-1");
+	notBoolStrings.push_back("$%#");
+	for (int i = 0; i < notBoolStrings.size(); i++)
+	{
+		try
+		{
+			bool value = boolSpec.FromString(notBoolStrings[i]);
+			// we should throw exception..
+			TEST_FAIL("No exception when invalid format.")
+		}
+		catch(WrongFormatException)
+		{
+			//this is ok
+		}
+		catch (...)
+		{
+			TEST_FAIL("Unexpected exception.")
+		}
+		
+	}
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
