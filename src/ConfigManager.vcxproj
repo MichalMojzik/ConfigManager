@@ -105,6 +105,7 @@
   <ItemGroup>
     <ClCompile Include="configmanager\configuration.cpp" />
     <ClCompile Include="ConfigManager\option.cpp" />
+    <ClCompile Include="ConfigManager\section.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="configmanager.h" />

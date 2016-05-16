@@ -4,6 +4,7 @@
 #include <string>
 #include "exceptions.h"
 #include "option.h"
+#include "enums.h"
 
 namespace ConfigManager
 {
@@ -50,13 +51,13 @@ namespace ConfigManager
 		/** Metoda pro pristup k jmenu sekce. 
 		*
 		*/
-		std::string GetName() { return ""; }
+		std::string GetName();
 
 	private:
 		/** Soukromy konstruktor pouzivany pri specifikaci sekce. 
 		* \param name Jmeno sekce.
 		*/
-		Section(std::string name) { }
+		Section(std::string name) {}
 
 		friend class Configuration;
 	};
