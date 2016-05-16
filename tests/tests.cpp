@@ -183,9 +183,13 @@ int main(int argc, char* argv[])
 	std::cout << "Starting test of ConfigManager library. \n";
 	try
 	{
-		ConfigurationTestSuite configSuite;
 		Test::TextOutput simpleOutput(Test::TextOutput::Mode::Verbose);
+
+		ConfigurationTestSuite configSuite;
 		configSuite.run(simpleOutput);
+
+		TypeSpecifiersTestSuite typeSpecifiersSuite;
+		typeSpecifiersSuite.run(simpleOutput);
 	}
 	catch (...)
 	{
@@ -301,7 +305,7 @@ ConfigurationTestSuite::~ConfigurationTestSuite()
 
 TypeSpecifiersTestSuite::TypeSpecifiersTestSuite()
 {
-	TEST_ADD(BooleanSpecifierTest)
+	TEST_ADD(TypeSpecifiersTestSuite::BooleanSpecifierTest)
 }
 
 
@@ -314,7 +318,7 @@ void TypeSpecifiersTestSuite::BooleanSpecifierTest()
 {
 	BooleanSpecifier bs;
 	vector<string> falseStrings;
-	falseStrings << "0";
-	falseStrings << "f"; 
+	falseStrings.push_back("0");
+	falseStrings.push_back("f");
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
