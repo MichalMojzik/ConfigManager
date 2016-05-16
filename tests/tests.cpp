@@ -192,7 +192,7 @@ int main(int argc, char* argv[])
 		cout << "unexpected exception encountered\n";
 		return EXIT_FAILURE;
 	}
-	cin.get();
+	//cin.get();
 	/*
 	std::cout << "Hi by tests..\n";
 	try

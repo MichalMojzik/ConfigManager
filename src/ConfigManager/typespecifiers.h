@@ -3,6 +3,7 @@
 
 #include <string>
 #include <map>
+#include "exceptions.h"
 
 namespace ConfigManager
 {
@@ -22,19 +23,19 @@ namespace ConfigManager
 		/** Zakladni konstruktor.
 		*
 		*/
-		BooleanSpecifier() { }
+		BooleanSpecifier();
 
 		/** Metoda prevadejici text na vyslednou hodnotu.
 		* Muze vyhodit WrongFormat vyjimku.
 		* \param data Vstupni data.
 		*/
-		ValueType FromString(const std::string& data) { return false; }
+		ValueType FromString(const std::string& data); 
 		
 		/** Metoda prevadejici nastavenou/zmenenou hodnotu zpet do textoveho formatu.
 		* Muze vyhodit WrongFormat vyjimku.
 		* \param Hodnota preveditelna na string.
 		*/
-		std::string ToString(const ValueType& value) { return ""; }
+		std::string ToString(const ValueType& value); 
 	};
 
 	/**  Trida realizujici prevod z textu do typu integer a zpet.
@@ -51,21 +52,21 @@ namespace ConfigManager
 		/** Konstruktor ktery neklade omezeni mezeni na rozsah hodnot.
 		*  Rozsah hodnot je potom dan rozsahem zvoleneho typu. 
 		*/
-		IntegerSpecifier() { }
+		IntegerSpecifier();
 		/** Konstruktor ktery specifikuje rozsah pro vystupni parametry.
 		* \param ramge_start dolni mez rozsahu. 
 		* \param ramge_end horni mez rozsahu.
 		*/
-		IntegerSpecifier(int64 range_start, int64 range_end) { }
+		IntegerSpecifier(int64 range_start, int64 range_end); 
 
 		/** \copydoc BooleanSpecifier::FromString(const std::string& data)
 		* 
 		*/
-		ValueType FromString(const std::string& data) throw(WrongFormat) { return 0; }
+		ValueType FromString(const std::string& data) throw(WrongFormat);
 		/** \copydoc BooleanSpecifier::ToString(const ValueType& value)
 		*
 		*/
-		std::string ToString(const ValueType& value) throw(WrongFormat) { return ""; }
+		std::string ToString(const ValueType& value) throw(WrongFormat); 
 	};
 
 	/**  Trida realizujici prevod z textu do typu unsigned integer a zpet.
@@ -82,20 +83,20 @@ namespace ConfigManager
 		/** \copydoc IntegerSpecifier::IntegerSpecifier()
 		*
 		*/
-		UnsignedSpecifier() { }
+		UnsignedSpecifier(); 
 		/** \copydoc IntegerSpecifier::IntegerSpecifier(int64 range_start, int64 range_end)
 		*
 		*/
-		UnsignedSpecifier(uint64 range_start, uint64 range_end) { }
+		UnsignedSpecifier(uint64 range_start, uint64 range_end); 
 
 		/** \copydoc BooleanSpecifier::FromString(const std::string& data)
 		*
 		*/
-		ValueType FromString(const std::string& data) throw(WrongFormat) { return 0; }
+		ValueType FromString(const std::string& data) throw(WrongFormat); 
 		/** \copydoc BooleanSpecifier::ToString(const ValueType& value)
 		*
 		*/
-		std::string ToString(const ValueType& value) throw(WrongFormat) { return ""; }
+		std::string ToString(const ValueType& value) throw(WrongFormat);
 	};
 
 	/**  Trida realizujici prevod z textu do typu float a zpet.
@@ -168,16 +169,16 @@ namespace ConfigManager
 		/** Zakladni konstruktor.
 		* 
 		*/
-		StringSpecifier() { }
+		StringSpecifier(); 
 
 		/** \copydoc BooleanSpecifier::FromString(const std::string& data)
 		*
 		*/
-		ValueType FromString(const std::string& data) { return ""; }
+		ValueType FromString(const std::string& data);
 		/** \copydoc BooleanSpecifier::ToString(const ValueType& value)
 		*
 		*/
-		std::string ToString(const ValueType& value) { return ""; }
+		std::string ToString(const ValueType& value); // { return ""; }
 	};
 };
 
