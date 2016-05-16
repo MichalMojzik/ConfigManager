@@ -35,4 +35,9 @@ void ConfigManager::AbstractOptionProxy::AssignLink(const AbstractOptionProxy & 
 {
 }
 
+std::string ConfigManager::AbstractOptionProxy::GetStringData()
+{
+	return std::string();
+}
+
 

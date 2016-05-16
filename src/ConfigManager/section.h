@@ -8,13 +8,14 @@
 
 namespace ConfigManager
 {
-	/** Trida realizujici sekci voleb. Predavana ven z knihovny. 
-	*
+	/** 
+	* Trida realizujici sekci voleb. Predavana ven z knihovny. 
 	*/
 	class Section
 	{
 	public:
-		/** Metoda urcujici novou volbu v dane sekci. 
+		/**
+		* Metoda urcujici novou volbu v dane sekci. 
 		*   Muze vyhodit WrongFormat, MandatoryMissing vyjimky.
 		*   \param name Jmeno nove volby.
 		*   \param type_specifier Trida pro preklad volby z a  do retezce.
@@ -34,7 +35,8 @@ namespace ConfigManager
 			return OptionProxy<TypeSpecifier>(default_value, type_specifier);
 		}
 
-		/** \copydoc Section::SpecifyOption(std::string name, const TypeSpecifier& type_specifier, const typename TypeSpecifier::ValueType& default_value, Requirement optional = Requirement::OPTIONAL, const std::string comments = "")
+		/**
+		* \copydoc Section::SpecifyOption(std::string name, const TypeSpecifier& type_specifier, const typename TypeSpecifier::ValueType& default_value, Requirement optional = Requirement::OPTIONAL, const std::string comments = "")
 		* Muze vyhodit WrongFormat, MandatoryMissing vyjimky.
 		*/
 		template<typename TypeSpecifier>
@@ -48,13 +50,14 @@ namespace ConfigManager
 		{
 			return ListOptionProxy<TypeSpecifier>(default_value, type_specifier);
 		}
-		/** Metoda pro pristup k jmenu sekce. 
-		*
+		/**
+		* Metoda pro pristup k jmenu sekce. 
 		*/
 		std::string GetName();
 
 	private:
-		/** Soukromy konstruktor pouzivany pri specifikaci sekce. 
+		/**
+		* Soukromy konstruktor pouzivany pri specifikaci sekce. 
 		* \param name Jmeno sekce.
 		*/
 		Section(std::string name) {}
