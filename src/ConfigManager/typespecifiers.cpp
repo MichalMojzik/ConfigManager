@@ -17,6 +17,8 @@ namespace ConfigManager
 		return std::string();
 	}
 
+
+
 	IntegerSpecifier::IntegerSpecifier()
 	{
 	}
@@ -25,12 +27,12 @@ namespace ConfigManager
 	{
 	}
 
-	IntegerSpecifier::ValueType IntegerSpecifier::FromString(const std::string & data) throw(WrongFormat)
+	IntegerSpecifier::ValueType IntegerSpecifier::FromString(const std::string & data)
 	{
 		return 0;
 	}
 
-	std::string IntegerSpecifier::ToString(const IntegerSpecifier::ValueType & value) throw(WrongFormat)
+	std::string IntegerSpecifier::ToString(const IntegerSpecifier::ValueType & value)
 	{
 		return std::string();
 	}
@@ -45,15 +47,17 @@ namespace ConfigManager
 	{
 	}
 
-	UnsignedSpecifier::ValueType UnsignedSpecifier::FromString(const std::string & data) throw(WrongFormat)
+	UnsignedSpecifier::ValueType UnsignedSpecifier::FromString(const std::string & data)
 	{
 		return 0;
 	}
 
-	std::string UnsignedSpecifier::ToString(const UnsignedSpecifier::ValueType & value) throw(WrongFormat)
+	std::string UnsignedSpecifier::ToString(const UnsignedSpecifier::ValueType & value)
 	{
 		return std::string();
 	}
+
+
 
 	StringSpecifier::StringSpecifier()
 	{

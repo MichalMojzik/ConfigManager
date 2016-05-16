@@ -1,43 +1,38 @@
 #include "option.h"
 
-
-
-ConfigManager::AbstractOptionProxy::AbstractOptionProxy()
+namespace ConfigManager
 {
-}
+	AbstractOptionProxy::AbstractOptionProxy()
+	{
+	}
 
-ConfigManager::AbstractOptionProxy::AbstractOptionProxy(AbstractOptionProxy && other)
-{
-}
+	AbstractOptionProxy::AbstractOptionProxy(AbstractOptionProxy && other)
+	{
+	}
 
-ConfigManager::AbstractOptionProxy & ConfigManager::AbstractOptionProxy::operator=(AbstractOptionProxy && other)
-{
-	return other;
-}
+	AbstractOptionProxy & ConfigManager::AbstractOptionProxy::operator=(AbstractOptionProxy && other)
+	{
+		return other;
+	}
 
-ConfigManager::AbstractOptionProxy::~AbstractOptionProxy()
-{
-}
+	AbstractOptionProxy::~AbstractOptionProxy()
+	{
+	}
 
-void ConfigManager::AbstractOptionProxy::AssignValueData(const std::string & data)
-{
-}
+	void AbstractOptionProxy::AssignValueData(const std::string & data)
+	{
+	}
 
-void ConfigManager::AbstractOptionProxy::AssignValueData(const std::string & data, int from_index, int count)
-{
-}
+	void AbstractOptionProxy::AssignValueData(const std::string & data, int from_index, int count)
+	{
+	}
 
-void ConfigManager::AbstractOptionProxy::AssignLink(const AbstractOptionProxy & data)
-{
-}
+	void AbstractOptionProxy::AssignLink(const AbstractOptionProxy & data)
+	{
+	}
 
-void ConfigManager::AbstractOptionProxy::AssignLink(const AbstractOptionProxy & data, int from_index, int count)
-{
+	void AbstractOptionProxy::AssignLink(const AbstractOptionProxy & data, int from_index, int count)
+	{
+	}
 }
-
-std::string ConfigManager::AbstractOptionProxy::GetStringData()
-{
-	return std::string();
-}
-
 

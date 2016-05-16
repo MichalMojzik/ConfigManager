@@ -271,7 +271,7 @@ void ConfigurationTestSuite::FormatReadingTest()
 			// pokud nebude mit hodnotu "value, tak je to spatne..
 
 			string dummyValue = dummyOpt.Get();
-			TEST_ASSERT(dummyValue == "value" );
+			TEST_ASSERT_EQUALS("value", dummyValue);
 		}
 		catch (MandatoryMissing & e)
 		{

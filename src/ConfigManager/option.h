@@ -78,10 +78,6 @@ namespace ConfigManager
 		*/
 		void AssignLink(const AbstractOptionProxy& data, int from_index, int count);
 
-		/**
-		* Metoda pro pristup k datum ve formatu retezce. 
-		*/
-		std::string GetStringData();
 	private:
 		friend class Section;
 		friend class Configuration;
