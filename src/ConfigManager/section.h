@@ -50,6 +50,7 @@ namespace ConfigManager
 		{
 			return ListOptionProxy<TypeSpecifier>(default_value, type_specifier);
 		}
+
 		/**
 		* Metoda pro pristup k jmenu sekce. 
 		*/
