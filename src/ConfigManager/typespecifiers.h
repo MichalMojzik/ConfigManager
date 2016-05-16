@@ -147,20 +147,24 @@ namespace ConfigManager
 		*
 		*/
 		typedef TResult ValueType;
+
 		/** Zaladni konstruktor. 
 		* Meze vyctoveho typu jsou jiz specifikovany.
 		*/
-		EnumSpecifier(const std::map<std::string, TResult>& value_mapping) {}
+
+		EnumSpecifier(const std::map<std::string, ValueType>& value_mapping);
 
 		/** \copydoc BooleanSpecifier::FromString(const std::string& data)
 		*
 		*/
-		ValueType FromString(const std::string& data) { return TResult(); }
+		ValueType FromString(const std::string& data);
 		/** \copydoc BooleanSpecifier::ToString(const ValueType& value)
 		*
 		*/
-		std::string ToString(const ValueType& value) { return ""; }
+		const std::string& ToString(const ValueType& value);
 
+	private:
+		std::map<std::string, ValueType> mapping_;
 	};
 	/**
 	* Trida realizujici prevod z textu do typu string a zpet.	 
@@ -184,8 +188,41 @@ namespace ConfigManager
 		/** 
 		* \copydoc BooleanSpecifier::ToString(const ValueType& value)
 		*/
-		std::string ToString(const ValueType& value); 
+		std::string ToString(const ValueType& value);
 	};
 };
+
+
+/* ================ EnumSpecifier implementation */
+namespace ConfigManager
+{
+	template<typename TResult>
+	EnumSpecifier<TResult>::EnumSpecifier(const std::map<std::string, TResult>& value_mapping)
+		: mapping_(value_mapping)
+	{
+	}
+
+	template<typename TResult>
+	auto EnumSpecifier<TResult>::FromString(const std::string& data) -> ValueType
+	{
+		auto valueIt = mapping_.find(data);
+		if(valieIt == mapping_.end())
+			throw WrongFormat();
+		return valueIt->second;
+	}
+
+	template<typename TResult>
+	const std::string& EnumSpecifier<TResult>::ToString(const ValueType& value)
+	{
+		for(auto it = mapping_.begin(), end = mapping_.end(); it != end; ++it)
+		{
+			if(it->second == value)
+			{
+				return it->first;
+			}
+		}
+		throw WrongFormat();
+	}
+}
 
 #endif
