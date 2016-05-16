@@ -62,11 +62,11 @@ namespace ConfigManager
 		/** \copydoc BooleanSpecifier::FromString(const std::string& data)
 		* 
 		*/
-		ValueType FromString(const std::string& data) throw(WrongFormat);
+		ValueType FromString(const std::string& data);
 		/** \copydoc BooleanSpecifier::ToString(const ValueType& value)
 		*
 		*/
-		std::string ToString(const ValueType& value) throw(WrongFormat); 
+		std::string ToString(const ValueType& value); 
 	};
 
 	/**  Trida realizujici prevod z textu do typu unsigned integer a zpet.
@@ -92,11 +92,11 @@ namespace ConfigManager
 		/** \copydoc BooleanSpecifier::FromString(const std::string& data)
 		*
 		*/
-		ValueType FromString(const std::string& data) throw(WrongFormat); 
+		ValueType FromString(const std::string& data); 
 		/** \copydoc BooleanSpecifier::ToString(const ValueType& value)
 		*
 		*/
-		std::string ToString(const ValueType& value) throw(WrongFormat);
+		std::string ToString(const ValueType& value);
 	};
 
 	/**  Trida realizujici prevod z textu do typu float a zpet.
