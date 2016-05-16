@@ -30,5 +30,6 @@ public:
 	TypeSpecifiersTestSuite();
 	~TypeSpecifiersTestSuite();
 private:
-	void BooleanSpecifierTest();
+	void BooleanSpecTest();
+	void IntegerSpecTest();
 };

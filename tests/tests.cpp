@@ -183,20 +183,19 @@ int main(int argc, char* argv[])
 	std::cout << "Starting test of ConfigManager library. \n";
 	try
 	{
-		Test::TextOutput simpleOutput(Test::TextOutput::Mode::Verbose);
-
 		ConfigurationTestSuite configSuite;
+		Test::TextOutput simpleOutput(Test::TextOutput::Mode::Verbose);
 		configSuite.run(simpleOutput);
 
-		TypeSpecifiersTestSuite typeSpecifiersSuite;
-		typeSpecifiersSuite.run(simpleOutput);
+		TypeSpecifiersTestSuite tsSuite;
+		tsSuite.run(simpleOutput);
 	}
 	catch (...)
 	{
 		cout << "unexpected exception encountered\n";
 		return EXIT_FAILURE;
 	}
-	//cin.get();
+	cin.get();
 	/*
 	std::cout << "Hi by tests..\n";
 	try
@@ -305,7 +304,8 @@ ConfigurationTestSuite::~ConfigurationTestSuite()
 
 TypeSpecifiersTestSuite::TypeSpecifiersTestSuite()
 {
-	TEST_ADD(TypeSpecifiersTestSuite::BooleanSpecifierTest)
+	TEST_ADD(TypeSpecifiersTestSuite::BooleanSpecTest)
+	TEST_ADD(TypeSpecifiersTestSuite::IntegerSpecTest)
 }
 
 
@@ -314,11 +314,153 @@ TypeSpecifiersTestSuite::~TypeSpecifiersTestSuite()
 }
 
 
-void TypeSpecifiersTestSuite::BooleanSpecifierTest()
+void TypeSpecifiersTestSuite::BooleanSpecTest()
 {
-	BooleanSpecifier bs;
-	vector<string> falseStrings;
-	falseStrings.push_back("0");
-	falseStrings.push_back("f");
+	BooleanSpecifier boolSpec;
+	///////////////////////////////////////////////
+	try {
+		// strings to be evaluated to false:
+		vector<string> falseStrings;
+		falseStrings.push_back("0");
+		falseStrings.push_back("f");
+		falseStrings.push_back("n");
+		falseStrings.push_back("off");
+		falseStrings.push_back("disabled");
+		for (int i = 0; i < falseStrings.size(); i++)
+		{
+			bool value = boolSpec.FromString(falseStrings[i]);
+			TEST_ASSERT_EQUALS(false, value)
+		}
+		// strings to be evaluated to false:
+		vector<string> trueStrings;
+		trueStrings.push_back("1");
+		trueStrings.push_back("t");
+		trueStrings.push_back("y");
+		trueStrings.push_back("on");
+		trueStrings.push_back("enabled");
+
+		for (int i = 0; i < trueStrings.size(); i++)
+		{
+			bool value = boolSpec.FromString(trueStrings[i]);
+			TEST_ASSERT_EQUALS(true, value)
+		}
+	}
+	catch (...)
+	{
+		TEST_FAIL("Exception thrown during valid convertion.");
+	}
+	// not booleans:
+	vector<string> notBoolStrings;
+	notBoolStrings.push_back("asdf");
+	notBoolStrings.push_back("3");
+	notBoolStrings.push_back("-1");
+	notBoolStrings.push_back("$%#");
+	for (int i = 0; i < notBoolStrings.size(); i++)
+	{
+		try
+		{
+			bool value = boolSpec.FromString(notBoolStrings[i]);
+			// we should throw exception..
+			TEST_FAIL("No exception when invalid format.")
+		}
+		catch(WrongFormatException)
+		{
+			//this is ok
+		}
+		catch (...)
+		{
+			TEST_FAIL("Unexpected exception.")
+		}
+		
+	}
+	////////////////////////////////////////////////////////////
+	// now test to string:
+	try 
+	{
+		std::string resultFalse = boolSpec.ToString(false);
+		TEST_ASSERT_EQUALS("false", resultFalse)
+		std::string resultTrue = boolSpec.ToString(true);
+		TEST_ASSERT_EQUALS("false", resultTrue)
+	}
+	catch (...)
+	{
+		TEST_FAIL("Unexpected exception.")
+	}
+}
+void TypeSpecifiersTestSuite::IntegerSpecTest()
+{
+	
+	try 
+	{
+		IntegerSpecifier intSpec;
+		IntegerSpecifier::ValueType value;
+		// test correct from string	
+		value = intSpec.FromString("0");
+		TEST_ASSERT_EQUALS(0, value);
+		value = intSpec.FromString("-1");
+		TEST_ASSERT_EQUALS(-1, value);
+		value = intSpec.FromString("0x5");
+		TEST_ASSERT_EQUALS(5, value);
+		value = intSpec.FromString("06");
+		TEST_ASSERT_EQUALS(0x5, value);
+		value = intSpec.FromString("0b1");
+		TEST_ASSERT_EQUALS(1, value);
+	}
+	catch (...)
+	{
+		TEST_FAIL("Unexpected exception.");
+	}
+	// test wrong input
+	try 
+	{
+		IntegerSpecifier intSpec;
+		IntegerSpecifier::ValueType value;
+		value = intSpec.FromString("asdf");
+		TEST_FAIL("Did not fail the non-numerical string.")
+	}
+	catch (WrongFormatException)
+	{
+		// tak to ma byt
+	}
+	
+	// test wrong range input
+	try 
+	{
+		IntegerSpecifier intSpec(5, -5);
+		TEST_FAIL("Did allow wrong range.")
+	}
+	catch (WrongRangeException)
+	{
+		// this is ok
+	}
+
+	try 
+	{
+		IntegerSpecifier intSpec(2, 7);
+		IntegerSpecifier::ValueType value = intSpec.FromString("0");
+		TEST_FAIL("Allowed value outside range.")
+	}
+	catch (WrongRangeException)
+	{
+		// this is ok
+	}
+	/// now to string method:
+	try 
+	{
+		IntegerSpecifier intSpec(2, 5);
+		std::string three = intSpec.ToString(3);
+		TEST_ASSERT_EQUALS("3", three)
+		std::string outOfBounds = intSpec.ToString(6);
+		TEST_FAIL("Used value outside of range.")
+	}
+	catch (WrongRangeException)
+	{
+		// this is ok
+	}
+
+	catch (...)
+	{
+			TEST_FAIL("Unexpected exception.")
+	}
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

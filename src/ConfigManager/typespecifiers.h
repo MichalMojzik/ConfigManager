@@ -56,9 +56,9 @@ namespace ConfigManager
 		*/
 		IntegerSpecifier();
 		/**
-		* Konstruktor ktery specifikuje rozsah pro vystupni parametry.
-		* \param ramge_start dolni mez rozsahu. 
-		* \param ramge_end horni mez rozsahu.
+		* Konstruktor ktery specifikuje rozsah pro vystupni parametry. ?? nema vyhazovat vyjimku kdyz range_start > range_end? 
+		* \param range_start dolni mez rozsahu. 
+		* \param range_end horni mez rozsahu.
 		*/
 		IntegerSpecifier(int64_t range_start, int64_t range_end); 
 

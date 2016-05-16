@@ -1,63 +1,64 @@
-# Review API ConfigManageru
+﻿# Review API ConfigManageru
 
 ## Obecné poznatky:
-- použití throw bych se vyhnul, už kvůli warningům a nepodpoře ze strany
-  Visual C a obecně bad practise v C++  (== omyl, odstranime)
-- chybí vygenerovaná dokumentace, nijak velká chyba,
-  ale bylo by dobré jí mít k dispozici a negenerovat si jí sám (== bude, vygenerujeme)
-- nezarovnání na nějakou rozumnou délku textu (80, 100, 120 znaků) (== jasny)
-- knihovna je psána jenom k jednomu účelu, k použití s validací,
-  čemuž je podřízeno všechno, v rámci úkolu v pořádku,
-  v rámci obecného použití už ne (== pridat primy pristup ke stringum.., typovy data vyzaduji kontrolu)
-- knihovna je možná až moc uzavřena a skrývá věci, které by skryté být nemusely (== ale co)
-- pojmenovávací konvence není asi ideální, ale drží se definovaného formátu,
-  tudíž bych v tom neviděl problém (== kaslem na to)
-- pojmenování obecně není špatné, až na některé detaily zmíněné v textu,
-  minimálně u tříd se dá mluvit o vhodných názvech (== ?? mozna zmenit nazvy aby explicitne poukazovali na spojeni se souborem.)
+	- použití throw bych se vyhnul, už kvůli warningům a nepodpoře ze strany
+  	Visual C a obecně bad practise v C++  (== omyl, odstranime) DONE
+ - chybí vygenerovaná dokumentace, nijak velká chyba,
+   ale bylo by dobré jí mít k dispozici a negenerovat si jí sám (== bude, vygenerujeme)
+ - nezarovnání na nějakou rozumnou délku textu (80, 100, 120 znaků) (== jasny)
+	- knihovna je psána jenom k jednomu účelu, k použití s validací,
+  	čemuž je podřízeno všechno, v rámci úkolu v pořádku,
+  	v rámci obecného použití už ne (== pridat primy pristup ke stringum.., typovy data vyzaduji kontrolu)
+	- knihovna je možná až moc uzavřena a skrývá věci, které by skryté být nemusely (== ale co)
+	- pojmenovávací konvence není asi ideální, ale drží se definovaného formátu,
+  	tudíž bych v tom neviděl problém (== kaslem na to)
+	- pojmenování obecně není špatné, až na některé detaily zmíněné v textu,
+  	minimálně u tříd se dá mluvit o vhodných názvech (== ?? mozna zmenit nazvy aby explicitne poukazovali na spojeni se souborem.)
 
 # Shrnující text:
-- občas by popis potřeboval zkrátit, či zpřesnit formulace a ujasnit je pořádně
-- na některé věci mi přijde, že by bylo vhodnější použít odrážky a
-  trošku strukturovanější text
-  (například u popisu jednotlivých tříd by seznam byl vhodnější a konkrétnější
-   popis by byl až v nějaké obecnější části) (== zvazit odrazky)
-- díky dodanému popisu se dá v návrhu relativně dobře zorientovat,
-  alespoň co se týče základní struktury (== )
+	- občas by popis potřeboval zkrátit, či zpřesnit formulace a ujasnit je pořádně
+ - na některé věci mi přijde, že by bylo vhodnější použít odrážky a
+   trošku strukturovanější text
+   (například u popisu jednotlivých tříd by seznam byl vhodnější a konkrétnější
+    popis by byl až v nějaké obecnější části) (== zvazit odrazky)
+	- díky dodanému popisu se dá v návrhu relativně dobře zorientovat,
+  	alespoň co se týče základní struktury (== )
 
 # Příklad použití:
-- příklad je zbytečně složitý, respektive zde chybí něco opravdu jednoduchého,
-  co na knihovnu naláká a představí ji v použitelném světle, mohl to být
-  například jednoduchý snippet/snippety z různých částí kódu (== nakonec...)
-- celá konfigurace se v příkladu převážně jen tvoří a použití načtených dat
-  je pouze lehce naznačeno (== pripiseme par pouziti...)
+ - příklad je zbytečně složitý, respektive zde chybí něco opravdu jednoduchého,
+   co na knihovnu naláká a představí ji v použitelném světle, mohl to být
+   například jednoduchý snippet/snippety z různých částí kódu (== nakonec...)
+ - celá konfigurace se v příkladu převážně jen tvoří a použití načtených dat
+   je pouze lehce naznačeno (== pripiseme par pouziti...)
 
 # Dokumentace:
-- jistá nekonzistentnost v diakritice, někde se vyskytuje někde ne
-- obecně použití češtiny není štastné, v rámci úkolu se asi ale dá tolerovat
-- nekonzistentnost ve formátu dokumentačních komentářů,
-  někde se začíná na první jinde až na druhé řádce komentáře, obecně bych
-  upřednostnil začínat až na druhém řádku, je to standardnější a lépe to vypadá 
-  (== dopiseme explicitni varovani)
-- obsah komentářů je často nejasný a příliš obecný,
-  občas by to chtělo více vysvětlit, co metoda doopravdy dělá (== mozna by nektere bylo lepsi prepsat, podle casu)
+ - jistá nekonzistentnost v diakritice, někde se vyskytuje někde ne
+	- obecně použití češtiny není štastné, v rámci úkolu se asi ale dá tolerovat
+	- nekonzistentnost ve formátu dokumentačních komentářů,
+  	někde se začíná na první jinde až na druhé řádce komentáře, obecně bych
+  	upřednostnil začínat až na druhém řádku, je to standardnější a lépe to vypadá 
+  	(== dopiseme explicitni varovani)
+ - obsah komentářů je často nejasný a příliš obecný,
+   občas by to chtělo více vysvětlit, co metoda doopravdy dělá (== mozna by nektere bylo lepsi prepsat, podle casu)
 - výjimky nejsou zdokumentovány, pomáhají akorát popisy při konstrukci  (== bo nebyl cas! dodelame)
 - u metod jsou sice vypsány výjimky, které v nich mohou vzniknout, (== dopisem)
   ale většinou není popsáno kdy a za jakých okolností
 
 # Configuration:
 - chybí metody pro vrácení určité Section, minimálně operator[] by zde měl být (== jenom pres stringy)
-- až moc velké provázání tříd Configuration, Section a Option,
-  které nedovolují volnější práci s nimi (== nechceme)
-- název metody Flush() mi nepřijde jako vhodný, ale chápu co autory vedlo
-  k tomuto jménu, přesto by Save(), či něco podobného bylo lepší (== prejmenovat)
+	- až moc velké provázání tříd Configuration, Section a Option,
+  	které nedovolují volnější práci s nimi (== nechceme)
+	- název metody Flush() mi nepřijde jako vhodný, ale chápu co autory vedlo
+  	k tomuto jménu, přesto by Save(), či něco podobného bylo lepší (== prejmenovat)
 - ukládání souboru v destruktoru je špatné, stejně jako u Flush() chápu proč to
   tak je, ale je to schované a uživatel na něco takového pravděpodobně zapomene
   a bude se divit, mělo by být na požádání, je to akce která má sideefekty
   (uvedený konstruktor je v zásadě z pohledu filesystemu nemá, destruktor ano) (== ??? co presne s tim, rozdelime na dva typy prace)
-- snad chápu dobře, že cílem bylo vytvořit něco podobného "streamům",
-  jakousi bufferovací strukturu, která se o vše postará sama,
-  sám bych tento přístup nezvolil a myslím si, že v tomto případě,
-  není úplně vhodný (== nedorozumění... myslíme si ze je to vhodné)
+
+	- snad chápu dobře, že cílem bylo vytvořit něco podobného "streamům",
+  	jakousi bufferovací strukturu, která se o vše postará sama,
+  	sám bych tento přístup nezvolil a myslím si, že v tomto případě,
+  	není úplně vhodný (== nedorozumění... myslíme si ze je to vhodné)
 - metody SetConfigFile() a SetInputFile() vlastně dělají to samé
   a přítomnost, druhé jmenované příliš nechápu, také není úplně jasné,
   co se stane pokud už bude nějaký soubor načten, uloží se? neuloží?
@@ -73,43 +74,43 @@
   v local scope? -> Option se zdestruuje, přičemž Section zůstane
   a co se pak stane při ukládání Section, respektive Configuration?
   při troše štěstí SIGSEGV, pravděpodobně ale něco horšího... (== neresime)
-- přijde mi nepochopitelné ukládát v třídě Section detaily o Option,
-  toto patří do Optionu, i přes tvrzení v shrnujícím textu,
-  které mi úplně nedává smysl (== bude dostupne v option)
+	- přijde mi nepochopitelné ukládát v třídě Section detaily o Option,
+  	toto patří do Optionu, i přes tvrzení v shrnujícím textu,
+  	které mi úplně nedává smysl (== bude dostupne v option)
 
 # Option:
-- rozlišování listu prvků a prvků jak? a jak se budou ukládat? jak získávat? (== )
-- metody Get() a Set() přijímají/vracejí pouze daný typ Optionu, 
-  uživatel si hodnotu musí případně přetypovat sám, toto asi není úplně chyba,
-  ale minimálně funkcionalita, kterou bych čekal, že bude knihovna poskytovat (== )
-- zajímavá je možnost vytváření linků, ale nemožnost jejich načtení 
-  z konfiguračního souboru a uložení jako linky
-  (čekal bych, že obě tyto funkcionality budou podporované) (== linky tam nebudou)
-- pěkné je procházení prvků ListOption pomocí operátoru [], nevím, jestli je
-  ale ideální vracet nějaký další typ, proč nevracet ValueType rovnou?  (== chceme odchytavat settery..)
-- úplně nechápu metody definované v AbstractOption, 
-  ano slouží ke zpřístupnění prvků Configuration, ale proč jsou schované? (== komunikace mezi configuration a option, uzivatel na ne nema sahat podle designu)
+	- rozlišování listu prvků a prvků jak? a jak se budou ukládat? jak získávat? (== )
+	- metody Get() a Set() přijímají/vracejí pouze daný typ Optionu, 
+  	uživatel si hodnotu musí případně přetypovat sám, toto asi není úplně chyba,
+  	ale minimálně funkcionalita, kterou bych čekal, že bude knihovna poskytovat (== )
+	- zajímavá je možnost vytváření linků, ale nemožnost jejich načtení 
+  	z konfiguračního souboru a uložení jako linky
+  	(čekal bych, že obě tyto funkcionality budou podporované) (== linky tam nebudou)
+	- pěkné je procházení prvků ListOption pomocí operátoru [], nevím, jestli je
+  	ale ideální vracet nějaký další typ, proč nevracet ValueType rovnou?  (== chceme odchytavat settery..)
+	- úplně nechápu metody definované v AbstractOption, 
+  	ano slouží ke zpřístupnění prvků Configuration, ale proč jsou schované? (== komunikace mezi configuration a option, uzivatel na ne nema sahat podle designu)
 - metoda AssignValueData(), respektive její přetížení s from_index a count,
   co to má dělat? dokumentace nepomáhá (== nebude)
 - přiřazování linků je pěkné, ale opět co dělá přetížení s from_index a count?
   dokumentace je nejasná, konkrétní místo v řetězcové hodnotě, co to znamená? (== nebude)
 
 # Exceptions:
-- nemají společného předka, v tomto případě by asi bylo záhodno ho udělat,
-  aby se dala chytat obecná výjimka knihovny (== je tam.. chybi dokumentace dodelame)
-- je konvencí výjimce vždy dát postfix exception, aby bylo hned jasné
-  k čemu daný objekt slouží a nebyl zaměněn (== pridame)
-- jinak hlášení chyb pomocí výjimek je určitě lepší než chybové kódy (== ok)
+	- nemají společného předka, v tomto případě by asi bylo záhodno ho udělat,
+  	aby se dala chytat obecná výjimka knihovny (== je tam.. chybi dokumentace dodelame)
+	- je konvencí výjimce vždy dát postfix exception, aby bylo hned jasné
+  	k čemu daný objekt slouží a nebyl zaměněn (== pridame)
+	- jinak hlášení chyb pomocí výjimek je určitě lepší než chybové kódy (== ok)
 
 # TypeSpecifiers:
-- nemají společného předka, který by se v tomto případě hodně hodil,
-  fungoval by jako interface i pro budoucí typy,
-  v popisu je sice napsáno, že předek neexistuje, ale není vysvětleno proč (== neni co dedit.., jine signatury metod, mohlo by byt.. pridame sablonu)
-- obecně se mi líbí nápad TypeSpecifiers, který docela pěkně řeší
-  některé problémy, jako konverze a typovost (== )
-- omezování hodnot, respektive nějaká jejich validace mi ale přijde,
-  že není úplně dotažená, ano splňuje zadání a jeho minimum, ale myslím,
-  že by s tím šlo dělat mnohem více věcí, minimálně přijímání funktoru (== muze si clovek napsat vlastni type specifier.. )
+	- nemají společného předka, který by se v tomto případě hodně hodil,
+  	fungoval by jako interface i pro budoucí typy,
+  	v popisu je sice napsáno, že předek neexistuje, ale není vysvětleno proč (== neni co dedit.., jine signatury metod, mohlo by byt.. pridame sablonu)
+	- obecně se mi líbí nápad TypeSpecifiers, který docela pěkně řeší
+  	některé problémy, jako konverze a typovost (== )
+	- omezování hodnot, respektive nějaká jejich validace mi ale přijde,
+  	že není úplně dotažená, ano splňuje zadání a jeho minimum, ale myslím,
+  	že by s tím šlo dělat mnohem více věcí, minimálně přijímání funktoru (== muze si clovek napsat vlastni type specifier.. )
 
 # Enums:
 - InputFilePolicy se dá zjednodušit, i když i tento název je docela příhodný (== chyba v dokumentaci)
