@@ -17,7 +17,7 @@ namespace ConfigManager
   
   void Configuration::Open(std::istream& input_stream)
   {
-		decltype(data_.find("")) section_it;
+		auto section_it = data_.end();
 		std::string line;
 		while(std::getline(input_stream, line))
 		{
