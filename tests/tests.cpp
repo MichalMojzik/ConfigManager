@@ -188,6 +188,12 @@ int main(int argc, char* argv[])
 		Test::TextOutput simpleOutput(Test::TextOutput::Mode::Verbose);
 		configSuite.run(simpleOutput);
 
+		SectionTestSuite sectionSuite;
+		sectionSuite.run(simpleOutput);
+
+		OptionTestSuite optionSuite;
+		optionSuite.run(simpleOutput);
+
 		TypeSpecifiersTestSuite tsSuite;
 		tsSuite.run(simpleOutput);
 	}
@@ -243,11 +249,11 @@ void ConfigurationTestSuite::FormatReadingTest()
 	{// funguji komentare ? (= jsou ignorovany ?  ) 
 		ConfigManager::Configuration config;
 		stringstream commentFileText;
-		commentFileText << "; this is comment.. the following should be ignored: ~@#$%^&*()_+{}:\"|<>?\n";
-		commentFileText << ";[commentedSection]\n";
-		commentFileText << "[section] ;comment.. \n";
-		commentFileText << "option=value;comment\n";
-		commentFileText << ";commentedOption=what\n";
+		commentFileText << "; this is comment.. the following should be ignored: ~@#$%^&*()_+{}:\"|<>?";
+		commentFileText << ";[commentedSection]";
+		commentFileText << "[section] ;comment.. ";
+		commentFileText << "option=value;comment";
+		commentFileText << ";commentedOption=what";
 		// takovy vstup by mel byt korektni. 
 		config.Open(commentFileText);
 		
@@ -528,4 +534,87 @@ void TypeSpecifiersTestSuite::EnumSpecTest()
 
 SectionTestSuite::SectionTestSuite()
 {
+	TEST_ADD(SectionTestSuite::BasicFunctionalityTests)
+	TEST_ADD(SectionTestSuite::OptionSpecificationTests)
+}
+
+void SectionTestSuite::OptionSpecificationTests()
+{
+	std::string testString = "string";
+	TEST_ASSERT_EQUALS("string", testString)
+}
+
+void SectionTestSuite::BasicFunctionalityTests()
+{
+	try 
+	{
+		{ // try if it gets name correctly from input
+			ConfigManager::Configuration homeConfig;
+			stringstream testText;
+			testText << "[sectionName]";
+
+			// takovy vstup by mel byt korektni. 
+			homeConfig.Open(testText);
+			Section section = homeConfig.SpecifySection("sectionName", ConfigManager::MANDATORY, "comments");
+			TEST_ASSERT_EQUALS("sectionName", section.GetName())
+		}
+		{// is name correct when given through specification
+			ConfigManager::Configuration homeConfig;
+			stringstream testText;
+			homeConfig.Open(testText);
+			Section newSection = homeConfig.SpecifySection("newSectionName", ConfigManager::OPTIONAL, "new section cannot be MANDATORY...");
+			TEST_ASSERT_EQUALS("newSectionName", newSection.GetName())
+		}
+	}
+	catch (...)
+	{
+		TEST_FAIL("Unexpected exception.")
+	}
+}
+
+OptionTestSuite::OptionTestSuite()
+{
+	TEST_ADD(OptionTestSuite::BasicTest)
+}
+
+void OptionTestSuite::BasicTest()
+{
+	// test section name
+	try
+	{
+		{ // try if it gets name correctly from input
+			ConfigManager::Configuration homeConfig;
+			stringstream testText;
+			testText << "[sectionName]";
+			testText << "optionOne=value";
+
+			// takovy vstup by mel byt korektni. 
+			homeConfig.Open(testText);
+			Section section = homeConfig.SpecifySection("sectionName", ConfigManager::MANDATORY, "comments");
+			OptionProxy<StringSpecifier> option = section.SpecifyOption("optionOne", StringSpecifier(), "default",
+				ConfigManager::MANDATORY, "mandatory testing");
+			TEST_ASSERT_EQUALS("optionOne", option.GetName())
+			TEST_ASSERT_EQUALS("sectionName", option.GetSectionName())
+
+			OptionProxy<StringSpecifier> newOption = section.SpecifyOption("optionTwo", StringSpecifier(), "defaultValueTwo",
+					ConfigManager::OPTIONAL, "testing new option in old section");
+			TEST_ASSERT_EQUALS("optionTwo", newOption.GetName())
+			TEST_ASSERT_EQUALS("sectionName", newOption.GetSectionName())
+		}
+		{// is name correct when given through specification
+			ConfigManager::Configuration homeConfig;
+			stringstream testText;
+			homeConfig.Open(testText);
+			Section newSection = homeConfig.SpecifySection("newSectionName", ConfigManager::OPTIONAL, "new section cannot be MANDATORY...");
+			OptionProxy<StringSpecifier> newOption = newSection.SpecifyOption("optionTwo", StringSpecifier(), "defaultValueTwo",
+				ConfigManager::OPTIONAL, "testing new option in old section");
+			TEST_ASSERT_EQUALS("optionTwo", newOption.GetName())
+			TEST_ASSERT_EQUALS("sectionName", newOption.GetSectionName())
+		}
+
+	}
+	catch (...)
+	{
+		TEST_FAIL("Unexpected exception.")
+	}
 }
