@@ -17,6 +17,12 @@ namespace ConfigManager
 		const char* message_;
 	};
 
+	class InvalidOperationException : public ConfigurationException
+	{
+	public:
+		InvalidOperationException(const char* message) : ConfigurationException(message) {}
+	};
+
 	class MalformedInputException : public ConfigurationException
 	{
 	public:

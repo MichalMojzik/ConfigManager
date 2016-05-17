@@ -7,7 +7,24 @@
 
 namespace ConfigManager
 {
+	template<typename TResult>
+	class RangeConstraint
+	{
+	public:
+		RangeConstraint();
+		RangeConstraint(const TResult& range_start, const TResult& range_end);
 
+		/**
+		* Metoda provadejici kontrolu, zda je podminka popisovana tridou splnena.
+		* Pokud ano, vraci svuj parametr.
+		* Jinak vyhazuje vyjimku WrongRangeException.
+		*/
+		const TResult& CheckConstraint(const TResult& value);
+
+	private:
+		TResult range_start_;
+		TResult range_end_;
+	};
 
 	/** 
 	* Trida realizujici prevod z textu do typu boolean a zpet. 
@@ -16,7 +33,7 @@ namespace ConfigManager
 	{
 	public:
 		/**
-		* Tato definice typu urcuje navratovy typ. 
+		* Tato definice typu urcuje navratovy typ.
 		*/
 		typedef bool ValueType;
 
@@ -43,13 +60,14 @@ namespace ConfigManager
 	/**
 	* Trida realizujici prevod z textu do typu integer a zpet.
 	*/
-	class IntegerSpecifier
+	class IntegerSpecifier : private RangeConstraint<int64_t>
 	{
 	public:
 		/**
-		* \copydoc BooleanSpecifier::ValueType 
+		*\copydoc BooleanSpecifier::ValueType
 		*/
 		typedef int64_t ValueType;
+
 		/**
 		* Konstruktor ktery neklade omezeni mezeni na rozsah hodnot.
 		* Rozsah hodnot je potom dan rozsahem zvoleneho typu. 
@@ -69,13 +87,13 @@ namespace ConfigManager
 		/**
 		* \copydoc BooleanSpecifier::ToString(const ValueType& value)
 		*/
-		std::string ToString(ValueType value); 
+		std::string ToString(ValueType value);
 	};
 
 	/**
 	* Trida realizujici prevod z textu do typu unsigned integer a zpet.
 	*/
-	class UnsignedSpecifier
+	class UnsignedSpecifier : private RangeConstraint<uint64_t>
 	{
 	public:
 		/**
@@ -104,7 +122,7 @@ namespace ConfigManager
 	/**
 	* Trida realizujici prevod z textu do typu float a zpet.
 	*/
-	class FloatSpecifier
+	class FloatSpecifier : private RangeConstraint<double>
 	{
 	public:
 		/**
@@ -191,6 +209,33 @@ namespace ConfigManager
 };
 
 
+/* ================ RangeConstraint implementation */
+namespace ConfigManager
+{
+	template<typename TResult>
+	RangeConstraint<TResult>::RangeConstraint()
+		: range_start_(std::numeric_limits<TResult>::min()), range_end_(std::numeric_limits<TResult>::max())
+	{
+	}
+
+	template<typename TResult>
+	RangeConstraint<TResult>::RangeConstraint(const TResult& range_start, const TResult& range_end)
+		: range_start_(range_start), range_end_(range_end)
+	{
+		if(range_end < range_start)
+			throw InvalidOperationException("Specified values do not form a valid range.");
+	}
+
+	template<typename TResult>
+	const TResult& RangeConstraint<TResult>::CheckConstraint(const TResult& value)
+	{
+		if(value < range_start_ || value > range_end_)
+			throw WrongRangeException();
+		return value;
+	}
+}
+
+
 /* ================ EnumSpecifier implementation */
 namespace ConfigManager
 {
@@ -204,7 +249,7 @@ namespace ConfigManager
 	auto EnumSpecifier<TResult>::FromString(const std::string& data) -> const ValueType&
 	{
 		auto valueIt = mapping_.find(data);
-		if(valieIt == mapping_.end())
+		if(valueIt == mapping_.end())
 			throw WrongFormatException();
 		return valueIt->second;
 	}
