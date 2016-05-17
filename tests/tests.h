@@ -25,8 +25,8 @@ class SectionTestSuite : public Test::Suite
 public:
 	SectionTestSuite();
 private:
-	void OptionSpecificationTests();
-	void BasicFunctionalityTests();
+	void SavingTests();
+	void BasicTests();
 };
 
 class OptionTestSuite : public Test::Suite

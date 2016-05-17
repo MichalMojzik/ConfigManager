@@ -7,6 +7,7 @@
 #include <iostream>
 #include <sstream>
 #include <map>
+#include <vector>
 
 #ifdef _MSC_VER
 #pragma warning (disable: 4290)
@@ -18,7 +19,7 @@
 
 using namespace std;
 using namespace ConfigManager;
-
+/*
 // Tests unconditional fail asserts
 //
 class FailTestSuite : public Test::Suite
@@ -175,7 +176,8 @@ cmdline(int argc, char* argv[])
 	}
 
 	return auto_ptr<Test::Output>(output);
-}
+} */
+
 
 // Main test program
 //
@@ -184,15 +186,16 @@ int main(int argc, char* argv[])
 	std::cout << "Starting test of ConfigManager library. \n";
 	try
 	{
-		ConfigurationTestSuite configSuite;
+		
 		Test::TextOutput simpleOutput(Test::TextOutput::Mode::Verbose);
-		configSuite.run(simpleOutput);
+		ConfigurationTestSuite configSuite;
+		//configSuite.run(simpleOutput);
 
 		SectionTestSuite sectionSuite;
 		sectionSuite.run(simpleOutput);
 
 		OptionTestSuite optionSuite;
-		optionSuite.run(simpleOutput);
+		//optionSuite.run(simpleOutput);
 
 		TypeSpecifiersTestSuite tsSuite;
 		tsSuite.run(simpleOutput);
@@ -249,11 +252,11 @@ void ConfigurationTestSuite::FormatReadingTest()
 	{// funguji komentare ? (= jsou ignorovany ?  ) 
 		ConfigManager::Configuration config;
 		stringstream commentFileText;
-		commentFileText << "; this is comment.. the following should be ignored: ~@#$%^&*()_+{}:\"|<>?";
-		commentFileText << ";[commentedSection]";
-		commentFileText << "[section] ;comment.. ";
-		commentFileText << "option=value;comment";
-		commentFileText << ";commentedOption=what";
+		commentFileText << "; this is comment.. the following should be ignored: ~@#$%^&*()_+{}:\"|<>?\n";
+		commentFileText << ";[commentedSection]\n";
+		commentFileText << "[section] ;comment..\n";
+		commentFileText << "option=value;comment\n";
+		commentFileText << ";commentedOption=what\n";
 		// takovy vstup by mel byt korektni. 
 		config.Open(commentFileText);
 		
@@ -272,7 +275,51 @@ void ConfigurationTestSuite::FormatReadingTest()
 				"this option should not be in configuration"), MandatoryMissingException )
 
 	}
-
+	// co se stane s nekorektnim vstupem
+	{// nesmysl
+		ConfigManager::Configuration config;
+		stringstream testText;
+		testText << "asdf";
+		TEST_THROWS(config.Open(testText), MalformedInputException);
+	}
+	{// spatne zadane sekce
+		ConfigManager::Configuration config;
+		stringstream testText;
+		testText << "[sectionName]asdf";
+		TEST_THROWS(config.Open(testText), MalformedInputException);
+	}
+	{// spatna sekce 
+		ConfigManager::Configuration config;
+		stringstream testText;
+		testText << "asdf[sectionName]";
+		TEST_THROWS(config.Open(testText), MalformedInputException);
+	}
+	{// spatna sekce 
+		ConfigManager::Configuration config;
+		stringstream testText;
+		testText << "[sectionName";
+		TEST_THROWS(config.Open(testText), MalformedInputException);
+	}
+	{// spatna sekce 
+		ConfigManager::Configuration config;
+		stringstream testText;
+		testText << "sectionName]";
+		TEST_THROWS(config.Open(testText), MalformedInputException);
+	}
+	{
+		ConfigManager::Configuration config;
+		stringstream testText;
+		testText << "[section]\n";
+		testText << "asdf";
+		TEST_THROWS(config.Open(testText), MalformedInputException);
+	}
+	{// spatny option
+		ConfigManager::Configuration config;
+		stringstream testText;
+		testText << "[section]\n";
+		testText << "asdf";
+		TEST_THROWS(config.Open(testText), MalformedInputException);
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -453,6 +500,10 @@ void TypeSpecifiersTestSuite::FloatSpecTest()
 		TEST_ASSERT_EQUALS(150000.5, value)
 		value = floatSpec.FromString("0.00045");
 		TEST_ASSERT_EQUALS(0.00045, value)
+		value = floatSpec.FromString("1.3E+3");
+		TEST_ASSERT_EQUALS(1300, value)
+		value = floatSpec.FromString("1.3e+3");
+		TEST_ASSERT_EQUALS(1300, value)
 
 		TEST_THROWS(value = floatSpec.FromString("notAnumber"), WrongFormatException)
 	}
@@ -534,24 +585,59 @@ void TypeSpecifiersTestSuite::EnumSpecTest()
 
 SectionTestSuite::SectionTestSuite()
 {
-	TEST_ADD(SectionTestSuite::BasicFunctionalityTests)
-	TEST_ADD(SectionTestSuite::OptionSpecificationTests)
+	TEST_ADD(SectionTestSuite::BasicTests)
+	TEST_ADD(SectionTestSuite::SavingTests)
 }
 
-void SectionTestSuite::OptionSpecificationTests()
+void SectionTestSuite::SavingTests()
 {
-	std::string testString = "string";
-	TEST_ASSERT_EQUALS("string", testString)
+	try 
+	{
+		{// saving new section
+			ConfigManager::Configuration config;
+			Section newSection = config.SpecifySection("newSection", ConfigManager::OPTIONAL, "comments");
+			stringstream output;
+			config.Save(output);
+			string resultingLine;
+			output >> resultingLine;
+			TEST_ASSERT_EQUALS("[newSection];comments", resultingLine)
+		}
+		{// saving old section:
+			ConfigManager::Configuration config;
+			stringstream input;
+			input << "[section];comment\n";
+			Section newSection = config.SpecifySection("section", ConfigManager::MANDATORY, "default");
+			stringstream output;
+			config.Save(output);
+			string resultingLine;
+			output >> resultingLine;
+			TEST_ASSERT_EQUALS("[section];comment", resultingLine)
+		}
+		{// if section is not needed, it should stay in given format
+			ConfigManager::Configuration config;
+			stringstream input;
+			input << "[section]; untouched  comment\n";
+			stringstream output;
+			config.Save(output);
+			string resultingLine;
+			output >> resultingLine;
+			TEST_ASSERT_EQUALS("[section]; untouched  comment", resultingLine)
+		}
+	}
+	catch (...)
+	{
+		TEST_FAIL("Unexpected exception")
+	}
 }
 
-void SectionTestSuite::BasicFunctionalityTests()
+void SectionTestSuite::BasicTests()
 {
 	try 
 	{
 		{ // try if it gets name correctly from input
 			ConfigManager::Configuration homeConfig;
 			stringstream testText;
-			testText << "[sectionName]";
+			testText << "[sectionName]\n";
 
 			// takovy vstup by mel byt korektni. 
 			homeConfig.Open(testText);
@@ -565,6 +651,25 @@ void SectionTestSuite::BasicFunctionalityTests()
 			Section newSection = homeConfig.SpecifySection("newSectionName", ConfigManager::OPTIONAL, "new section cannot be MANDATORY...");
 			TEST_ASSERT_EQUALS("newSectionName", newSection.GetName())
 		}
+		/// move on to list options:
+		{ // try if it gets name correctly from input
+			ConfigManager::Configuration homeConfig;
+			stringstream testText;
+			testText << "[sectionName]\n";
+
+			// takovy vstup by mel byt korektni. 
+			homeConfig.Open(testText);
+			Section section = homeConfig.SpecifySection("sectionName", ConfigManager::MANDATORY, "comments");
+			TEST_ASSERT_EQUALS("sectionName", section.GetName())
+		}
+		{// is name correct when given through specification
+			ConfigManager::Configuration homeConfig;
+			stringstream testText;
+			homeConfig.Open(testText);
+			Section newSection = homeConfig.SpecifySection("newSectionName", ConfigManager::OPTIONAL, "new section cannot be MANDATORY...");
+			TEST_ASSERT_EQUALS("newSectionName", newSection.GetName())
+		}
+
 	}
 	catch (...)
 	{
@@ -585,8 +690,8 @@ void OptionTestSuite::BasicTest()
 		{ // try if it gets name correctly from input
 			ConfigManager::Configuration homeConfig;
 			stringstream testText;
-			testText << "[sectionName]";
-			testText << "optionOne=value";
+			testText << "[sectionName]\n";
+			testText << "optionOne=value\n";
 
 			// takovy vstup by mel byt korektni. 
 			homeConfig.Open(testText);
@@ -608,6 +713,29 @@ void OptionTestSuite::BasicTest()
 			Section newSection = homeConfig.SpecifySection("newSectionName", ConfigManager::OPTIONAL, "new section cannot be MANDATORY...");
 			OptionProxy<StringSpecifier> newOption = newSection.SpecifyOption("optionTwo", StringSpecifier(), "defaultValueTwo",
 				ConfigManager::OPTIONAL, "testing new option in old section");
+			TEST_ASSERT_EQUALS("optionTwo", newOption.GetName())
+			TEST_ASSERT_EQUALS("sectionName", newOption.GetSectionName())
+		}
+		{ // try if it gets name correctly from input
+			// now listOption
+			ConfigManager::Configuration homeConfig;
+			stringstream testText;
+			testText << "[sectionName]\n"; //testText << "[sectionName]";
+			testText << "optionOne=value,value2\n";
+
+			// takovy vstup by mel byt korektni. 
+			homeConfig.Open(testText);
+			Section section = homeConfig.SpecifySection("sectionName", ConfigManager::MANDATORY, "comments");
+			vector<StringSpecifier::ValueType> defaultValues;
+			defaultValues.push_back("defaultValue");
+			defaultValues.push_back("valueDefault");
+			ListOptionProxy<StringSpecifier> listOption = section.SpecifyListOption("optionOne", StringSpecifier(), defaultValues,
+				ConfigManager::MANDATORY, "mandatory testing");
+			TEST_ASSERT_EQUALS("optionOne", listOption.GetName())
+			TEST_ASSERT_EQUALS("sectionName", listOption.GetSectionName())
+
+			ListOptionProxy<StringSpecifier> newOption = section.SpecifyListOption("optionTwo", StringSpecifier(), defaultValues,
+					ConfigManager::OPTIONAL, "testing new option in old section");
 			TEST_ASSERT_EQUALS("optionTwo", newOption.GetName())
 			TEST_ASSERT_EQUALS("sectionName", newOption.GetSectionName())
 		}
