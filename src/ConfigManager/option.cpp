@@ -34,11 +34,13 @@ namespace ConfigManager
 	void AbstractOptionProxy::AssignLink(const AbstractOptionProxy & data, int from_index, int count)
 	{
 	}
-	std::string AbstractOptionProxy::getOptionName()
+
+	std::string AbstractOptionProxy::GetName()
 	{
 		return std::string();
 	}
-	std::string AbstractOptionProxy::getSectionName()
+
+	std::string AbstractOptionProxy::GetSectionName()
 	{
 		return std::string();
 	}

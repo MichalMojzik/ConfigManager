@@ -12,6 +12,21 @@ namespace ConfigManager
 	*/
 	class AbstractOptionProxy
 	{
+	public:
+		/**
+		* Tato metoda vraci nazev optionu.
+		*/
+		std::string GetName();
+		/**
+		* Metoda zpristupnujici jmeno sekce do ktere tento option prislusi.
+		*/
+		std::string GetSectionName();
+
+		// /**
+		// * Vraci objekt Configuration do ktereho option prislusi. 
+		// */
+		///Configuration& getConfiguration();
+
 	protected:
 		/** 
 		*Zakladní konstruktor.
@@ -78,20 +93,6 @@ namespace ConfigManager
 		*/
 		void AssignLink(const AbstractOptionProxy& data, int from_index, int count);
 
-		/**
-		* Tato metoda vraci nazev optionu.
-		*/
-		std::string getOptionName();
-		/**
-		* Metoda zpristupnujici jmeno sekce do ktere tento option prislusi.
- 		*/
-		std::string getSectionName();
-
-		// /**
-		// * Vraci objekt Configuration do ktereho option prislusi. 
-		// */
-		///Configuration& getConfiguration();
-
 	private:
 		friend class Section;
 		friend class Configuration;
@@ -106,7 +107,7 @@ namespace ConfigManager
 	{
 		typedef typename TypeSpecifier::ValueType ValueType;
 	public:
-    OptionProxy() {}
+		OptionProxy();
     
 		/**
 		* Hlavni kontruktor, specifikujici format dane volby. 
@@ -115,28 +116,28 @@ namespace ConfigManager
 		* \param comments Komentare. 
 		*/
 		OptionProxy(const ValueType& default_value,
-			   TypeSpecifier type_specifier = TypeSpecifier(), 
-			   const std::string comments = "" ) { }
+			TypeSpecifier type_specifier = TypeSpecifier(),
+			const std::string comments = "");
 		/**
 		* \copydoc AbstractOptionProxy::operator=(const AbstractOptionProxy& other)
 		*
 		*/
-		OptionProxy(OptionProxy&& other) {}
+		OptionProxy(OptionProxy&& other);
 		/**
 		* \copydoc AbstractOptionProxy::operator=(const AbstractOptionProxy& other)
 		*
 		*/
-		OptionProxy& operator=(OptionProxy&& other) {}
+		OptionProxy& operator=(OptionProxy&& other);
 		/** Metoda vracejici nastavenou hodnotu. 
 		*
 		*/
-		const ValueType& Get() const { return value; }
+		const ValueType& Get() const;
 		/**
 		* Metoda pro nastaveni nove hodnoty volby.
 		* Muze vyhodit WrongFormatException vyjimku (kvuli existenci referenci).
 		* \param value nova hodnota.
 		*/
-		void Set(ValueType value) { }
+		void Set(ValueType value);
 		/** 
 		* Tato metoda realizuje volbu odkazem (ve vstupnim souboru uvedene znakem $).
 		* Muze vyhodit WrongFormatException vyjimku (kvuli existenci referenci).
@@ -155,7 +156,7 @@ namespace ConfigManager
 		*/
 		virtual void ProcessValueData(const std::string& data) override {}
 	private:
-		ValueType value;
+		ValueType value_;
 	};
 
 	/**
@@ -284,5 +285,21 @@ namespace ConfigManager
 		virtual void ProcessValueData(const std::string& data) override { }
 	};
 };
+
+/* ================ OptionProxy */
+namespace ConfigManager
+{
+	template<typename TypeSpecifier>
+	auto OptionProxy<TypeSpecifier>::Get() const -> const ValueType&
+	{
+		return value_;
+	}
+
+	template<typename TypeSpecifier>
+	void OptionProxy<TypeSpecifier>::Set(const ValueType& value)
+	{
+		value_ = value;
+	}
+}
 
 #endif

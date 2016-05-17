@@ -3,6 +3,7 @@
 
 #include <string>
 #include <memory>
+#include <map>
 
 #include "exceptions.h"
 #include "enums.h"
@@ -23,40 +24,13 @@ namespace ConfigManager
 		* Zakladni kontruktor. 
 		*/
 		Configuration();
-		/**
-		* Konstruktor nacitajici nastaveni ze zvoleneho souboru. 
-		* Muze vyhodit MalformedInputException, IoException vyjimky.
-		* \param filename Jmeno souboru. (Ocekavany format ".ini")
-		* \param policy Spefikuje pristup k vstupnimu souboru (relaxed/strict).
-		*/
-		Configuration(std::string filename, InputFilePolicy policy = InputFilePolicy::NONE);
 
-		/**
-		* Zakladni dektruktor. Vsechny zmenene volby se program pokusi ulozit na urcene misto (soubor/istream). 
-		* Muze selhat obdobne jako Flush(), ale nevyhazuje vyjimky (jelikoz vyjimka z destruktoru by zpusobila pad programu, pokud jiz doslo k jine vyjimce).
-		*/
-		~Configuration();
-
-		/**
-		* Umoznuje menit soubor konfigurace ke kteremu se tato trida vztahuje. 
-		* \param filename Jmeno souboru. (Ocekavany format ".ini")
-		* \param filename Spefikuje pristup k vstupnimu souboru (relaxed/strict).
-		*/
-		void SetConfigFile(std::string filename, InputFilePolicy policy = InputFilePolicy::NONE);
-
-		/**
-		* Nastavuje jmeno vstupniho souboru. Zakladni pristup je IGNORE_NONEXISTANT(relaxed).
-		* Muze vyhodit MalformedInputException, IoException, WrongFormatException, MandatoryMissingException vyjimky.
-		* \param filename Jmeno souboru. (Ocekavany format ".ini")
-		*/
-		void SetInputFile(std::string filename);
-		
 		/**
 		* Metoda pro nastaveni vstupniho streamu. 
 		* Muze vyhodit MalformedInputException, IoException, WrongFormatException, MandatoryMissingException vyjimky. 	
 		* \param input_stream Vstupni istream.
 		*/
-		void SetInputStream(std::istream& input_stream);
+		void Open(std::istream& input_stream);
 
 		/**
 		* Metoda pro kontrolu, zda vstup odpovida jiz striktne specifikovanemu formatu. 
@@ -65,24 +39,11 @@ namespace ConfigManager
 		void CheckStrict();
 
 		/**
-		* Meto pro nastaveni vystupniho souboru.
-		* Muze vyhodit IoException vyjimku.
-		* \param filename Jmeno vystupniho souboru.
-		*/
-		void SetOutputFile(std::string filename);
-		/**
-		* Metoda pro nastaveni vystupniho streamu.
-		* Muze vyhodit MalformedInputException, IoException, WrongFormatException, MandatoryMissingException vyjimky.
-		* \param output_stream Vystupni istream.
-		*/
-		void SetOutputStream(std::ostream& output_stream);
-
-		/**
 		* Metoda vynucijici zapis zmenenych voleb na disk. 
 		* Muze vyhodit IoException vyjimku (v pøipadì selhání otevøení souboru pro zápis).
 		* \param output_method Volba zapisu prednastavenych hodnot. 
 		*/
-		void Flush(OutputMethod output_method = OutputMethod::NORMAL);
+		void Save(std::ostream& output_stream, OutputMethod output_method = OutputMethod::NORMAL);
 
 		/**
 		* Metoda specifikujici dalsi sekci. 
@@ -92,6 +53,33 @@ namespace ConfigManager
 		* \param comments Komentare k dane sekci. 
 		*/
 		Section SpecifySection(std::string section_name, Requirement requirement = Requirement::OPTIONAL, const std::string comments = "");
+
+		Section operator[](std::string section_name) const;
+
+	private:
+		std::map<std::string, std::map<std::string, std::pair<std::string, AbstractOptionProxy*>>> data_;
+	};
+
+
+	class ConfigurationFile : public Configuration
+	{
+	public:
+		/**
+		* Konstruktor nacitajici nastaveni ze zvoleneho souboru.
+		* Muze vyhodit MalformedInputException, IoException vyjimky.
+		* \param filename Jmeno souboru. (Ocekavany format ".ini")
+		* \param policy Spefikuje pristup k vstupnimu souboru (relaxed/strict).
+		*/
+		ConfigurationFile(std::string filename, InputFilePolicy policy = InputFilePolicy::NONE);
+
+		/**
+		* Zakladni dektruktor. Vsechny zmenene volby se program pokusi ulozit na urcene misto (soubor/istream).
+		* Muze selhat obdobne jako Flush(), ale nevyhazuje vyjimky (jelikoz vyjimka z destruktoru by zpusobila pad programu, pokud jiz doslo k jine vyjimce).
+		*/
+		~ConfigurationFile();
+
+	private:
+		std::string filename_;
 	};
 };
 

@@ -31,7 +31,7 @@ namespace ConfigManager
 	enum OutputMethod
 	{
 		NORMAL, /**< Pri teto volbe se vypisi pouze hodnoty ruzne od prednastavenych.*/
-		OUTPUT_DEFAULTS  /**< Pri teto volbe se vypisi vsechny hodnoty (vcetne prednastavenych).*/
+		EMIT_DEFAULT_VALUES  /**< Pri teto volbe se vypisi vsechny hodnoty (vcetne prednastavenych).*/
 	};
 };
 
