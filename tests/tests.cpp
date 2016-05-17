@@ -307,6 +307,8 @@ TypeSpecifiersTestSuite::TypeSpecifiersTestSuite()
 	TEST_ADD(TypeSpecifiersTestSuite::BooleanSpecTest)
 	TEST_ADD(TypeSpecifiersTestSuite::IntegerSpecTest)
 	TEST_ADD(TypeSpecifiersTestSuite::UnsignIntSpecTest)
+	TEST_ADD(TypeSpecifiersTestSuite::FloatSpecTest)
+	TEST_ADD(TypeSpecifiersTestSuite::StringSpecTest)
 }
 
 
@@ -443,6 +445,10 @@ void TypeSpecifiersTestSuite::UnsignIntSpecTest()
 		TEST_THROWS(UnsignedSpecifier::ValueType value = unsignedSpec.FromString("-5"), WrongRangeException)
 		TEST_THROWS(UnsignedSpecifier::ValueType value = unsignedSpec.FromString("16"), WrongRangeException)
 		TEST_THROWS_NOTHING(UnsignedSpecifier::ValueType value = unsignedSpec.FromString("10"))
+		// not integer:
+		TEST_THROWS(UnsignedSpecifier::ValueType value = unsignedSpec.FromString("3.14"), WrongFormatException)
+
+		TEST_THROWS(UnsignedSpecifier::ValueType value = unsignedSpec.FromString("notAnumber"), WrongFormatException )
 	}
 	{// test to string feature:
 		UnsignedSpecifier unsignedSpec(11, 3025);
@@ -451,5 +457,63 @@ void TypeSpecifiersTestSuite::UnsignIntSpecTest()
 		std::string twenty = unsignedSpec.ToString(20);
 		TEST_ASSERT_EQUALS("20" , twenty)
 	}
+}
+void TypeSpecifiersTestSuite::FloatSpecTest()
+{
+	// test correct numbers:
+	try
+	{
+		FloatSpecifier floatSpec;
+		FloatSpecifier::ValueType value;
+		// test correct from string	
+		value = floatSpec.FromString("0");
+		TEST_ASSERT_EQUALS(0, value)
+		value = floatSpec.FromString("12.05");
+		TEST_ASSERT_EQUALS(12.05, value)
+		value = floatSpec.FromString("-7.05");
+		TEST_ASSERT_EQUALS(-7.05, value)
+		value = floatSpec.FromString("150000.5"); 
+		TEST_ASSERT_EQUALS(150000.5, value)
+		value = floatSpec.FromString("0.00045");
+		TEST_ASSERT_EQUALS(0.00045, value)
+
+		TEST_THROWS(value = floatSpec.FromString("notAnumber"), WrongFormatException)
+	}
+	catch (...)
+	{
+		TEST_FAIL("Unexpected exception.");
+	}
+
+	{	// wrong bounds
+		TEST_THROWS(FloatSpecifier reversedRange(5, 2), InvalidOperationException)
+		FloatSpecifier floatSpec(-3.14, 15);
+		// outside bounds
+		TEST_THROWS(FloatSpecifier::ValueType value = floatSpec.FromString("-5"), WrongRangeException)
+		TEST_THROWS(FloatSpecifier::ValueType value = floatSpec.FromString("16"), WrongRangeException)
+		// in bounds
+		TEST_THROWS_NOTHING(FloatSpecifier::ValueType value = floatSpec.FromString("10"))
+
+		// not a number
+		TEST_THROWS(FloatSpecifier::ValueType value = floatSpec.FromString("notAnumber"), WrongFormatException)
+	}
+	{// test to string feature:
+		FloatSpecifier floatSpec(11, 3025);
+		TEST_THROWS(std::string negativeNum = floatSpec.ToString(-10), WrongRangeException)
+		TEST_THROWS(std::string outsideBounds = floatSpec.ToString(6007), WrongRangeException)
+		std::string twenty = floatSpec.ToString(20.5);
+		TEST_ASSERT_EQUALS("20.5", twenty)
+	}
+
+}
+void TypeSpecifiersTestSuite::StringSpecTest()
+{
+	// there is not much to test, is it??
+	StringSpecifier strSpec;
+	std::string data = "hello!@#$%^&*()_+}{|\":?><";
+	std::string result = strSpec.FromString(data);
+	TEST_ASSERT_EQUALS(data, result)
+	std::string backConversion = strSpec.ToString(result);
+	TEST_ASSERT_EQUALS(data, backConversion)
+
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

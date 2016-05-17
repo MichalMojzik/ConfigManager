@@ -33,4 +33,6 @@ private:
 	void BooleanSpecTest();
 	void IntegerSpecTest();
 	void UnsignIntSpecTest();
+	void FloatSpecTest();
+	void StringSpecTest();
 };
