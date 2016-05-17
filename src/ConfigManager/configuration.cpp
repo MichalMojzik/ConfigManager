@@ -35,7 +35,6 @@ namespace ConfigManager
 				auto& option_value = option_it->second.first;
 				auto& option_proxy = option_it->second.second;
 				output_stream << option_name << "=" << option_value << std::endl;
-				option_it
 			}
 		}
   }

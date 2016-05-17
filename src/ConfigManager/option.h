@@ -107,7 +107,7 @@ namespace ConfigManager
 	{
 		typedef typename TypeSpecifier::ValueType ValueType;
 	public:
-		OptionProxy();
+		OptionProxy() {}
     
 		/**
 		* Hlavni kontruktor, specifikujici format dane volby. 
@@ -117,17 +117,17 @@ namespace ConfigManager
 		*/
 		OptionProxy(const ValueType& default_value,
 			TypeSpecifier type_specifier = TypeSpecifier(),
-			const std::string comments = "");
+			const std::string comments = "") {}
 		/**
 		* \copydoc AbstractOptionProxy::operator=(const AbstractOptionProxy& other)
 		*
 		*/
-		OptionProxy(OptionProxy&& other);
+		OptionProxy(OptionProxy&& other) {}
 		/**
 		* \copydoc AbstractOptionProxy::operator=(const AbstractOptionProxy& other)
 		*
 		*/
-		OptionProxy& operator=(OptionProxy&& other);
+		OptionProxy& operator=(OptionProxy&& other) {}
 		/** Metoda vracejici nastavenou hodnotu. 
 		*
 		*/
@@ -137,7 +137,7 @@ namespace ConfigManager
 		* Muze vyhodit WrongFormatException vyjimku (kvuli existenci referenci).
 		* \param value nova hodnota.
 		*/
-		void Set(ValueType value);
+		void Set(const ValueType& value);
 		/** 
 		* Tato metoda realizuje volbu odkazem (ve vstupnim souboru uvedene znakem $).
 		* Muze vyhodit WrongFormatException vyjimku (kvuli existenci referenci).

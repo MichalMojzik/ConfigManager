@@ -251,7 +251,7 @@ void ConfigurationTestSuite::FormatReadingTest()
 		// takovy vstup by mel byt korektni. 
 		try 
 		{
-			config.SetInputStream(commentFileText);
+			config.Open(commentFileText);
 		}
 		catch(ConfigManager::IoException & e)
 		{
