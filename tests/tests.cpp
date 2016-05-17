@@ -306,6 +306,7 @@ TypeSpecifiersTestSuite::TypeSpecifiersTestSuite()
 {
 	TEST_ADD(TypeSpecifiersTestSuite::BooleanSpecTest)
 	TEST_ADD(TypeSpecifiersTestSuite::IntegerSpecTest)
+	TEST_ADD(TypeSpecifiersTestSuite::UnsignIntSpecTest)
 }
 
 
@@ -392,56 +393,63 @@ void TypeSpecifiersTestSuite::IntegerSpecTest()
 		TEST_FAIL("Unexpected exception.");
 	}
 	// test wrong input
-	try 
 	{
 		IntegerSpecifier intSpec;
 		IntegerSpecifier::ValueType value;
-		value = intSpec.FromString("asdf");
-		TEST_FAIL("Did not fail the non-numerical string.")
+		TEST_THROWS(value = intSpec.FromString("asdf"), WrongFormatException);
+		// test wrong range input
+		TEST_THROWS(IntegerSpecifier intSpec(5, -5), InvalidOperationException)
 	}
-	catch (WrongFormatException)
-	{
-		// tak to ma byt
-	}
-	
-	// test wrong range input
-	try 
-	{
-		IntegerSpecifier intSpec(5, -5);
-		TEST_FAIL("Did allow wrong range.")
-	}
-	catch (WrongRangeException)
-	{
-		// this is ok
-	}
-
-	try 
 	{
 		IntegerSpecifier intSpec(2, 7);
-		IntegerSpecifier::ValueType value = intSpec.FromString("0");
-		TEST_FAIL("Allowed value outside range.")
-	}
-	catch (WrongRangeException)
-	{
-		// this is ok
+		TEST_THROWS(IntegerSpecifier::ValueType value = intSpec.FromString("0"), WrongRangeException)
 	}
 	/// now to string method:
-	try 
 	{
 		IntegerSpecifier intSpec(2, 5);
 		std::string three = intSpec.ToString(3);
 		TEST_ASSERT_EQUALS("3", three)
-		std::string outOfBounds = intSpec.ToString(6);
-		TEST_FAIL("Used value outside of range.")
-	}
-	catch (WrongRangeException)
-	{
-		// this is ok
+		TEST_THROWS(std::string outOfBounds = intSpec.ToString(6), WrongRangeException )
 	}
 
+}
+void TypeSpecifiersTestSuite::UnsignIntSpecTest()
+{ 
+	// test correct numbers:
+	try
+	{
+		UnsignedSpecifier uIntSpec;
+		UnsignedSpecifier::ValueType value;
+		// test correct from string	
+		value = uIntSpec.FromString("0");
+		TEST_ASSERT_EQUALS(0, value);
+		value = uIntSpec.FromString("12");
+		TEST_ASSERT_EQUALS(12, value);
+		value = uIntSpec.FromString("0x5");
+		TEST_ASSERT_EQUALS(0x5, value);
+		value = uIntSpec.FromString("016"); /// 8-based: 10 = 8, 16 = 14
+		TEST_ASSERT_EQUALS(14, value);
+		value = uIntSpec.FromString("0b1");
+		TEST_ASSERT_EQUALS(1, value);
+	}
 	catch (...)
 	{
-			TEST_FAIL("Unexpected exception.")
+		TEST_FAIL("Unexpected exception.");
+	}
+	{// negative number and numbers outside bounds
+		TEST_THROWS(UnsignedSpecifier reversedRange(5, 2), InvalidOperationException)
+		TEST_THROWS(UnsignedSpecifier negativeRange(-7, 2), InvalidOperationException)
+		UnsignedSpecifier unsignedSpec(7, 15);
+		TEST_THROWS(UnsignedSpecifier::ValueType value = unsignedSpec.FromString("-5"), WrongRangeException)
+		TEST_THROWS(UnsignedSpecifier::ValueType value = unsignedSpec.FromString("16"), WrongRangeException)
+		TEST_THROWS_NOTHING(UnsignedSpecifier::ValueType value = unsignedSpec.FromString("10"))
+	}
+	{// test to string feature:
+		UnsignedSpecifier unsignedSpec(11, 3025);
+		TEST_THROWS(std::string negativeNum = unsignedSpec.ToString(-10), WrongRangeException)
+		TEST_THROWS(std::string outsideBounds = unsignedSpec.ToString(6007), WrongRangeException)
+		std::string twenty = unsignedSpec.ToString(20);
+		TEST_ASSERT_EQUALS("20" , twenty)
 	}
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -32,4 +32,5 @@ public:
 private:
 	void BooleanSpecTest();
 	void IntegerSpecTest();
+	void UnsignIntSpecTest();
 };
