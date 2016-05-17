@@ -19,7 +19,7 @@
 
 using namespace std;
 using namespace ConfigManager;
-
+/*
 // Tests unconditional fail asserts
 //
 class FailTestSuite : public Test::Suite
@@ -176,7 +176,8 @@ cmdline(int argc, char* argv[])
 	}
 
 	return auto_ptr<Test::Output>(output);
-}
+} */
+
 
 // Main test program
 //
@@ -185,6 +186,7 @@ int main(int argc, char* argv[])
 	std::cout << "Starting test of ConfigManager library. \n";
 	try
 	{
+		
 		Test::TextOutput simpleOutput(Test::TextOutput::Mode::Verbose);
 		ConfigurationTestSuite configSuite;
 		//configSuite.run(simpleOutput);
@@ -584,13 +586,48 @@ void TypeSpecifiersTestSuite::EnumSpecTest()
 SectionTestSuite::SectionTestSuite()
 {
 	TEST_ADD(SectionTestSuite::BasicTests)
-	TEST_ADD(SectionTestSuite::OptionSpecificationTests)
+	TEST_ADD(SectionTestSuite::SavingTests)
 }
 
-void SectionTestSuite::OptionSpecificationTests()
+void SectionTestSuite::SavingTests()
 {
-	//std::string testString = "string";
-	//TEST_ASSERT_EQUALS("string", testString)
+	try 
+	{
+		{// saving new section
+			ConfigManager::Configuration config;
+			Section newSection = config.SpecifySection("newSection", ConfigManager::OPTIONAL, "comments");
+			stringstream output;
+			config.Save(output);
+			string resultingLine;
+			output >> resultingLine;
+			TEST_ASSERT_EQUALS("[newSection];comments", resultingLine)
+		}
+		{// saving old section:
+			ConfigManager::Configuration config;
+			stringstream input;
+			input << "[section];comment\n";
+			Section newSection = config.SpecifySection("section", ConfigManager::MANDATORY, "default");
+			stringstream output;
+			config.Save(output);
+			string resultingLine;
+			output >> resultingLine;
+			TEST_ASSERT_EQUALS("[section];comment", resultingLine)
+		}
+		{// if section is not needed, it should stay in given format
+			ConfigManager::Configuration config;
+			stringstream input;
+			input << "[section]; untouched  comment\n";
+			stringstream output;
+			config.Save(output);
+			string resultingLine;
+			output >> resultingLine;
+			TEST_ASSERT_EQUALS("[section]; untouched  comment", resultingLine)
+		}
+	}
+	catch (...)
+	{
+		TEST_FAIL("Unexpected exception")
+	}
 }
 
 void SectionTestSuite::BasicTests()
@@ -700,7 +737,7 @@ void OptionTestSuite::BasicTest()
 			ListOptionProxy<StringSpecifier> newOption = section.SpecifyListOption("optionTwo", StringSpecifier(), defaultValues,
 					ConfigManager::OPTIONAL, "testing new option in old section");
 			TEST_ASSERT_EQUALS("optionTwo", newOption.GetName())
-				TEST_ASSERT_EQUALS("sectionName", newOption.GetSectionName())
+			TEST_ASSERT_EQUALS("sectionName", newOption.GetSectionName())
 		}
 
 	}
