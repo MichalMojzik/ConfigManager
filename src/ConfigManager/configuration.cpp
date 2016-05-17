@@ -4,17 +4,52 @@
 
 namespace ConfigManager
 {
+	std::string trim(std::string value)
+	{
+		value.erase(0, value.find_first_not_of(' '));
+		value.erase(value.find_last_not_of(' ') + 1);
+		return value;
+	}
+
   Configuration::Configuration()
   {
   }
   
   void Configuration::Open(std::istream& input_stream)
   {
+		decltype(data_.find("")) section_it;
 		std::string line;
 		while(std::getline(input_stream, line))
 		{
-			line.substr(0, line.find_first_of(';'));
-			
+			auto semilocon_position = line.find_first_of(';');
+			if(semilocon_position != std::string::npos)
+				line = line.substr(0, semilocon_position); // strip comments away
+			line = trim(line); // strip whitespaces away
+
+			if(line.length() == 0)
+			{
+				continue;
+			}
+
+			if(line.front() == '[' && line.back() == ']')
+			{
+				//data_.insert(
+				std::string section_name = line.substr(1, line.length() - 2);
+				auto result = data_.emplace(section_name, SectionData());
+				if(!result.second)
+				{
+					throw MalformedInputException();
+				}
+				section_it = result.first;
+			}
+			else if(section_it == data_.end())
+			{
+				throw MalformedInputException();
+			}
+			else
+			{
+
+			}
 		}
   }
 
@@ -53,7 +88,7 @@ namespace ConfigManager
 	ConfigurationFile::ConfigurationFile(std::string filename, InputFilePolicy policy)
 		: filename_(filename), Configuration()
 	{
-		std::ifstream file_stream(filename);
+		std::ifstream file_stream(filename_);
 		Open(file_stream);
 	}
 	

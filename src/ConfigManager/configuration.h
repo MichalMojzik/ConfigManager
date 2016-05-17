@@ -57,7 +57,9 @@ namespace ConfigManager
 		Section operator[](std::string section_name) const;
 
 	private:
-		std::map<std::string, std::map<std::string, std::pair<std::string, AbstractOptionProxy*>>> data_;
+		typedef std::pair<std::string, AbstractOptionProxy*> OptionData;
+		typedef std::map<std::string, OptionData> SectionData;
+		std::map<std::string, SectionData> data_;
 	};
 
 
