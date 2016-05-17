@@ -680,6 +680,8 @@ void SectionTestSuite::BasicTests()
 OptionTestSuite::OptionTestSuite()
 {
 	TEST_ADD(OptionTestSuite::BasicTest)
+	TEST_ADD(OptionTestSuite::SavingTest)
+	TEST_ADD(OptionTestSuite::LinksTest)
 }
 
 void OptionTestSuite::SavingTest()
@@ -835,5 +837,28 @@ void OptionTestSuite::BasicTest()
 	catch (...)
 	{
 		TEST_FAIL("Unexpected exception.")
+	}
+}
+
+void OptionTestSuite::LinksTest()
+{
+	try 
+	{
+		{
+			stringstream inputText;
+			inputText << "[section1]\n";
+			inputText << "option=value\n";
+			inputText << "[section2]\n";
+			inputText << "option=${secion1#option}\n";
+			Configuration config;
+			config.Open(inputText);
+			Section section2 = config.SpecifySection("section2", ConfigManager::MANDATORY);
+			OptionProxy<StringSpecifier> opt2 = section2.SpecifyOption("option", StringSpecifier(), "defaultVal", OPTIONAL);
+			TEST_ASSERT_EQUALS("value", opt2.Get());
+		}
+	}
+	catch (...)
+	{
+		TEST_FAIL("Unexpected exception.");
 	}
 }

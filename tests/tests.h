@@ -48,6 +48,14 @@ private:
 	*/
 	void BasicTest();
 
+	/*
+	* Test link functionality.
+	*/
+	void LinksTest(); 
+
+	/*
+	* Enum class for testing purposes.
+	*/
 	enum TestEnum
 	{
 		FIRST_VAL,
