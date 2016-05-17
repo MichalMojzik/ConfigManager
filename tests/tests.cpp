@@ -6,6 +6,7 @@
 #include <cstring>
 #include <iostream>
 #include <sstream>
+#include <map>
 
 #ifdef _MSC_VER
 #pragma warning (disable: 4290)
@@ -309,12 +310,10 @@ TypeSpecifiersTestSuite::TypeSpecifiersTestSuite()
 	TEST_ADD(TypeSpecifiersTestSuite::UnsignIntSpecTest)
 	TEST_ADD(TypeSpecifiersTestSuite::FloatSpecTest)
 	TEST_ADD(TypeSpecifiersTestSuite::StringSpecTest)
+	TEST_ADD(TypeSpecifiersTestSuite::EnumSpecTest)
 }
 
 
-TypeSpecifiersTestSuite::~TypeSpecifiersTestSuite()
-{
-}
 
 
 void TypeSpecifiersTestSuite::BooleanSpecTest()
@@ -516,4 +515,45 @@ void TypeSpecifiersTestSuite::StringSpecTest()
 	TEST_ASSERT_EQUALS(data, backConversion)
 
 }
+void TypeSpecifiersTestSuite::EnumSpecTest()
+{
+	typedef  EnumSpecifier<TypeSpecifiersTestSuite::TestEnum>::ValueType enumValType;
+	{// test right usage of enum
+		
+		map<std::string, enumValType> rightValMap;
+		rightValMap.insert(std::pair <std::string, enumValType>("FIRST_VALUE_STR", enumValType::FIRST_VAL));
+		rightValMap.insert(std::pair <std::string, enumValType>("SECOND_VALUE_STR", enumValType::SECOND_VAL));
+		rightValMap.insert(std::pair <std::string, enumValType>("THIRD_VALUE_STR", enumValType::THIRD_VAL));
+
+		TEST_THROWS_NOTHING(EnumSpecifier<TypeSpecifiersTestSuite::TestEnum> enumSpec(rightValMap))
+			EnumSpecifier<TypeSpecifiersTestSuite::TestEnum> testEnumSpecifier(rightValMap);
+		//check values:
+		TEST_ASSERT_EQUALS(enumValType::FIRST_VAL, testEnumSpecifier.FromString("FIRST_VALUE_STR"))
+		TEST_ASSERT_EQUALS(enumValType::SECOND_VAL, testEnumSpecifier.FromString("SECOND_VALUE_STR"))
+		TEST_ASSERT_EQUALS(enumValType::THIRD_VAL, testEnumSpecifier.FromString("THIRD_VALUE_STR"))
+		TEST_THROWS(enumValType nonsense = testEnumSpecifier.FromString("gibberish"), WrongFormatException)
+
+		// now to string:
+		TEST_ASSERT_EQUALS("FIRST_VALUE_STR", testEnumSpecifier.ToString( enumValType::FIRST_VAL))
+		TEST_ASSERT_EQUALS("SECOND_VALUE_STR", testEnumSpecifier.ToString(enumValType::SECOND_VAL))
+		TEST_ASSERT_EQUALS("THIRD_VALUE_STR", testEnumSpecifier.ToString(enumValType::THIRD_VAL))
+	}
+	{
+		//what if it is partially specified?
+		map<std::string, enumValType> partialValMap;
+		partialValMap.insert(std::pair <std::string, enumValType>("FIRST_VALUE_STR", enumValType::FIRST_VAL));
+		partialValMap.insert(std::pair <std::string, enumValType>("THIRD_VALUE_STR", enumValType::THIRD_VAL));
+		EnumSpecifier<TypeSpecifiersTestSuite::TestEnum> testEnumSpecifier(partialValMap);
+		TEST_ASSERT_EQUALS(enumValType::FIRST_VAL, testEnumSpecifier.FromString("FIRST_VALUE_STR"))
+		TEST_ASSERT_EQUALS(enumValType::THIRD_VAL, testEnumSpecifier.FromString("THIRD_VALUE_STR"))
+		// now to string:
+		TEST_ASSERT_EQUALS("FIRST_VALUE_STR", testEnumSpecifier.ToString(enumValType::FIRST_VAL))
+		TEST_ASSERT_EQUALS("THIRD_VALUE_STR", testEnumSpecifier.ToString(enumValType::THIRD_VAL))
+	}
+
+}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+SectionTestSuite::SectionTestSuite()
+{
+}

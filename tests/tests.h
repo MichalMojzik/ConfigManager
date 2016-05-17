@@ -21,6 +21,13 @@ private:
 	void FormatReadingTest();
 };
 
+class SectionTestSuite : public Test::Suite
+{
+public:
+	SectionTestSuite();
+private:
+};
+
 /*
 * Testy pro tridy TypeSpecifier.
 */
@@ -28,11 +35,21 @@ class TypeSpecifiersTestSuite : public Test::Suite
 {
 public:
 	TypeSpecifiersTestSuite();
-	~TypeSpecifiersTestSuite();
 private:
 	void BooleanSpecTest();
 	void IntegerSpecTest();
 	void UnsignIntSpecTest();
 	void FloatSpecTest();
 	void StringSpecTest();
+	void EnumSpecTest();
+
+	enum TestEnum
+	{
+		FIRST_VAL,
+		SECOND_VAL,
+		THIRD_VAL
+	};
 };
+
+
+
