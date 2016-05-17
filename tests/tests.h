@@ -14,8 +14,7 @@ public:
 	ConfigurationTestSuite();
 private:
 	/* 
-	*Test proverujici spravne cteni formatu vstupnich dat.
-	*
+	* Test proverujici spravne cteni formatu vstupnich dat.
 	*/
 	void FormatReadingTest();
 };
@@ -25,7 +24,13 @@ class SectionTestSuite : public Test::Suite
 public:
 	SectionTestSuite();
 private:
+	/*
+	* Test ukladani sekci.
+	*/
 	void SavingTests();
+	/*
+	* Test metody getName.
+	*/
 	void BasicTests();
 };
 
@@ -34,7 +39,21 @@ class OptionTestSuite : public Test::Suite
 public:
 	OptionTestSuite();
 private:
+	/*
+	* Test ukladani sekci..
+	*/
+	void SavingTest();
+	/*
+	* Test metody getName a getSectionName.
+	*/
 	void BasicTest();
+
+	enum TestEnum
+	{
+		FIRST_VAL,
+		SECOND_VAL,
+		THIRD_VAL
+	};
 };
 
 /*
