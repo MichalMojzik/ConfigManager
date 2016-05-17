@@ -12,7 +12,6 @@ class ConfigurationTestSuite : public Test::Suite
 {
 public:
 	ConfigurationTestSuite();
-	~ConfigurationTestSuite();
 private:
 	/* 
 	*Test proverujici spravne cteni formatu vstupnich dat.
@@ -26,6 +25,7 @@ class SectionTestSuite : public Test::Suite
 public:
 	SectionTestSuite();
 private:
+	void 
 };
 
 /*

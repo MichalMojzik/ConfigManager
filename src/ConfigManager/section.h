@@ -16,7 +16,7 @@ namespace ConfigManager
 	public:
 		/**
 		* Metoda urcujici novou volbu v dane sekci. 
-		*   Muze vyhodit WrongFormatException, MandatoryMissingException vyjimky.
+		* Muze vyhodit WrongFormatException, MandatoryMissingException vyjimky.
 		*   \param name Jmeno nove volby.
 		*   \param type_specifier Trida pro preklad volby z a  do retezce.
 		*   \param default_value Prednastavena hodnota.
