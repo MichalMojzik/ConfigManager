@@ -245,60 +245,32 @@ void ConfigurationTestSuite::FormatReadingTest()
 		stringstream commentFileText;
 		commentFileText << "; this is comment.. the following should be ignored: ~@#$%^&*()_+{}:\"|<>?\n";
 		commentFileText << ";[commentedSection]\n";
-		commentFileText << ";commentedOption=what\n";
 		commentFileText << "[section] ;comment.. \n";
 		commentFileText << "option=value;comment\n";
+		commentFileText << ";commentedOption=what\n";
 		// takovy vstup by mel byt korektni. 
-		try 
-		{
-			config.Open(commentFileText);
-		}
-		catch(ConfigManager::IoException & e)
-		{
-			TEST_FAIL("FormatReadingTest: testing comments: IoException.")
-		}
-		catch (ConfigManager::ConfigurationException & e)
-		{	
-			TEST_FAIL("FormatReadingTest: testing comments: exception thrown.")
-		}
-		catch (...)
-		{
-			TEST_FAIL("FormatReadingTest: testing comments: unexpected exception, while reading input stream.")
-		}
+		config.Open(commentFileText);
 		
-		try
-		{
-			Section dummySection = config.SpecifySection("section", Requirement::MANDATORY, "this section should be there");
+		Section dummySection = config.SpecifySection("section", Requirement::MANDATORY, "this section should be there");
 			// pokud tam tato sekce neni, nepujde ji specifikovat jako MANDATORY..
-			OptionProxy<StringSpecifier> dummyOpt =  dummySection.SpecifyOption<StringSpecifier>
-								("option", StringSpecifier() , "default", OPTIONAL,"this option should be there");
-			// pokud nebude mit hodnotu "value, tak je to spatne..
+		OptionProxy<StringSpecifier> dummyOpt =  dummySection.SpecifyOption<StringSpecifier>
+							("option", StringSpecifier() , "default", OPTIONAL,"this option should be there");
+		// pokud nebude mit hodnotu "value, tak je to spatne..
+		string dummyValue = dummyOpt.Get();
+		TEST_ASSERT_EQUALS("value", dummyValue);
+		
+		TEST_THROWS(Section commentedSectionOut = config.SpecifySection("commentedSection", ConfigManager::MANDATORY, 
+			"this should throw, as it was commented out"), MandatoryMissingException)
+		TEST_THROWS(OptionProxy<StringSpecifier> commentedOption = dummySection.SpecifyOption
+			(";commentedOption", StringSpecifier(), "default", ConfigManager::MANDATORY, 
+				"this option should not be in configuration"), MandatoryMissingException )
 
-			string dummyValue = dummyOpt.Get();
-			TEST_ASSERT_EQUALS("value", dummyValue);
-		}
-		catch (MandatoryMissingException & e)
-		{
-			TEST_FAIL("FormatReadingTest: testing comments: '[section];comment' did not create a section.")
-		}
-		catch (...)
-		{
-			TEST_FAIL("FormatReadingTest: testing comments: unexpected exception, specifying section.")
-		}	
-
-		// TODO:  test that there are not commented options and sections...
 	}
-
-	
-	//	config.SetInputStream();
 
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-ConfigurationTestSuite::~ConfigurationTestSuite()
-{
-}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
