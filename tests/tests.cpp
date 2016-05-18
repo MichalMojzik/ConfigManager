@@ -575,7 +575,7 @@ void SectionTestSuite::BasicTests()
 OptionTestSuite::OptionTestSuite()
 {
 	TEST_ADD(OptionTestSuite::InputNameOptionTest)
-	//TEST_ADD(OptionTestSuite::InputNameLOptionTest) not implemented yet
+	TEST_ADD(OptionTestSuite::InputNameListOptionTest)
 	TEST_ADD(OptionTestSuite::SpecNameOption)
 	TEST_ADD(OptionTestSuite::SavingBoolTest)
 	TEST_ADD(OptionTestSuite::SavingIntTest)
@@ -585,8 +585,8 @@ OptionTestSuite::OptionTestSuite()
 	TEST_ADD(OptionTestSuite::SavingEnumTest)
 	//TEST_ADD(OptionTestSuit::SavingListTest) not implemented
 	TEST_ADD(OptionTestSuite::PreservingFormatTest)
-    //TEST_ADD(OptionTestSuite::ListModificationTest) not implemented
-	//TEST_ADD(OptionTestSuite::ListLinkTest ) not implemented
+  TEST_ADD(OptionTestSuite::ListModificationTest)
+	TEST_ADD(OptionTestSuite::ListLinkTest )
 	TEST_ADD(OptionTestSuite::LinksTest)
 
 }
@@ -938,7 +938,7 @@ void OptionTestSuite::SpecNameOption()
 	}
 }
 
-/*
+
 void OptionTestSuite::ListModificationTest()
 {
 	try {
@@ -954,7 +954,7 @@ void OptionTestSuite::ListModificationTest()
 			boolList.Add(false);
 		TEST_ASSERT_EQUALS(false, boolList[boolList.Count()].Get());
 		// removing element
-		boolList[0].Remove();
+		boolList.Remove(0);
 		// checking that list contain (true, false)
 		TEST_ASSERT_EQUALS(2, boolList.Count())
 			TEST_ASSERT_EQUALS(true, boolList[0].Get())
@@ -967,7 +967,7 @@ void OptionTestSuite::ListModificationTest()
 		TEST_FAIL("Unexpected exception.")
 	}
 }
-*/
+
 void OptionTestSuite::LinksTest()
 {
 	try 
@@ -991,7 +991,6 @@ void OptionTestSuite::LinksTest()
 	}
 }
 
-/* commented out cause is not working yet
 void OptionTestSuite::ListLinkTest()
 {
 	try
@@ -1022,7 +1021,6 @@ void OptionTestSuite::ListLinkTest()
 		TEST_FAIL("Unexpected exception.");
 	}
 }
-*/
 
 void OptionTestSuite::InputNameListOptionTest()
 {
