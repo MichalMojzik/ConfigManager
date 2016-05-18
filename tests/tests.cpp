@@ -194,8 +194,8 @@ void ConfigurationTestSuite::OptionSyntaxTest()
 		input << "[section]\n";
 		input << "    option1   =option name with spaces\n";
 		input << "option2=      value with spaces     \n";
-		input << " \ option3\  =with valid spaces in name\n";
-		input << "option4= \ valid spaces in value\ \n";
+		input << " \\ option3\\  =with valid spaces in name\n";
+		input << "option4= \\ valid spaces in value\\ \n";
 		Configuration config;
 		config.Open(input);
 		Section section = config.SpecifySection("section", MANDATORY);
@@ -204,7 +204,7 @@ void ConfigurationTestSuite::OptionSyntaxTest()
 		TEST_ASSERT_EQUALS("value with spaces", option2.Get())
 		TEST_THROWS_NOTHING(OptionProxy<StringSpecifier> option3 = section.SpecifyOption(" option3 ", StringSpecifier(), "default3", MANDATORY))
 		OptionProxy<StringSpecifier> option4 = section.SpecifyOption("option4", StringSpecifier(), "default", MANDATORY);
-		TEST_ASSERT_EQUALS(" valid psaces in value ", option4.Get())
+		TEST_ASSERT_EQUALS(" valid spaces in value ", option4.Get())
 		// now test the saving:
 		
 	}
