@@ -194,10 +194,13 @@ namespace ConfigManager
 		{
 			bool section_header_emitted = false;
 			auto& section = *section_it->second;
-			if(emit_default)
+			if(emit_default || section.loaded_)
 			{
 				output_stream << "[" << section.Name() << "]";
-				output_stream << ";" << section.comment_;
+				if(emit_default)
+				{
+					output_stream << ";" << section.comment_;
+				}
 				output_stream << std::endl;
 				section_header_emitted = true;
 			}
