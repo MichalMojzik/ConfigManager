@@ -429,7 +429,7 @@ void TypeSpecifiersTestSuite::StringSpecTest()
 {
 	// there is not much to test, is it??
 	StringSpecifier strSpec;
-	std::string data = "hello!@#%^&*()_+}{|\":?><\.\,\;\$";
+	std::string data = "hello!@#%^&*()_+}{|\":?><\\.\\,\\;\\$";
 	// will transform into:
 	std::string expected = "hello!@#%^&*()_+}{|\":?><.,;$";
 	std::string result = strSpec.FromString(data);
@@ -1009,12 +1009,8 @@ void OptionTestSuite::ListLinkTest()
 		defValues.push_back("default1");
 		ListOptionProxy<StringSpecifier> listOption = section2.SpecifyListOption
 			("option", StringSpecifier(), defValues, OPTIONAL);
-		TEST_ASSERT_EQUALS("linkedValue", listOption[0].Get());
 		TEST_ASSERT_EQUALS("inPlaceValue", listOption[0].Get());
-		ListOptionProxy<StringSpecifier> listOption2 = section2.SpecifyListOption
-			("option", StringSpecifier(), defValues, OPTIONAL);
-		TEST_ASSERT_EQUALS("linkedValue", listOption[0].Get());
-		TEST_ASSERT_EQUALS("inPlaceValue", listOption[0].Get());
+		TEST_ASSERT_EQUALS("linkedValue", listOption[1].Get());
 	}
 	catch (...)
 	{

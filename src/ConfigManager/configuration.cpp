@@ -119,8 +119,8 @@ namespace ConfigManager
 
 	OptionNode::OptionNode(SectionNode& section, const std::string& name)
 		: section_(section), name_(name), loaded_(false), changed_(false),
-		proxy_(nullptr), requirement_(Requirement::OPTIONAL), comment_(""),
-		value_("")
+		proxy_(nullptr), requirement_(Requirement::OPTIONAL), comment_(),
+		value_()
 	{
 	}
 
@@ -144,7 +144,9 @@ namespace ConfigManager
 
 			auto semilocon_position = find_first_nonespaced(line, ';');
 			if(semilocon_position != std::string::npos)
-				line = line.substr(0, semilocon_position); // strip comments away
+			{
+				line = line.substr(0, semilocon_position); // strip comment away
+			}
 			line = trim_nonescaped(line); // strip whitespaces away
 
 			if(line.length() == 0)
@@ -181,11 +183,59 @@ namespace ConfigManager
 				option.Load(option_value);
 			}
 		}
-  }
+
+		// as everything is loaded, we check whether all mandatory sections and options are present
+		for(auto section_it = data_.begin(), section_end = data_.end(); section_it != section_end; ++section_it)
+		{
+			auto& section = *section_it->second;
+			// only check for requirements if the section was actually present in the stream
+			if(section.IsLoaded())
+			{
+				for(auto option_it = section.data_.begin(), option_end = section.data_.end(); option_it != option_end; ++option_it)
+				{
+					auto& option = *option_it->second;
+					if(!option.IsLoaded() && option.requirement_ == Requirement::MANDATORY)
+					{
+						throw MandatoryMissingException();
+					}
+				}
+			}
+			// section has to have been loaded if it was specified as mandatory
+			else if(section.requirement_ == Requirement::MANDATORY)
+			{
+				throw MandatoryMissingException();
+			}
+		}
+	}
 
   void Configuration::CheckStrict()
   {
-  }
+		// enumerate through all of the known section
+		for(auto section_it = data_.begin(), section_end = data_.end(); section_it != section_end; ++section_it)
+		{
+			// extract the SectionNode from the iterator
+			auto& section = *section_it->second;
+
+			// if the section wasn't specified, then that is in violation of strict mode
+			if(section.IsLoaded() && !section.is_specified_)
+			{
+				throw StrictException();
+			}
+
+			// enumerate through all of the known options of the section
+			for(auto option_it = section.data_.begin(), option_end = section.data_.end(); option_it != option_end; ++option_it)
+			{
+				// extract the OptionNode from the iterator
+				auto& option = *option_it->second;
+
+				// if the option wasn't specified, then that is in vioaltion of strict mode
+				if(option.IsLoaded() && option.proxy_ != nullptr)
+				{
+					throw StrictException();
+				}
+			}
+		}
+	}
   
   void Configuration::Save(std::ostream& output_stream, OutputMethod output_method)
   {

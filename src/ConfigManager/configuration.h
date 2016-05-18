@@ -121,6 +121,10 @@ namespace ConfigManager
 		*/
 		Section SpecifySection(const std::string& section_name, Requirement requirement = Requirement::OPTIONAL, const std::string& comments = "");
 
+		/**
+		* Metoda zpristupnujici dalsi sekci. Lze pouzit nezavisle na zavolani SpecifySection.
+		* \param section_name Jmeno sekce.
+		*/
 		Section operator[](const std::string& section_name);
 
 		/**
@@ -150,7 +154,7 @@ namespace ConfigManager
 
 		/**
 		* Zakladni dektruktor. Vsechny zmenene volby se program pokusi ulozit na urcene misto (soubor/istream).
-		* Muze selhat obdobne jako Flush(), ale nevyhazuje vyjimky (jelikoz vyjimka z destruktoru by zpusobila pad programu, pokud jiz doslo k jine vyjimce).
+		* Muze selhat obdobne jako Save(), ale nevyhazuje vyjimky (jelikoz vyjimka z destruktoru by zpusobila pad programu, pokud jiz doslo k jine vyjimce).
 		*/
 		~ConfigurationFile();
 
