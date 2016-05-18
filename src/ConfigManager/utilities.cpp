@@ -16,7 +16,55 @@ namespace ConfigManager
 		}
 	}
 
-	std::string escape_trim(std::string value)
+	std::string escape(const std::string& value)
+	{
+		std::string result;
+		result.reserve(value.length());
+
+		for(auto it = value.begin(), end = value.end(); it != end; ++it)
+		{
+			switch(*it)
+			{
+			case '=':
+			case '$':
+			case ':':
+			case ',':
+			case ' ':
+			case ';':
+				result += '\\';
+				break;
+			default:
+				break;
+			}
+			result += *it;
+		}
+
+		return result;
+	}
+	std::string unescape(const std::string& value)
+	{
+		std::string result;
+		result.reserve();
+
+		bool next_escaped = false;
+		for(auto it = value.begin(), end = value.end(); it != end; ++it)
+		{
+			if(*it == '\\' && !next_escaped)
+			{
+				next_escaped = true;
+				continue;
+			}
+
+			result += *it;
+			next_escaped = false;
+		}
+		if(next_escaped)
+			result += '\\';
+
+		return result;
+	}
+
+	std::string trim_nonescaped(std::string value)
 	{
 		auto last_char = value.find_last_not_of(' ');
 		if(last_char != std::string::npos)

@@ -145,7 +145,7 @@ namespace ConfigManager
 			auto semilocon_position = find_first_nonespaced(line, ';');
 			if(semilocon_position != std::string::npos)
 				line = line.substr(0, semilocon_position); // strip comments away
-			line = escape_trim(line); // strip whitespaces away
+			line = trim_nonescaped(line); // strip whitespaces away
 
 			if(line.length() == 0)
 			{
@@ -154,7 +154,7 @@ namespace ConfigManager
 
 			if(line.front() == '[' && line.back() == ']')
 			{
-				std::string section_name = line.substr(1, line.length() - 2);
+				std::string section_name = unescape(line.substr(1, line.length() - 2));
 				auto& section = RetrieveSection(section_name);
 				if(section.loaded_)
 				{
@@ -175,8 +175,8 @@ namespace ConfigManager
 				{
 					throw MalformedInputException();
 				}
-				std::string option_name = escape_trim(line.substr(0, assignment_position));
-				std::string option_value = escape_trim(line.substr(assignment_position + 1));
+				std::string option_name = unescape(trim_nonescaped(line.substr(0, assignment_position)));
+				std::string option_value = trim_nonescaped(line.substr(assignment_position + 1));
 				auto& option = section[option_name];
 				option.Load(option_value);
 			}
