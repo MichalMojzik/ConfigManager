@@ -19,27 +19,183 @@
 
 using namespace std;
 using namespace ConfigManager;
+/*
+// Tests unconditional fail asserts
+//
+class FailTestSuite : public Test::Suite
+{
+public:
+	FailTestSuite()
+	{
+		TEST_ADD(FailTestSuite::success)
+		TEST_ADD(FailTestSuite::always_fail)
 
+	}
+
+private:
+	void success() {}
+
+	void always_fail()
+	{
+		// This will always fail
+		//
+		TEST_FAIL("unconditional fail");
+	}
+};
+
+// Tests compare asserts
+//
+class CompareTestSuite : public Test::Suite
+{
+public:
+	CompareTestSuite()
+	{
+		TEST_ADD(CompareTestSuite::success)
+			TEST_ADD(CompareTestSuite::compare)
+			TEST_ADD(CompareTestSuite::delta_compare)
+	}
+
+private:
+	void success() {}
+
+	void compare()
+	{
+		// Will succeed since the expression evaluates to true
+		//
+		TEST_ASSERT(1 + 1 == 2)
+
+			// Will fail since the expression evaluates to false
+			//
+			TEST_ASSERT(0 == 1);
+	}
+
+	void delta_compare()
+	{
+		// Will succeed since the expression evaluates to true
+		//
+		TEST_ASSERT_DELTA(0.5, 0.7, 0.3);
+
+		// Will fail since the expression evaluates to false
+		//
+		TEST_ASSERT_DELTA(0.5, 0.7, 0.1);
+	}
+};
+
+// Tests throw asserts
+//
+class ThrowTestSuite : public Test::Suite
+{
+public:
+	ThrowTestSuite()
+	{
+		TEST_ADD(ThrowTestSuite::success)
+			TEST_ADD(ThrowTestSuite::test_throw)
+	}
+
+private:
+	void success() {}
+
+	void test_throw()
+	{
+		// Will fail since the none of the functions throws anything
+		//
+		TEST_THROWS_MSG(func(), int, "func() does not throw, expected int exception")
+			TEST_THROWS_MSG(func_no_throw(), int, "func_no_throw() does not throw, expected int exception")
+			TEST_THROWS_ANYTHING_MSG(func(), "func() does not throw, expected any exception")
+			TEST_THROWS_ANYTHING_MSG(func_no_throw(), "func_no_throw() does not throw, expected any exception")
+
+			// Will succeed since none of the functions throws anything
+			//
+			TEST_THROWS_NOTHING(func())
+			TEST_THROWS_NOTHING(func_no_throw())
+
+			// Will succeed since func_throw_int() throws an int
+			//
+			TEST_THROWS(func_throw_int(), int)
+			TEST_THROWS_ANYTHING(func_throw_int())
+
+			// Will fail since func_throw_int() throws an int (not a float)
+			//
+			TEST_THROWS_MSG(func_throw_int(), float, "func_throw_int() throws an int, expected a float exception")
+			TEST_THROWS_NOTHING_MSG(func_throw_int(), "func_throw_int() throws an int, expected no exception at all")
+	}
+
+	void func() {}
+	void func_no_throw() throw() {}
+	void func_throw_int() throw(int) { throw 13; }
+};
+
+enum OutputType
+{
+	Compiler,
+	Html,
+	TextTerse,
+	TextVerbose
+};
+
+static void
+usage()
+{
+	cout << "usage: mytest [MODE]\n"
+		<< "where MODE may be one of:\n"
+		<< "  --compiler\n"
+		<< "  --html\n"
+		<< "  --text-terse (default)\n"
+		<< "  --text-verbose\n";
+	exit(0);
+}
+
+static auto_ptr<Test::Output>
+cmdline(int argc, char* argv[])
+{
+	if (argc > 2)
+		usage(); // will not return
+
+	
+
+	Test::Output* output = 0;
+
+	if (argc == 1)
+		output = new Test::TextOutput(Test::TextOutput::Verbose);
+	else
+	{
+		const char* arg = argv[1];
+		if (strcmp(arg, "--compiler") == 0)
+			output = new Test::CompilerOutput;
+		else if (strcmp(arg, "--html") == 0)
+			output = new Test::HtmlOutput;
+		else if (strcmp(arg, "--text-terse") == 0)
+			output = new Test::TextOutput(Test::TextOutput::Terse);
+		else if (strcmp(arg, "--text-verbose") == 0)
+			output = new Test::TextOutput(Test::TextOutput::Verbose);
+		else
+		{
+			cout << "invalid commandline argument: " << arg << endl;
+			usage(); // will not return
+		}
+	}
+
+	return auto_ptr<Test::Output>(output);
+} */
 
 
 // Main test program
 //
 int main(int argc, char* argv[])
 {
-	string welcomeStr = "Starting test of ConfigManager library.\n";
-	std::cout << welcomeStr;
+	std::cout << "Starting test of ConfigManager library. \n";
 	try
 	{
 		
 		Test::TextOutput simpleOutput(Test::TextOutput::Mode::Verbose);
 		ConfigurationTestSuite configSuite;
-		configSuite.run(simpleOutput);
+		//configSuite.run(simpleOutput);
 
 		SectionTestSuite sectionSuite;
 		sectionSuite.run(simpleOutput);
 
 		OptionTestSuite optionSuite;
-		optionSuite.run(simpleOutput);
+		//optionSuite.run(simpleOutput);
 
 		TypeSpecifiersTestSuite tsSuite;
 		tsSuite.run(simpleOutput);
@@ -524,29 +680,29 @@ void SectionTestSuite::BasicTests()
 
 OptionTestSuite::OptionTestSuite()
 {
-	TEST_ADD(OptionTestSuite::InputNameOptionTest)
-	//TEST_ADD(OptionTestSuite::InputNameLOptionTest) not implemented yet
-	TEST_ADD(OptionTestSuite::SpecNameOption)
-	TEST_ADD(OptionTestSuite::SavingBoolTest)
-	TEST_ADD(OptionTestSuite::SavingIntTest)
-	TEST_ADD(OptionTestSuite::SavingUintTest)
-	TEST_ADD(OptionTestSuite::SavingFloatTest)
-	TEST_ADD(OptionTestSuite::SavingStringTest)
-	TEST_ADD(OptionTestSuite::SavingEnumTest)
-	// savingListTest
-	TEST_ADD(OptionTestSuite::PreservingFormatTest)
-
+	TEST_ADD(OptionTestSuite::BasicTest)
+	TEST_ADD(OptionTestSuite::SavingTest)
 	TEST_ADD(OptionTestSuite::LinksTest)
-
 }
 
-void OptionTestSuite::SavingBoolTest()
+void OptionTestSuite::SavingTest()
 {
+	typedef OptionTestSuite::TestEnum enumType;
 	try
-	{// saving various types:
+	{
+		{// saving various types:
 			ConfigManager::Configuration config;
 			Section section = config.SpecifySection("section", ConfigManager::OPTIONAL, "comments");
 			OptionProxy<BooleanSpecifier> boolOption = section.SpecifyOption("boolOpt", BooleanSpecifier(), true, OPTIONAL, "commentsBool");
+			OptionProxy<IntegerSpecifier> intOption = section.SpecifyOption("intOpt", IntegerSpecifier(), -1, OPTIONAL, "commentsInt");
+			OptionProxy<UnsignedSpecifier> uintOption = section.SpecifyOption("uintOpt", UnsignedSpecifier(), 1, OPTIONAL, "commentsUint");
+			OptionProxy<FloatSpecifier> floatOption = section.SpecifyOption("floatOpt", FloatSpecifier(), 3.14, OPTIONAL, "commentsFloat");
+			map<std::string, enumType> valueMap;
+			valueMap.insert(std::pair <std::string, enumType>("FIRST_VALUE_STR", enumType::FIRST_VAL));
+			valueMap.insert(std::pair <std::string, enumType>("SECOND_VALUE_STR", enumType::SECOND_VAL));
+			valueMap.insert(std::pair <std::string, enumType>("THIRD_VALUE_STR", enumType::THIRD_VAL));
+			OptionProxy<EnumSpecifier<OptionTestSuite::TestEnum>> enumOption = section.SpecifyOption("enumOpt", 
+					EnumSpecifier<enumType>(valueMap), enumType::THIRD_VAL , OPTIONAL, "commentsEnum");
 			{
 				stringstream output;
 				config.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
@@ -554,9 +710,21 @@ void OptionTestSuite::SavingBoolTest()
 				output >> oLine; // throw away the section line
 				output >> oLine;
 				TEST_ASSERT_EQUALS("boolOpt=enabled;commentsBool", oLine)
+				output >> oLine;
+				TEST_ASSERT_EQUALS("intOpt=-1;commentsInt", oLine)
+				output >> oLine;
+				TEST_ASSERT_EQUALS("uintOpt=1;commentsUint", oLine)
+				output >> oLine;
+				TEST_ASSERT_EQUALS("floatOpt=3.14;commentsFloat", oLine)
+				output >> oLine;
+				TEST_ASSERT_EQUALS("enumOpt=THIRD_VALUE_STR;commentsEnum", oLine)
 			}
 			// now let us change values:
 			boolOption.Set(false);
+			intOption.Set(-2);
+			uintOption.Set(2);
+			floatOption.Set(2.72);
+			enumOption.Set(enumType::FIRST_VAL);
 		    {
 				stringstream output;
 				config.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
@@ -564,170 +732,40 @@ void OptionTestSuite::SavingBoolTest()
 				output >> oLine; // section line is not needed
 				output >> oLine;
 				TEST_ASSERT_EQUALS("boolOpt=disabled;commentsBool", oLine)
-			}	
-	}
-	catch (...)
-	{
-		TEST_FAIL("Unexpected exception")
-	}
-}
-
-void OptionTestSuite::SavingIntTest()
-{
-	try
-	{
-		{// saving various types:
-			ConfigManager::Configuration config;
-			Section section = config.SpecifySection("section", ConfigManager::OPTIONAL, "comments");
-			OptionProxy<IntegerSpecifier> intOption = section.SpecifyOption("intOpt", IntegerSpecifier(), -1, OPTIONAL, "commentsInt");
-			{
-				stringstream output;
-				config.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
-				string oLine;
-				output >> oLine; // throw away the section line
-				output >> oLine;
-				TEST_ASSERT_EQUALS("intOpt=-1;commentsInt", oLine)
-			}
-			// now we change the value
-			intOption.Set(-2);
-			{
-				stringstream output;
-				config.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
-				string oLine;
-				output >> oLine; // section line is not needed
 				output >> oLine;
 				TEST_ASSERT_EQUALS("intOpt=-2;commentsInt", oLine)
-			}
+				output >> oLine;
+				TEST_ASSERT_EQUALS("uintOpt=2;commentsUint", oLine)
+				output >> oLine;
+				TEST_ASSERT_EQUALS("floatOpt=2.72;commentsFloat", oLine)
+				output >> oLine;
+				TEST_ASSERT_EQUALS("enumOpt=FIRST_VALUE_STR;commentsEnum", oLine)
+			}	
 		}
-	}
-	catch (...)
-	{
-		TEST_FAIL("Unexpected exception")
-	}
-}
-
-void OptionTestSuite::SavingUintTest()
-{
-	try
-	{// saving various types:
-		ConfigManager::Configuration config;
-		Section section = config.SpecifySection("section", ConfigManager::OPTIONAL, "comments");
-		OptionProxy<UnsignedSpecifier> uintOption = section.SpecifyOption("uintOpt",
-			UnsignedSpecifier(), 1, OPTIONAL, "commentsUint");
-		{
+		{// test preserving of formating:
+			ConfigManager::Configuration config;
+			stringstream inputText;
+			inputText << "[section] ; arbitrarily formatted comment \n";
+			inputText << "boolOpt = enabled; comments Bool\n";
+			inputText << "intOpt=-2;comme ntsInt\n";
+			inputText << "uintOpt=2;  comm entsUint\n";
+			inputText << "floatOpt=2.72;comments Float";
+			inputText << "enumOpt=FIRST_VALUE_STR;commentsEnum";
+			config.Open(inputText);
+			Section section = config.SpecifySection("section", ConfigManager::MANDATORY, "comments");
 			stringstream output;
-			config.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
+			config.Save(output);
 			string oLine;
-			output >> oLine; // throw away the section line
 			output >> oLine;
-			TEST_ASSERT_EQUALS("uintOpt=1;commentsUint", oLine)
-		}
-		// now, lets change the value
-		uintOption.Set(2);
-		{
-			stringstream output;
-			config.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
-			string oLine;
-			output >> oLine; // section line is not needed
+			TEST_ASSERT_EQUALS("[section] ; arbitrarily formatted comment ", oLine)
+			output >> oLine;
+			TEST_ASSERT_EQUALS("boolOpt=disabled;commentsBool", oLine)
+			output >> oLine;
+			TEST_ASSERT_EQUALS("intOpt=-2;commentsInt", oLine)
 			output >> oLine;
 			TEST_ASSERT_EQUALS("uintOpt=2;commentsUint", oLine)
-		}
-	}
-	catch (...)
-	{
-		TEST_FAIL("Unexpected exception")
-	}
-}
-
-void OptionTestSuite::SavingFloatTest()
-{
-	try
-	{// saving various types:
-		ConfigManager::Configuration config;
-		Section section = config.SpecifySection("section", ConfigManager::OPTIONAL, "comments");
-		OptionProxy<FloatSpecifier> floatOption = section.SpecifyOption("floatOpt", FloatSpecifier(), 3.14, OPTIONAL, "commentsFloat");
-		{
-			stringstream output;
-			config.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
-			string oLine;
-			output >> oLine; // throw away the section line
-			output >> oLine;
-			TEST_ASSERT_EQUALS("floatOpt=3.14;commentsFloat", oLine)
-		}
-		floatOption.Set(2.72);
-		{
-			stringstream output;
-			config.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
-			string oLine;
-			output >> oLine; // section line is not needed
 			output >> oLine;
 			TEST_ASSERT_EQUALS("floatOpt=2.72;commentsFloat", oLine)
-		}
-	}
-	catch (...)
-	{
-		TEST_FAIL("Unexpected exception")
-	}
-}
-
-void OptionTestSuite::SavingStringTest()
-{
-	try
-	{// saving various types:
-		ConfigManager::Configuration config;
-		Section section = config.SpecifySection("section", ConfigManager::OPTIONAL, "comments");
-		OptionProxy<StringSpecifier> stringOption = section.SpecifyOption("stringOpt", StringSpecifier(),"defaultString", OPTIONAL, "commentsString");
-		{
-			stringstream output;
-			config.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
-			string oLine;
-			output >> oLine; // throw away the section line
-			output >> oLine;
-			TEST_ASSERT_EQUALS("stringOpt=defaultString;commentsString", oLine)
-		}
-		stringOption.Set("anotherString");
-		{
-			stringstream output;
-			config.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
-			string oLine;
-			output >> oLine; // section line is not needed
-			output >> oLine;
-			TEST_ASSERT_EQUALS("stringOpt=anotherString;commentsString", oLine)
-		}
-	}
-	catch (...)
-	{
-		TEST_FAIL("Unexpected exception")
-	}
-}
-
-void OptionTestSuite::SavingEnumTest()
-{
-	typedef OptionTestSuite::TestEnum enumType;
-	try
-	{// saving various types:
-		ConfigManager::Configuration config;
-		Section section = config.SpecifySection("section", ConfigManager::OPTIONAL, "comments");
-		map<std::string, enumType> valueMap;
-		valueMap.insert(std::pair <std::string, enumType>("FIRST_VALUE_STR", enumType::FIRST_VAL));
-		valueMap.insert(std::pair <std::string, enumType>("SECOND_VALUE_STR", enumType::SECOND_VAL));
-		valueMap.insert(std::pair <std::string, enumType>("THIRD_VALUE_STR", enumType::THIRD_VAL));
-		OptionProxy<EnumSpecifier<OptionTestSuite::TestEnum>> enumOption = section.SpecifyOption("enumOpt",
-			EnumSpecifier<enumType>(valueMap), enumType::THIRD_VAL, OPTIONAL, "commentsEnum");
-		{
-			stringstream output;
-			config.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
-			string oLine;
-			output >> oLine; // throw away section line
-			output >> oLine;
-			TEST_ASSERT_EQUALS("enumOpt=THIRD_VALUE_STR;commentsEnum", oLine)
-		}
-		enumOption.Set(enumType::FIRST_VAL);
-		{
-			stringstream output;
-			config.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
-			string oLine;
-			output >> oLine; // section line is not needed
 			output >> oLine;
 			TEST_ASSERT_EQUALS("enumOpt=FIRST_VALUE_STR;commentsEnum", oLine)
 		}
@@ -738,65 +776,12 @@ void OptionTestSuite::SavingEnumTest()
 	}
 }
 
-void OptionTestSuite::PreservingFormatTest()
+void OptionTestSuite::BasicTest()
 {
+	// test section name
 	try
-	{// test preserving of formating:
-		ConfigManager::Configuration config;
-		stringstream inputText;
-		string sectionLine = "[section] ; arbitrarily formatted comment \n";
-		inputText << sectionLine;
-		string boolLine = "boolOpt = enabled; comments Bool\n";
-		inputText << boolLine;
-		string intLine = "intOpt = -2;comme ntsInt\n";
-		inputText << intLine;
-		string uintLine = "uintOpt = 2;  comm entsUint\n";
-		inputText << uintLine;
-		string floatLine = "floatOpt = 2.72;comments Float\n";
-		inputText << floatLine;
-		string stringLine = "stringOpt = some string; comment string";
-		inputText << stringLine;
-		string enumLine = "enumOpt = FIRST_VALUE_STR;comment sEnum\n";
-		inputText << enumLine;
-		string listLine1 = "listOpt1 = list,separated,by,comas; com ment list1\n";
-		inputText << listLine1;
-		string listLine2 = "listOpt2 = list:separated:by:colon; comment list 2\n";
-		inputText << listLine2;
-		config.Open(inputText);
-		Section section = config.SpecifySection("section", ConfigManager::MANDATORY, "comments");
-		stringstream output;
-		config.Save(output);
-		string oLine;
-		// problem is that from string we get line without line ending, therefore we need to append it again:
-		output >> oLine;
-		TEST_ASSERT_EQUALS(sectionLine, oLine + "\n")
-		output >> oLine;
-		TEST_ASSERT_EQUALS(boolLine, oLine + "\n")
-		output >> oLine;
-		TEST_ASSERT_EQUALS(intLine, oLine + "\n")
-		output >> oLine;
-		TEST_ASSERT_EQUALS(uintLine, oLine + "\n")
-		output >> oLine;
-		TEST_ASSERT_EQUALS(floatLine, oLine + "\n")
-		output >> oLine;
-		TEST_ASSERT_EQUALS(stringLine, oLine + "\n");
-		output >> oLine;
-		TEST_ASSERT_EQUALS(enumLine, oLine + "\n")
-		output >> oLine;
-		TEST_ASSERT_EQUALS(listLine1, oLine + "\n")
-		output >> oLine;
-		TEST_ASSERT_EQUALS(listLine2, oLine + "\n")
-	}
-	catch (...)
 	{
-		TEST_FAIL("Unexpected exception.")
-	}
-}
-
-void OptionTestSuite::InputNameOptionTest()
-{
-	try
-	{// try if it gets name correctly from input
+		{ // try if it gets name correctly from input
 			ConfigManager::Configuration homeConfig;
 			stringstream testText;
 			testText << "[sectionName]\n";
@@ -814,28 +799,43 @@ void OptionTestSuite::InputNameOptionTest()
 					ConfigManager::OPTIONAL, "testing new option in old section");
 			TEST_ASSERT_EQUALS("optionTwo", newOption.GetName())
 			TEST_ASSERT_EQUALS("sectionName", newOption.GetSectionName())
+		}
+		{// is name correct when given through specification
+			ConfigManager::Configuration homeConfig;
+			stringstream testText;
+			homeConfig.Open(testText);
+			Section newSection = homeConfig.SpecifySection("newSectionName", ConfigManager::OPTIONAL, "new section cannot be MANDATORY...");
+			OptionProxy<StringSpecifier> newOption = newSection.SpecifyOption("optionTwo", StringSpecifier(), "defaultValueTwo",
+				ConfigManager::OPTIONAL, "testing new option in old section");
+			TEST_ASSERT_EQUALS("optionTwo", newOption.GetName())
+			TEST_ASSERT_EQUALS("sectionName", newOption.GetSectionName())
+		}
+		{ // try if it gets name correctly from input
+			// now listOption
+			ConfigManager::Configuration homeConfig;
+			stringstream testText;
+			testText << "[sectionName]\n"; //testText << "[sectionName]";
+			testText << "optionOne=value,value2\n";
+
+			// takovy vstup by mel byt korektni. 
+			homeConfig.Open(testText);
+			Section section = homeConfig.SpecifySection("sectionName", ConfigManager::MANDATORY, "comments");
+			vector<StringSpecifier::ValueType> defaultValues;
+			defaultValues.push_back("defaultValue");
+			defaultValues.push_back("valueDefault");
+			ListOptionProxy<StringSpecifier> listOption = section.SpecifyListOption("optionOne", StringSpecifier(), defaultValues,
+				ConfigManager::MANDATORY, "mandatory testing");
+			TEST_ASSERT_EQUALS("optionOne", listOption.GetName())
+			TEST_ASSERT_EQUALS("sectionName", listOption.GetSectionName())
+
+			ListOptionProxy<StringSpecifier> newOption = section.SpecifyListOption("optionTwo", StringSpecifier(), defaultValues,
+					ConfigManager::OPTIONAL, "testing new option in old section");
+			TEST_ASSERT_EQUALS("optionTwo", newOption.GetName())
+			TEST_ASSERT_EQUALS("sectionName", newOption.GetSectionName())
+		}
+
 	}
 	catch (...)
-	{
-		TEST_FAIL("Unexpected exception.")
-	}
-}
-
-void OptionTestSuite::SpecNameOption()
-{
-	try
-	{// is name correct when given through specification
-		ConfigManager::Configuration homeConfig;
-		stringstream testText;
-		homeConfig.Open(testText);
-		Section newSection = homeConfig.SpecifySection("newSectionName", ConfigManager::OPTIONAL, 
-			"new section cannot be MANDATORY...");
-		OptionProxy<StringSpecifier> newOption = newSection.SpecifyOption("optionTwo", StringSpecifier(), 
-			"defaultValueTwo", ConfigManager::OPTIONAL, "testing new option in old section");
-		TEST_ASSERT_EQUALS("optionTwo", newOption.GetName())
-			TEST_ASSERT_EQUALS("sectionName", newOption.GetSectionName())
-	}
-	catch(...)
 	{
 		TEST_FAIL("Unexpected exception.")
 	}
@@ -863,194 +863,3 @@ void OptionTestSuite::LinksTest()
 		TEST_FAIL("Unexpected exception.");
 	}
 }
-
-void OptionTestSuite::InputNameLOptionTest()
-{
-	try
-	{ // try if it gets name correctly from input
-		ConfigManager::Configuration homeConfig;
-		stringstream testText;
-		testText << "[sectionName]\n"; //testText << "[sectionName]";
-		testText << "optionOne=value,value2\n";
-
-		// takovy vstup by mel byt korektni. 
-		homeConfig.Open(testText);
-		Section section = homeConfig.SpecifySection("sectionName", ConfigManager::MANDATORY, "comments");
-		vector<StringSpecifier::ValueType> defaultValues;
-		defaultValues.push_back("defaultValue");
-		defaultValues.push_back("valueDefault");
-		ListOptionProxy<StringSpecifier> listOption = section.SpecifyListOption("optionOne", StringSpecifier(), defaultValues,
-			ConfigManager::MANDATORY, "mandatory testing");
-		TEST_ASSERT_EQUALS("optionOne", listOption.GetName())
-		TEST_ASSERT_EQUALS("sectionName", listOption.GetSectionName())
-
-		ListOptionProxy<StringSpecifier> newOption = section.SpecifyListOption("optionTwo", StringSpecifier(), defaultValues,
-				ConfigManager::OPTIONAL, "testing new option in old section");
-		TEST_ASSERT_EQUALS("optionTwo", newOption.GetName())
-		TEST_ASSERT_EQUALS("sectionName", newOption.GetSectionName())
-	}
-	catch (...)
-	{
-		TEST_FAIL("Unexpected exception.");
-	}
-}
-
-///////////////////////////////////////DEMOSTRATION OF CPPTEST CODE: not used ////////////////////////////////////////////////
-/*
-// Tests unconditional fail asserts
-//
-class FailTestSuite : public Test::Suite
-{
-public:
-FailTestSuite()
-{
-TEST_ADD(FailTestSuite::success)
-TEST_ADD(FailTestSuite::always_fail)
-
-}
-
-private:
-void success() {}
-
-void always_fail()
-{
-// This will always fail
-//
-TEST_FAIL("unconditional fail");
-}
-};
-
-// Tests compare asserts
-//
-class CompareTestSuite : public Test::Suite
-{
-public:
-CompareTestSuite()
-{
-TEST_ADD(CompareTestSuite::success)
-TEST_ADD(CompareTestSuite::compare)
-TEST_ADD(CompareTestSuite::delta_compare)
-}
-
-private:
-void success() {}
-
-void compare()
-{
-// Will succeed since the expression evaluates to true
-//
-TEST_ASSERT(1 + 1 == 2)
-
-// Will fail since the expression evaluates to false
-//
-TEST_ASSERT(0 == 1);
-}
-
-void delta_compare()
-{
-// Will succeed since the expression evaluates to true
-//
-TEST_ASSERT_DELTA(0.5, 0.7, 0.3);
-
-// Will fail since the expression evaluates to false
-//
-TEST_ASSERT_DELTA(0.5, 0.7, 0.1);
-}
-};
-
-// Tests throw asserts
-//
-class ThrowTestSuite : public Test::Suite
-{
-public:
-ThrowTestSuite()
-{
-TEST_ADD(ThrowTestSuite::success)
-TEST_ADD(ThrowTestSuite::test_throw)
-}
-
-private:
-void success() {}
-
-void test_throw()
-{
-// Will fail since the none of the functions throws anything
-//
-TEST_THROWS_MSG(func(), int, "func() does not throw, expected int exception")
-TEST_THROWS_MSG(func_no_throw(), int, "func_no_throw() does not throw, expected int exception")
-TEST_THROWS_ANYTHING_MSG(func(), "func() does not throw, expected any exception")
-TEST_THROWS_ANYTHING_MSG(func_no_throw(), "func_no_throw() does not throw, expected any exception")
-
-// Will succeed since none of the functions throws anything
-//
-TEST_THROWS_NOTHING(func())
-TEST_THROWS_NOTHING(func_no_throw())
-
-// Will succeed since func_throw_int() throws an int
-//
-TEST_THROWS(func_throw_int(), int)
-TEST_THROWS_ANYTHING(func_throw_int())
-
-// Will fail since func_throw_int() throws an int (not a float)
-//
-TEST_THROWS_MSG(func_throw_int(), float, "func_throw_int() throws an int, expected a float exception")
-TEST_THROWS_NOTHING_MSG(func_throw_int(), "func_throw_int() throws an int, expected no exception at all")
-}
-
-void func() {}
-void func_no_throw() throw() {}
-void func_throw_int() throw(int) { throw 13; }
-};
-
-enum OutputType
-{
-Compiler,
-Html,
-TextTerse,
-TextVerbose
-};
-
-static void
-usage()
-{
-cout << "usage: mytest [MODE]\n"
-<< "where MODE may be one of:\n"
-<< "  --compiler\n"
-<< "  --html\n"
-<< "  --text-terse (default)\n"
-<< "  --text-verbose\n";
-exit(0);
-}
-
-static auto_ptr<Test::Output>
-cmdline(int argc, char* argv[])
-{
-if (argc > 2)
-usage(); // will not return
-
-
-
-Test::Output* output = 0;
-
-if (argc == 1)
-output = new Test::TextOutput(Test::TextOutput::Verbose);
-else
-{
-const char* arg = argv[1];
-if (strcmp(arg, "--compiler") == 0)
-output = new Test::CompilerOutput;
-else if (strcmp(arg, "--html") == 0)
-output = new Test::HtmlOutput;
-else if (strcmp(arg, "--text-terse") == 0)
-output = new Test::TextOutput(Test::TextOutput::Terse);
-else if (strcmp(arg, "--text-verbose") == 0)
-output = new Test::TextOutput(Test::TextOutput::Verbose);
-else
-{
-cout << "invalid commandline argument: " << arg << endl;
-usage(); // will not return
-}
-}
-
-return auto_ptr<Test::Output>(output);
-} */

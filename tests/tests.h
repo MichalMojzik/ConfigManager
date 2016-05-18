@@ -42,26 +42,16 @@ private:
 	/*
 	* Test ukladani sekci..
 	*/
-	void SavingBoolTest();
-	void SavingIntTest();
-	void SavingUintTest();
-	void SavingFloatTest();
-	void SavingStringTest();
-	void SavingEnumTest();
-
-	void PreservingFormatTest();
+	void SavingTest();
 	/*
 	* Test metody getName a getSectionName.
 	*/
-	void InputNameOptionTest();
-	void SpecNameOption();
+	void BasicTest();
 
 	/*
 	* Test link functionality.
 	*/
-	void LinksTest();
-
-	void InputNameLOptionTest();
+	void LinksTest(); 
 
 	/*
 	* Enum class for testing purposes.

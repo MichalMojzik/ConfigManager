@@ -43,11 +43,11 @@ namespace ConfigManager
 			std::string option_name,
 			const TypeSpecifier& type_specifier,
 			const std::vector<typename TypeSpecifier::ValueType>& default_value,
-			Requirement optional = Requirement::OPTIONAL,
+			Requirement optional = Requirement::OPTIONAL, 
 			const std::string comments = ""
 			)
 		{
-			return ListOptionProxy<TypeSpecifier>(default_value, type_specifier);	 
+			return ListOptionProxy<TypeSpecifier>(default_value, type_specifier);
 		}
 		/**
 		* Metoda pro pristup k jmenu sekce. 
@@ -86,7 +86,6 @@ namespace ConfigManager
 		auto& option_node = (*section_node_)[option_name];
 		return OptionProxy<TypeSpecifier>(option_node, default_value, type_specifier);
 	}
-
 }
 
 #endif
