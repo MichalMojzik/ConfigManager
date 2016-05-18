@@ -1,8 +1,96 @@
 /**
-\mainpage The mainpage documentation
+\mainpage Knihovna ConfigManager
 
-This is a simple example of a mainpage you can create yourself.
-Place this inside of a file called `mainpage.dox` and use doxygen.
-If you specified `INPUT` or `FILE_PATTERNS` in your Doxyfile please
-add `.dox` to your file patterns or `mainpage.dox` to your INPUT files.
-*/
+Knihovna (C++) umožňuje přístup k hodnotám voleb v souboru (.ini). 
+
+##Nástin použítí:
+ 
+Uživatel vytvoří „Configuration“ a předá ji jméno souboru. 
+Uživatel vytvoří „Section“. Dalším krokem je specifikace voleb v sekci
+(instance „OptionProxy“,či „ListOptionProxy“). Jejich hodnoty si pak uživatel 
+uloží do vlastních proměnných/atributů. Při ukládání konfugurace jsou potom
+hodnoty v "OptionProxy“ uloženy také. 
+
+##Mini příklad:
+
+=========================================================================
+<pre><code>
+Configuration config; 
+config.open(inpuStream); // nyni se nactou data z daneho srteamu
+
+Section optionalSec = config.SpecifySection("optionalSection"); 
+// toto najde blok dat odpovidajici sekci nazvane "optionalSection"
+
+OptionProxy<StringSpecifier> saveFileName =  
+			dummySection.SpecifyOption<StringSpecifier>("Save File", StringSpecifier() );
+// nyni muze uzivatl prostrednictvim saveFileName cist a menit tuto volbu. 
+
+...
+
+saveFileName.Set("newFile.sav");
+
+...
+
+cofing.save(outputStream); // timto se vsechny volby ulozi
+</code></pre>
+
+=========================================================================
+
+##Hlavní vlastnoti:
+
+Datové typy (podle kterých se mají textová data interpretovat) jsou určeny 
+pomocí specialních tříd tzv."TypeSpecfiers" (v příkladu "StringSpecifier").
+Vlastní implementace těchto tříd umožuje uživateli definovát vlastní 
+přechodové funkce mezi textem a požadovanými daty.  
+
+Třída „Configuration“ a „OptionProxy“ spolu komunikují po celou dobu. 
+Po ukončení práce lze všechny aktuální hodnoty v specifikovaných 
+"OptionProxy“ uložit pomocí "Configuration.save". Konfliktům je zamezeno
+tím, že od každé volby je vydána maximálně jedna instance "OptionProxy".
+
+##Příklad rendereru:
+
+=========================================================================
+
+<pre><code>
+class Upbp
+{
+public:
+	Upbp(Configuration& configuration)	
+	{
+		Section sectionUpbp = configuration.SpecifySection("UPBP", Requirement::MANDATORY);
+		beamDensity_ = sectionUpbp.SpecifyOption("BeamDensity", FloatSpecifier(), 15.f);
+	}
+	...
+};
+class Vcm
+{
+public:
+	Vcm(Configuration& configuration)
+	{
+		Section sectionVcm = configuration.SpecifySection("VCM", Requirement::MANDATORY);
+		radius_ = sectionVcm.SpecifyOption("Radius", FloatSpecifier(), 15.f);
+	}
+    ... 
+};
+
+enum AlgorithmType
+{
+	UPBP,
+	VCM
+}
+
+
+
+Configuration configuration("render.ini", InputFilePolicy::IGNORE_NONEXISTANT);
+
+Section mainSection = configuration.SpecifySection("Main", Requirement::MANDATORY);
+auto algorithmType = mainSection.SpecifyOption("Algorithm", EnumSpecifier<AlgorithmType>({ { "VCM", VCM }, { "UPBP", UPBP } }), AlgorithmType::VCM);
+switch (algorithmType.Get())
+{
+	case VCM: renderer = new Vcm(configuration); break;
+	case UPBP: renderer = new Upbp(configuration); break;
+}
+</code></pre>
+ 
+ */

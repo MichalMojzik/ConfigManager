@@ -1,13 +1,9 @@
 var searchData=
 [
-  ['save',['Save',['../class_config_manager_1_1_configuration.html#aa9922ac136da02f6588d60d731208d19',1,'ConfigManager::Configuration']]],
-  ['section',['Section',['../class_config_manager_1_1_section.html',1,'ConfigManager']]],
-  ['sectionnode',['SectionNode',['../class_config_manager_1_1_section_node.html',1,'ConfigManager']]],
-  ['set',['Set',['../class_config_manager_1_1_option_proxy.html#aa2be6bc353562df57f88ab222d38a2a3',1,'ConfigManager::OptionProxy']]],
-  ['specifylistoption',['SpecifyListOption',['../class_config_manager_1_1_section.html#a3ebb197102f277aec4a012e073c8a0ca',1,'ConfigManager::Section']]],
-  ['specifyoption',['SpecifyOption',['../class_config_manager_1_1_section.html#a94e7c5fe73d725c5cfdab6773f2ec00e',1,'ConfigManager::Section']]],
-  ['specifysection',['SpecifySection',['../class_config_manager_1_1_configuration.html#ac4d3be4b09060a773cffc45f47ad50a1',1,'ConfigManager::Configuration']]],
-  ['strictexception',['StrictException',['../class_config_manager_1_1_strict_exception.html',1,'ConfigManager']]],
-  ['stringspecifier',['StringSpecifier',['../class_config_manager_1_1_string_specifier.html',1,'ConfigManager']]],
-  ['stringspecifier',['StringSpecifier',['../class_config_manager_1_1_string_specifier.html#a430e783d95729964c8a9a8755146805d',1,'ConfigManager::StringSpecifier']]]
+  ['rangeconstraint',['RangeConstraint',['../class_config_manager_1_1_range_constraint.html',1,'ConfigManager']]],
+  ['rangeconstraint_3c_20double_20_3e',['RangeConstraint&lt; double &gt;',['../class_config_manager_1_1_range_constraint.html',1,'ConfigManager']]],
+  ['rangeconstraint_3c_20int64_5ft_20_3e',['RangeConstraint&lt; int64_t &gt;',['../class_config_manager_1_1_range_constraint.html',1,'ConfigManager']]],
+  ['rangeconstraint_3c_20uint64_5ft_20_3e',['RangeConstraint&lt; uint64_t &gt;',['../class_config_manager_1_1_range_constraint.html',1,'ConfigManager']]],
+  ['regeneratevaluedata',['RegenerateValueData',['../class_config_manager_1_1_abstract_option_proxy.html#aceb7b5e86f60c3dbd5b0622a230da1b3',1,'ConfigManager::AbstractOptionProxy::RegenerateValueData()'],['../class_config_manager_1_1_option_proxy.html#a6f0f8c517701e7f55c2572e2deae6ad9',1,'ConfigManager::OptionProxy::RegenerateValueData()'],['../class_config_manager_1_1_list_option_proxy.html#ab7d04f2f12da920861c6cef6d8dca501',1,'ConfigManager::ListOptionProxy::RegenerateValueData()']]],
+  ['remove',['Remove',['../class_config_manager_1_1_list_option_proxy.html#adf4052cfbba12a60b02601b63a618ae6',1,'ConfigManager::ListOptionProxy']]]
 ];

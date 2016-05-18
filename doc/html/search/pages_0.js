@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['the_20mainpage_20documentation',['The mainpage documentation',['../index.html',1,'']]]
+  ['knihovna_20configmanager',['Knihovna ConfigManager',['../index.html',1,'']]]
 ];

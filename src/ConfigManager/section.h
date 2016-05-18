@@ -4,7 +4,8 @@
 #include <string>
 #include "exceptions.h"
 #include "option.h"
-#include "enums.h"
+#include "enums.h"	
+#include "sectionnode.h"
 
 namespace ConfigManager
 {
