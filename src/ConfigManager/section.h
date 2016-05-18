@@ -31,11 +31,8 @@ namespace ConfigManager
 			const TypeSpecifier& type_specifier,
 			const typename TypeSpecifier::ValueType& default_value,
 			Requirement optional = Requirement::OPTIONAL,
-			const std::string comments = ""
-			)
-		{
-			return OptionProxy<TypeSpecifier>(default_value, type_specifier);
-		}
+			const std::string& comment = ""
+			);
 
 		/**
 		* \copydoc Section::SpecifyOption(std::string name, const TypeSpecifier& type_specifier, const typename TypeSpecifier::ValueType& default_value, Requirement optional = Requirement::OPTIONAL, const std::string comments = "")
@@ -75,6 +72,20 @@ namespace ConfigManager
 	};
 }
 
-
+/* ================ Section */
+namespace ConfigManager
+{
+	template<typename TypeSpecifier>
+	OptionProxy<TypeSpecifier> Section::SpecifyOption(std::string option_name,
+		const TypeSpecifier& type_specifier,
+		const typename TypeSpecifier::ValueType& default_value,
+		Requirement optional,
+		const std::string& comment
+		)
+	{
+		auto& option_node = (*section_node_)[option_name];
+		return OptionProxy<TypeSpecifier>(option_node, default_value, type_specifier);
+	}
+}
 
 #endif

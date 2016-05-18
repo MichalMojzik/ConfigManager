@@ -25,7 +25,7 @@ namespace ConfigManager
 
 		const std::string& Name() const;
 	private:
-		SectionNode(Configuration& configuration);
+		SectionNode(Configuration& configuration, const std::string& name);
 		Configuration& configuration_;
 
 		std::string name_;
@@ -53,10 +53,12 @@ namespace ConfigManager
 
 		SectionNode& Section();
 		const SectionNode& Section() const;
+
+		bool IsLoaded() const;
 	private:
 		void Load(const std::string& value);
 
-		OptionNode(SectionNode& section);
+		OptionNode(SectionNode& section, const std::string& name);
 		SectionNode& section_;
 
 		std::string name_;

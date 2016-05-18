@@ -75,6 +75,11 @@ namespace ConfigManager
 		*/
 		void AssignValueData(const std::string& data);
 
+		OptionNode* const& Node()
+		{
+			return option_node_;
+		}
+
 	private:
 		OptionNode* option_node_;
 
@@ -132,10 +137,13 @@ namespace ConfigManager
 		*/
 		OptionProxy(OptionNode& option_node,
 			const ValueType& default_value,
-			TypeSpecifier type_specifier = TypeSpecifier(),
-			const std::string comments = "");
+			TypeSpecifier type_specifier = TypeSpecifier()
+			);
 
+		TypeSpecifier type_specifier_;
 		ValueType value_;
+
+		friend class Section;
 	};
 
 	/**
@@ -154,8 +162,8 @@ namespace ConfigManager
 		* \param comments Komentare.
 		*/
 		ListOptionProxy(const std::vector<ValueType>& default_value, 
-			       TypeSpecifier type_specifier = TypeSpecifier(),
-			       const std::string comments = "") { }
+			       TypeSpecifier type_specifier = TypeSpecifier()
+			       ) { }
 		/**
 		* \copydoc AbstractOptionProxy::operator=(const AbstractOptionProxy& other)
 		*
@@ -262,6 +270,8 @@ namespace ConfigManager
 		*
 		*/
 		virtual void ProcessValueData(const std::string& data) override { }
+
+		friend class Section;
 	};
 };
 
@@ -273,11 +283,18 @@ namespace ConfigManager
 	OptionProxy<TypeSpecifier>::OptionProxy(
 		OptionNode& option_node,
 		const ValueType& default_value,
-		TypeSpecifier type_specifier = TypeSpecifier(),
-		const std::string comments = ""
+		TypeSpecifier type_specifier
 		)
-		: AbstractOptionProxy(option_node), value_(default_value)
+		: AbstractOptionProxy(option_node), value_(default_value), type_specifier_(type_specifier)
 	{
+		if(option_node.IsLoaded())
+		{
+			value_ = type_specifier_.FromString(option_node.Value());
+		}
+		else
+		{
+			AssignValueData(type_specifier_.ToString(default_value));
+		}
 	}
 
 	template<typename TypeSpecifier>
@@ -289,9 +306,21 @@ namespace ConfigManager
 	template<typename TypeSpecifier>
 	void OptionProxy<TypeSpecifier>::Set(const ValueType& value)
 	{
+		AssignValueData(type_specifier_.ToString(value));
 		value_ = value;
 	}
 
+	template<typename TypeSpecifier>
+	void OptionProxy<TypeSpecifier>::RegenerateValueData()
+	{
+		AssignValueData(type_specifier_.ToString(value_));
+	}
+
+	template<typename TypeSpecifier>
+	void OptionProxy<TypeSpecifier>::ProcessValueData(const std::string& data)
+	{
+		value_ = type_specifier_.FromString(data);
+	}
 }
 
 #endif

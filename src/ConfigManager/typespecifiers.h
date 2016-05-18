@@ -164,10 +164,11 @@ namespace ConfigManager
 		*/
 		typedef TResult ValueType;
 
-		/** Zaladni konstruktor. 
+		EnumSpecifier();
+
+		/** Zaladni konstruktor.
 		* Meze vyctoveho typu jsou jiz specifikovany.
 		*/
-
 		EnumSpecifier(const std::map<std::string, ValueType>& value_mapping);
 
 		/** \copydoc BooleanSpecifier::FromString(const std::string& data)
@@ -239,6 +240,12 @@ namespace ConfigManager
 /* ================ EnumSpecifier implementation */
 namespace ConfigManager
 {
+	template<typename TResult>
+	EnumSpecifier<TResult>::EnumSpecifier()
+		: mapping_()
+	{
+	}
+
 	template<typename TResult>
 	EnumSpecifier<TResult>::EnumSpecifier(const std::map<std::string, TResult>& value_mapping)
 		: mapping_(value_mapping)

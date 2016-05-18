@@ -16,9 +16,14 @@ namespace ConfigManager
 	}
 
 
+	const std::string& SectionNode::Name() const
+	{
+		return name_;
+	}
+
 	OptionNode& SectionNode::operator[](const std::string& option_name)
 	{
-		auto result = data_.emplace(option_name, std::make_unique<OptionNode>(this));
+		auto result = data_.emplace(option_name, std::unique_ptr<OptionNode>(new OptionNode(*this, option_name)));
 		return *result.first->second;
 	}
 
@@ -27,15 +32,33 @@ namespace ConfigManager
 		return const_cast<SectionNode&>(*this)[option_name];
 	}
 
-	const std::string& SectionNode::Name() const
+	SectionNode::SectionNode(Configuration& configuration, const std::string& name)
+		: configuration_(configuration), name_(name), loaded_(false), is_specified_(false),
+		requirement_(Requirement::OPTIONAL), comment_(""), data_()
 	{
-		return name_;
+
 	}
+
 
 
 	const std::string& OptionNode::Name() const
 	{
 		return name_;
+	}
+
+	void OptionNode::SetProxy(AbstractOptionProxy* proxy)
+	{
+		proxy_ = proxy;
+	}
+
+	void OptionNode::SetRequirement(Requirement requirement)
+	{
+		requirement_ = requirement;
+	}
+
+	void OptionNode::SetComment(const std::string& comment)
+	{
+		comment_ = comment;
 	}
 
 	std::string& OptionNode::Value()
@@ -46,6 +69,16 @@ namespace ConfigManager
 	const std::string& OptionNode::Value() const
 	{
 		return value_;
+	}
+
+	SectionNode& OptionNode::Section()
+	{
+		return section_;
+	}
+
+	const SectionNode& OptionNode::Section() const
+	{
+		return section_;
 	}
 
 	void OptionNode::Load(const std::string& value)
@@ -61,6 +94,19 @@ namespace ConfigManager
 			proxy_->AssignValueData(value_);
 		}
 	}
+
+	bool OptionNode::IsLoaded() const
+	{
+		return loaded_;
+	}
+
+	OptionNode::OptionNode(SectionNode& section, const std::string& name)
+		: section_(section), name_(name), loaded_(false), changed_(false),
+		proxy_(nullptr), requirement_(Requirement::OPTIONAL), comment_(""),
+		value_("")
+	{
+	}
+
 
   Configuration::Configuration()
   {
@@ -91,7 +137,7 @@ namespace ConfigManager
 			{
 				std::string section_name = line.substr(1, line.length() - 2);
 				auto& section = RetrieveSection(section_name);
-				if(!section.loaded_)
+				if(section.loaded_)
 				{
 					throw MalformedInputException();
 				}
@@ -126,7 +172,7 @@ namespace ConfigManager
 		for(auto section_it = data_.begin(), section_end = data_.end(); section_it != section_end; ++section_it)
 		{
 			auto& section_name = section_it->first;
-			auto& section_data = *section_end->second;
+			auto& section_data = *section_it->second;
 			output_stream << "[" << section_name << "]" << std::endl;
 			for(auto option_it = section_data.data_.begin(), option_end = section_data.data_.end(); option_it != option_end; ++option_it)
 			{
@@ -156,7 +202,7 @@ namespace ConfigManager
 
 	SectionNode& Configuration::RetrieveSection(const std::string& section_name)
 	{
-		auto result = data_.emplace(section_name, std::make_unique<SectionNode>(*this));
+		auto result = data_.emplace(section_name, std::unique_ptr<SectionNode>(new SectionNode(*this, section_name)));
 		return *result.first->second;
 	}
 

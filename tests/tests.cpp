@@ -617,6 +617,7 @@ void SectionTestSuite::SavingTests()
 			ConfigManager::Configuration config;
 			stringstream input;
 			input << "[section]; untouched  comment\n";
+			config.Open(input);
 			stringstream output;
 			config.Save(output);
 			string resultingLine;
@@ -700,7 +701,7 @@ void OptionTestSuite::SavingTest()
 			valueMap.insert(std::pair <std::string, enumType>("FIRST_VALUE_STR", enumType::FIRST_VAL));
 			valueMap.insert(std::pair <std::string, enumType>("SECOND_VALUE_STR", enumType::SECOND_VAL));
 			valueMap.insert(std::pair <std::string, enumType>("THIRD_VALUE_STR", enumType::THIRD_VAL));
-			OptionProxy<EnumSpecifier< OptionTestSuite::TestEnum > > enumOption = section.SpecifyOption("enumOpt", 
+			OptionProxy<EnumSpecifier<OptionTestSuite::TestEnum>> enumOption = section.SpecifyOption("enumOpt", 
 					EnumSpecifier<enumType>(valueMap), enumType::THIRD_VAL , OPTIONAL, "commentsEnum");
 			{
 				stringstream output;
@@ -751,7 +752,7 @@ void OptionTestSuite::SavingTest()
 			inputText << "floatOpt=2.72;comments Float";
 			inputText << "enumOpt=FIRST_VALUE_STR;commentsEnum";
 			config.Open(inputText);
-			Section section = config.SpecifySection("section", ConfigManager::Mandatory, "comments");
+			Section section = config.SpecifySection("section", ConfigManager::MANDATORY, "comments");
 			stringstream output;
 			config.Save(output);
 			string oLine;
