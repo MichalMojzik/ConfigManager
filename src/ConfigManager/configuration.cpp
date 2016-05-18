@@ -273,7 +273,7 @@ namespace ConfigManager
 		return *result.first->second;
 	}
 
-	bool SectionNode::IsLoaded() const
+	bool Configuration::IsLoaded() const
 	{
 		return loaded_;
 	}
