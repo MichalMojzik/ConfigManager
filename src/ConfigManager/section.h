@@ -83,6 +83,8 @@ namespace ConfigManager
 		)
 	{
 		auto& option_node = (*section_node_)[option_name];
+		option_node.SetRequirement(optional);
+		option_node.SetComment(comment);
 		return OptionProxy<TypeSpecifier>(option_node, default_value, type_specifier);
 	}
 
@@ -96,6 +98,8 @@ namespace ConfigManager
 		)
 	{
 		auto& option_node = (*section_node_)[option_name];
+		option_node.SetRequirement(optional);
+		option_node.SetComment(comment);
 		return ListOptionProxy<TypeSpecifier>(option_node, default_value, type_specifier);
 	}
 }

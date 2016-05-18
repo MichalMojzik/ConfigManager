@@ -98,21 +98,22 @@ namespace ConfigManager
 
 	IntegerSpecifier::ValueType IntegerSpecifier::FromString(const std::string& data)
 	{
+		std::size_t processed_count;
+		auto base_skip_pair = detect_base(data);
+		auto base = base_skip_pair.first;
+		auto skip = base_skip_pair.second;
+		ValueType result;
 		try
 		{
-			std::size_t processed_count;
-			auto base_skip_pair = detect_base(data);
-			auto base = base_skip_pair.first;
-			auto skip = base_skip_pair.second;
-			auto result = std::stoll(data.substr(skip), &processed_count, base);
-			if(processed_count != data.length() - skip)
-				throw WrongFormatException();
-			return CheckConstraint(result);
+			result = std::stoll(data.substr(skip), &processed_count, base);
 		}
 		catch(...)
 		{
 			throw WrongFormatException();
 		}
+		if(processed_count != data.length() - skip)
+			throw WrongFormatException();
+		return CheckConstraint(result);
 	}
 
 	std::string IntegerSpecifier::ToString(IntegerSpecifier::ValueType value)
@@ -133,21 +134,22 @@ namespace ConfigManager
 
 	UnsignedSpecifier::ValueType UnsignedSpecifier::FromString(const std::string& data)
 	{
+		std::size_t processed_count;
+		auto base_skip_pair = detect_base(data);
+		auto base = base_skip_pair.first;
+		auto skip = base_skip_pair.second;
+		ValueType result;
 		try
 		{
-			std::size_t processed_count;
-			auto base_skip_pair = detect_base(data);
-			auto base = base_skip_pair.first;
-			auto skip = base_skip_pair.second;
-			auto result = std::stoull(data.substr(skip), &processed_count, base);
-			if(processed_count != data.length() - skip)
-				throw WrongFormatException();
-			return CheckConstraint(result);
+			result = std::stoull(data.substr(skip), &processed_count, base);
 		}
 		catch(...)
 		{
 			throw WrongFormatException();
 		}
+		if(processed_count != data.length() - skip)
+			throw WrongFormatException();
+		return CheckConstraint(result);
 	}
 
 	std::string UnsignedSpecifier::ToString(UnsignedSpecifier::ValueType value)
@@ -168,12 +170,27 @@ namespace ConfigManager
 
 	FloatSpecifier::ValueType FloatSpecifier::FromString(const std::string& data)
 	{
-		return CheckConstraint(std::stod(data));
+		ValueType result;
+		try
+		{
+			result = std::stod(data);
+		}
+		catch(...)
+		{
+			throw WrongFormatException();
+		}
+		return CheckConstraint(result);
 	}
 
 	std::string FloatSpecifier::ToString(ValueType value)
 	{
-		return std::to_string(CheckConstraint(value));
+		std::string result = std::to_string(CheckConstraint(value));
+		auto trailing_zero_start = result.find_last_not_of('0');
+		if(trailing_zero_start != std::string::npos)
+		{
+			result.erase(trailing_zero_start + 1 + (result[trailing_zero_start] == '.' ? 1 : 0));
+		}
+		return result;
 	}
 
 

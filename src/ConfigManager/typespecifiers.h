@@ -215,7 +215,7 @@ namespace ConfigManager
 {
 	template<typename TResult>
 	RangeConstraint<TResult>::RangeConstraint()
-		: range_start_(std::numeric_limits<TResult>::min()), range_end_(std::numeric_limits<TResult>::max())
+		: range_start_(std::numeric_limits<TResult>::lowest()), range_end_(std::numeric_limits<TResult>::max())
 	{
 	}
 

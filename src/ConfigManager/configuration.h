@@ -55,9 +55,11 @@ namespace ConfigManager
 		const SectionNode& Section() const;
 
 		bool IsLoaded() const;
+		bool HasValue() const;
 	private:
 		void Load(const std::string& value);
-
+		bool LoadDefaultValue();
+		
 		OptionNode(SectionNode& section, const std::string& name);
 		SectionNode& section_;
 

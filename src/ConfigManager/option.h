@@ -294,20 +294,16 @@ namespace ConfigManager
 		)
 		: AbstractOptionProxy(option_node), value_(default_value), type_specifier_(type_specifier)
 	{
+		if(option_node.IsLoaded())
+		{
+			ProcessValueData(option_node.Value());
+		}
 	}
 
 	template<typename TypeSpecifier>
 	OptionProxy<TypeSpecifier>::OptionProxy(OptionProxy&& other)
 		: AbstractOptionProxy(std::move(other)), value_(std::move(other.value_)), type_specifier_(std::move(other.type_specifier_))
 	{
-		if(option_node.IsLoaded())
-		{
-			ProcessValueData(option_node.Value());
-		}
-		else
-		{
-			RegenerateValueData();
-		}
 	}
 
 	template<typename TypeSpecifier>
@@ -366,10 +362,6 @@ namespace ConfigManager
 		if(option_node.IsLoaded())
 		{
 			ProcessValueData(option_node.Value());
-		}
-		else
-		{
-			RegenerateValueData();
 		}
 	}
 

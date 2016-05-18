@@ -441,7 +441,7 @@ void SectionTestSuite::SavingTests()
 			ConfigManager::Configuration config;
 			Section newSection = config.SpecifySection("newSection", ConfigManager::OPTIONAL, "comments");
 			stringstream output;
-			config.Save(output);
+			config.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
 			string resultingLine;
 			output >> resultingLine;
 			TEST_ASSERT_EQUALS("[newSection];comments", resultingLine)
@@ -553,7 +553,7 @@ void OptionTestSuite::SavingBoolTest()
 				string oLine;
 				output >> oLine; // throw away the section line
 				output >> oLine;
-				TEST_ASSERT_EQUALS("boolOpt=enabled;commentsBool", oLine)
+				TEST_ASSERT_EQUALS("boolOpt=on;commentsBool", oLine)
 			}
 			// now let us change values:
 			boolOption.Set(false);
@@ -563,7 +563,7 @@ void OptionTestSuite::SavingBoolTest()
 				string oLine;
 				output >> oLine; // section line is not needed
 				output >> oLine;
-				TEST_ASSERT_EQUALS("boolOpt=disabled;commentsBool", oLine)
+				TEST_ASSERT_EQUALS("boolOpt=off;commentsBool", oLine)
 			}	
 	}
 	catch (...)
@@ -754,7 +754,7 @@ void OptionTestSuite::PreservingFormatTest()
 		inputText << uintLine;
 		string floatLine = "floatOpt = 2.72;comments Float\n";
 		inputText << floatLine;
-		string stringLine = "stringOpt = some string; comment string";
+		string stringLine = "stringOpt = some string; comment string\n";
 		inputText << stringLine;
 		string enumLine = "enumOpt = FIRST_VALUE_STR;comment sEnum\n";
 		inputText << enumLine;
@@ -833,7 +833,7 @@ void OptionTestSuite::SpecNameOption()
 		OptionProxy<StringSpecifier> newOption = newSection.SpecifyOption("optionTwo", StringSpecifier(), 
 			"defaultValueTwo", ConfigManager::OPTIONAL, "testing new option in old section");
 		TEST_ASSERT_EQUALS("optionTwo", newOption.GetName())
-			TEST_ASSERT_EQUALS("sectionName", newOption.GetSectionName())
+			TEST_ASSERT_EQUALS("newSectionName", newOption.GetSectionName())
 	}
 	catch(...)
 	{
