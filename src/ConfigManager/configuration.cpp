@@ -100,6 +100,24 @@ namespace ConfigManager
 		return loaded_;
 	}
 
+	bool OptionNode::HasValue() const
+	{
+		return loaded_ || changed_;
+	}
+
+	bool OptionNode::LoadDefaultValue()
+	{
+		if(proxy_ != nullptr)
+		{
+			proxy_->RegenerateValueData();
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
 	OptionNode::OptionNode(SectionNode& section, const std::string& name)
 		: section_(section), name_(name), loaded_(false), changed_(false),
 		proxy_(nullptr), requirement_(Requirement::OPTIONAL), comment_(""),
@@ -141,6 +159,7 @@ namespace ConfigManager
 				{
 					throw MalformedInputException();
 				}
+				section.loaded_ = true;
 				section_ptr = &section;
 			}
 			else if(section_ptr == nullptr)
@@ -169,17 +188,58 @@ namespace ConfigManager
   
   void Configuration::Save(std::ostream& output_stream, OutputMethod output_method)
   {
+		bool emit_default = output_method == OutputMethod::EMIT_DEFAULT_VALUES;
+
 		for(auto section_it = data_.begin(), section_end = data_.end(); section_it != section_end; ++section_it)
 		{
-			auto& section_name = section_it->first;
-			auto& section_data = *section_it->second;
-			output_stream << "[" << section_name << "]" << std::endl;
-			for(auto option_it = section_data.data_.begin(), option_end = section_data.data_.end(); option_it != option_end; ++option_it)
+			bool section_header_emitted = false;
+			auto& section = *section_it->second;
+			if(emit_default || section.loaded_)
 			{
-				auto& option_name = option_it->first;
-				auto& option_value = option_it->second->value_;
-				auto& option_proxy = option_it->second->proxy_;
-				output_stream << option_name << "=" << option_value << std::endl;
+				output_stream << "[" << section.Name() << "]";
+				if(emit_default)
+				{
+					output_stream << ";" << section.comment_;
+				}
+				output_stream << std::endl;
+				section_header_emitted = true;
+			}
+			for(auto option_it = section.data_.begin(), option_end = section.data_.end(); option_it != option_end; ++option_it)
+			{
+				auto& option = *option_it->second;
+				if(!option.HasValue())
+				{
+					if(emit_default)
+					{
+						if(!option.LoadDefaultValue())
+						{
+							continue;
+						}
+					}
+					else
+					{
+						continue;
+					}
+				}
+
+				if(!section_header_emitted)
+				{
+					output_stream << "[" << section.Name() << "]";
+					if(emit_default)
+					{
+						output_stream << ";" << section.comment_;
+					}
+					output_stream << std::endl;
+
+					section_header_emitted = true;
+				}
+
+				output_stream << option.Name() << "=" << option.Value();
+				if(emit_default)
+				{
+					output_stream << ";" << option.comment_;
+				}
+				output_stream << std::endl;
 			}
 		}
   }

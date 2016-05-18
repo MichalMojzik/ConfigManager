@@ -499,6 +499,7 @@ void SectionTestSuite::SavingTests()
 			ConfigManager::Configuration config;
 			stringstream input;
 			input << "[section];comment\n";
+			config.Open(input);
 			Section newSection = config.SpecifySection("section", ConfigManager::MANDATORY, "default");
 			stringstream output;
 			config.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
@@ -603,7 +604,7 @@ void OptionTestSuite::SavingBoolTest()
 				string oLine;
 				output >> oLine; // throw away the section line
 				output >> oLine;
-				TEST_ASSERT_EQUALS("boolOpt=enabled;commentsBool", oLine)
+				TEST_ASSERT_EQUALS("boolOpt=on;commentsBool", oLine)
 			}
 			// now let us change values:
 			boolOption.Set(false);
@@ -613,7 +614,7 @@ void OptionTestSuite::SavingBoolTest()
 				string oLine;
 				output >> oLine; // section line is not needed
 				output >> oLine;
-				TEST_ASSERT_EQUALS("boolOpt=disabled;commentsBool", oLine)
+				TEST_ASSERT_EQUALS("boolOpt=off;commentsBool", oLine)
 			}	
 	}
 	catch (...)
@@ -850,7 +851,7 @@ void OptionTestSuite::PreservingFormatTest()
 		inputText << uintLine;
 		string floatLine = "floatOpt = 2.72;comments Float\n";
 		inputText << floatLine;
-		string stringLine = "stringOpt = some string; comment string";
+		string stringLine = "stringOpt = some string; comment string\n";
 		inputText << stringLine;
 		string enumLine = "enumOpt = FIRST_VALUE_STR;comment sEnum\n";
 		inputText << enumLine;
@@ -864,24 +865,24 @@ void OptionTestSuite::PreservingFormatTest()
 		config.Save(output);
 		string oLine;
 		// problem is that from string we get line without line ending, therefore we need to append it again:
-		output >> oLine;
-		TEST_ASSERT_EQUALS(sectionLine, oLine + "\n")
-		output >> oLine;
-		TEST_ASSERT_EQUALS(boolLine, oLine + "\n")
-		output >> oLine;
-		TEST_ASSERT_EQUALS(intLine, oLine + "\n")
-		output >> oLine;
-		TEST_ASSERT_EQUALS(uintLine, oLine + "\n")
-		output >> oLine;
-		TEST_ASSERT_EQUALS(floatLine, oLine + "\n")
-		output >> oLine;
+		std::getline(output, oLine);
+		TEST_ASSERT_EQUALS(sectionLine, oLine + "\n");
+		std::getline(output, oLine);
+		TEST_ASSERT_EQUALS(boolLine, oLine + "\n");
+		std::getline(output, oLine);
+		TEST_ASSERT_EQUALS(intLine, oLine + "\n");
+		std::getline(output, oLine);
+		TEST_ASSERT_EQUALS(uintLine, oLine + "\n");
+		std::getline(output, oLine);
+		TEST_ASSERT_EQUALS(floatLine, oLine + "\n");
+		std::getline(output, oLine);
 		TEST_ASSERT_EQUALS(stringLine, oLine + "\n");
-		output >> oLine;
-		TEST_ASSERT_EQUALS(enumLine, oLine + "\n")
-		output >> oLine;
-		TEST_ASSERT_EQUALS(listLine1, oLine + "\n")
-		output >> oLine;
-		TEST_ASSERT_EQUALS(listLine2, oLine + "\n")
+		std::getline(output, oLine);
+		TEST_ASSERT_EQUALS(enumLine, oLine + "\n");
+		std::getline(output, oLine);
+		TEST_ASSERT_EQUALS(listLine1, oLine + "\n");
+		std::getline(output, oLine);
+		TEST_ASSERT_EQUALS(listLine2, oLine + "\n");
 	}
 	catch (...)
 	{

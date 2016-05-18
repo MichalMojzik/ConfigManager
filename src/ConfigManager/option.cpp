@@ -13,6 +13,7 @@ namespace ConfigManager
 	AbstractOptionProxy::AbstractOptionProxy(OptionNode& option_node)
 		: option_node_(&option_node)
 	{
+		option_node.SetProxy(this);
 	}
 
 	AbstractOptionProxy::AbstractOptionProxy(AbstractOptionProxy && other)

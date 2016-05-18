@@ -26,6 +26,38 @@ namespace ConfigManager
 		TResult range_end_;
 	};
 
+
+	/**
+	* Trida realizujici prevod z textu do nejakoho typu a zpet. Tato trida slouzi pouze jako ukazka rozhrani, ktere musi TypeSpecifiery splnovat.
+	*/
+	template<typename TValueType>
+	class TypeSpecifier
+	{
+	public:
+		/**
+		* Tato definice typu urcuje navratovy typ.
+		*/
+		typedef TValueType ValueType;
+
+		/**
+		* Vychozi konstruktor je zapotrebi v pripadech, jelikoz musi byt nektere tridy, ktere TypeSpecifiery obsahuji, default inicializovany.
+		*/
+		TypeSpecifier();
+
+		/**
+		* Metoda prevadejici text na vyslednou hodnotu.
+		* Muze vyhodit WrongFormatException vyjimku.
+		* \param data Vstupni data.
+		*/
+		ValueType FromString(const std::string& data);
+		/**
+		* Metoda prevadejici nastavenou/zmenenou hodnotu zpet do textoveho formatu.
+		* Muze vyhodit WrongFormatException vyjimku.
+		* \param Hodnota preveditelna na string.
+		*/
+		std::string ToString(const ValueType& value);
+	};
+
 	/** 
 	* Trida realizujici prevod z textu do typu boolean a zpet. 
 	*/
@@ -33,7 +65,7 @@ namespace ConfigManager
 	{
 	public:
 		/**
-		* Tato definice typu urcuje navratovy typ.
+		*\copydoc TypeSpecifier::ValueType
 		*/
 		typedef bool ValueType;
 
@@ -43,18 +75,13 @@ namespace ConfigManager
 		BooleanSpecifier();
 
 		/**
-		* Metoda prevadejici text na vyslednou hodnotu.
-		* Muze vyhodit WrongFormatException vyjimku.
-		* \param data Vstupni data.
+		*\copydoc TypeSpecifier::FromString(const std::string& data)
 		*/
-		ValueType FromString(const std::string& data); 
-		
+		ValueType FromString(const std::string& data);
 		/**
-		* Metoda prevadejici nastavenou/zmenenou hodnotu zpet do textoveho formatu.
-		* Muze vyhodit WrongFormatException vyjimku.
-		* \param Hodnota preveditelna na string.
+		* \copydoc TypeSpecifier::ToString(const ValueType& value)
 		*/
-		std::string ToString(ValueType value); 
+		std::string ToString(ValueType value);
 	};
 
 	/**
@@ -215,7 +242,7 @@ namespace ConfigManager
 {
 	template<typename TResult>
 	RangeConstraint<TResult>::RangeConstraint()
-		: range_start_(std::numeric_limits<TResult>::min()), range_end_(std::numeric_limits<TResult>::max())
+		: range_start_(std::numeric_limits<TResult>::lowest()), range_end_(std::numeric_limits<TResult>::max())
 	{
 	}
 
