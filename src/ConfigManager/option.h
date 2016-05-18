@@ -163,7 +163,7 @@ namespace ConfigManager
 		*/
 		ListOptionProxy(const std::vector<ValueType>& default_value, 
 			       TypeSpecifier type_specifier = TypeSpecifier()
-			       ) { }
+			       ) {   }
 		/**
 		* \copydoc AbstractOptionProxy::operator=(const AbstractOptionProxy& other)
 		*
