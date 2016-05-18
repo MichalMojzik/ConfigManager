@@ -69,8 +69,31 @@ namespace ConfigManager
 	private:
 		SectionNode& RetrieveSection(const std::string& section_name);
 
+		typedef std::pair<std::string, std::string> Link;
+		typedef std::pair<std::size_t, std::size_t> SectionRange;
+		typedef std::size_t OptionIndex;
+		typedef std::map<Link, OptionNode*> LinkValues;
+		typedef std::multimap<Link, SectionRange> PostponedSections;
+		typedef std::multimap<Link, OptionIndex> PostponedOptions;
+
+		bool ResolveLink(const std::string& value, LinkValues& link_values, std::string* result, std::vector<OptionNode*>* resolved_links, Link* unresolved_link);
+		void ProcessLines();
+		void ProcessSection(SectionRange range, LinkValues& link_values, PostponedSections& postponed_sections, PostponedOptions& postponed_options);
+		void ProcessOption(OptionIndex index, LinkValues& link_values, PostponedSections& postponed_sections, PostponedOptions& postponed_options);
+
+		struct OriginalData
+		{
+			std::string line_;
+			SectionNode* section_;
+			OptionNode* option_;
+			std::string::iterator value_start_;
+			std::string::iterator value_end_;
+
+			OriginalData(const std::string& line);
+		};
+
 		bool loaded_;
-		std::vector<std::string> original_lines_;
+		std::vector<OriginalData> original_lines_;
 		std::map<std::string, std::unique_ptr<SectionNode>> data_;
 	};
 

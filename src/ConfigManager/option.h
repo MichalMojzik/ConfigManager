@@ -415,7 +415,7 @@ namespace ConfigManager
 		return parent_.list_[index_];
 	}
 
-		template<typename TypeSpecifier>
+	template<typename TypeSpecifier>
 	auto ListOptionProxy<TypeSpecifier>::Item::Get() const -> const ValueType&
 	{
 		return parent_.list_[index_];
@@ -530,7 +530,7 @@ namespace ConfigManager
 			{
 				next = data.length();
 			}
-			std::string item_data = data.substr(offset, next - offset);
+			std::string item_data = trim_nonescaped(data.substr(offset, next - offset));
 			ValueType item_value = type_specifier_.FromString(unescape(item_data));
 			list_.push_back(item_value);
 			offset = next + 1;

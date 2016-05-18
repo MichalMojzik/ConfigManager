@@ -1,15 +1,252 @@
 #include "configuration.h"
+#include "optionnode.h"
+#include "sectionnode.h"
 
 #include "utilities.h"
 #include <fstream>
+#include <stack>
 
 namespace ConfigManager
 {
+	Configuration::OriginalData::OriginalData(const std::string& line)
+		: line_(line), section_(nullptr), option_(nullptr)
+	{
+	}
+
+
 	Configuration::Configuration()
 		: loaded_(false)
   {
   }
   
+
+	bool Configuration::ResolveLink(const std::string& value, LinkValues& link_values, std::string* result, std::vector<OptionNode*>* resolved_links, Link* unresolved_link)
+	{
+		std::size_t offset = 0;
+		while(offset < value.size())
+		{
+			auto link_position = find_first_nonespaced(value, '$', offset);
+			if(link_position == std::string::npos)
+			{
+				if(result != nullptr)
+				{
+					*result += value.substr(offset);
+				}
+				break;
+			}
+
+			if(result != nullptr)
+			{
+				*result += value.substr(offset, link_position - offset);
+			}
+
+			if(link_position + 1 == value.length() || value[link_position + 1] != '{')
+			{
+				throw MalformedInputException();
+			}
+
+			auto colon_position = find_first_nonespaced_unscoped(value, ':', link_position + 2, '{', '}');
+			if(colon_position == std::string::npos)
+			{
+				throw MalformedInputException();
+			}
+			auto last_brace_position = find_first_nonespaced_unscoped(value, '}', colon_position + 1, '{', '}');
+			if(last_brace_position == std::string::npos)
+			{
+				throw MalformedInputException();
+			}
+
+			Link link;
+			// resolve section name recursively, report unresolved links
+			if(!ResolveLink(value.substr(link_position + 2, colon_position - link_position - 2), link_values, &link.first, resolved_links, unresolved_link))
+			{
+				return false;
+			}
+			// resolve option name recursively, report unresolved links
+			if(!ResolveLink(value.substr(colon_position + 1, last_brace_position - colon_position - 1), link_values, &link.second, resolved_links, unresolved_link))
+			{
+				return false;
+			}
+
+			auto link_it = link_values.find(link);
+			if(link_it == link_values.end())
+			{
+				if(unresolved_link != nullptr)
+				{
+					*unresolved_link = link;
+				}
+				return false;
+			}
+
+			if(resolved_links)
+			{
+				resolved_links->push_back(link_it->second);
+			}
+
+			// the option node that is pointed to has to have a valid values by now
+			if(result != nullptr)
+			{
+				*result += link_it->second->Value();
+			}
+
+			offset = last_brace_position + 1;
+		}
+
+		return true;
+	}
+
+	std::string StripComment(std::string line)
+	{
+		auto semilocon_position = find_first_nonespaced(line, ';');
+		if(semilocon_position != std::string::npos)
+		{
+			line.erase(semilocon_position); // strip comment away
+		}
+		line = trim_nonescaped(line); // strip whitespaces away
+		return line;
+	}
+
+	void Configuration::ProcessLines()
+	{
+		LinkValues link_values;
+		PostponedSections postponed_sections;
+		PostponedOptions postponed_options;
+
+		bool is_section = false;
+		SectionRange section_range;
+
+		for(std::size_t line_index = 0; line_index <= original_lines_.size(); ++line_index)
+		{
+			bool is_last = line_index == original_lines_.size();
+			std::string line = StripComment(original_lines_[line_index].line_);
+			if(line.empty())
+			{
+				continue;
+			}
+
+			if(line.front() == '[' && line.back() == ']')
+			{
+				if(is_section)
+				{
+					ProcessSection(section_range, link_values, postponed_sections, postponed_options);
+				}
+
+				is_section = true;
+				section_range = { line_index, line_index };
+			}
+			else if(is_section)
+			{
+				section_range.second = line_index;
+			}
+			else
+			{
+				throw MalformedInputException();
+			}
+		}
+
+		if(is_section)
+		{
+			ProcessSection(section_range, link_values, postponed_sections, postponed_options);
+		}
+
+		if(!postponed_sections.empty() || !postponed_options.empty())
+		{
+			throw MalformedInputException();
+		}
+	}
+
+	void Configuration::ProcessSection(SectionRange range, LinkValues& link_values, PostponedSections& postponed_sections, PostponedOptions& postponed_options)
+	{
+		std::string line = StripComment(original_lines_[range.first].line_);
+		if(line.front() != '[' || line.back() != ']')
+		{
+			throw InvalidOperationException();
+		}
+
+		std::vector<OptionNode*> dependancies;
+		Link unresolved_link;
+		std::string section_name;
+		if(!ResolveLink(line.substr(1, line.length() - 2), link_values, &section_name, &dependancies, &unresolved_link))
+		{
+			postponed_sections.emplace(unresolved_link, range);
+			return;
+		}
+		section_name = unescape(section_name);
+
+		auto& section = RetrieveSection(section_name);
+		if(section.loaded_)
+		{
+			throw MalformedInputException();
+		}
+		section.loaded_ = true;
+		original_lines_[range.first].section_ = &section;
+
+		for(std::size_t line_index = range.first + 1; line_index <= range.second; ++line_index)
+		{
+			original_lines_[line_index].section_ = &section;
+
+			ProcessOption(line_index, link_values, postponed_sections, postponed_options);
+		}
+	}
+
+	void Configuration::ProcessOption(OptionIndex index, LinkValues& link_values, PostponedSections& postponed_sections, PostponedOptions& postponed_options)
+	{
+		auto& original_line_data = original_lines_[index];
+
+		std::string line = StripComment(original_lines_[index].line_);
+		if(line.empty())
+		{
+			return;
+		}
+
+		auto assignment_position = find_first_nonespaced(line, '=');
+		if(assignment_position == std::string::npos)
+		{
+			throw MalformedInputException();
+		}
+
+		Link unresolved_link;
+		std::vector<OptionNode*> dependancies;
+		OptionNode* option = original_line_data.option_;
+		if(option == nullptr)
+		{
+			std::string option_name;
+			if(!ResolveLink(trim_nonescaped(line.substr(0, assignment_position)), link_values, &option_name, &dependancies, &unresolved_link))
+			{
+				postponed_options.emplace(unresolved_link, index);
+				return;
+			}
+			option_name = unescape(option_name);
+
+			option = &(*original_line_data.section_)[option_name];
+			original_line_data.option_ = option;
+		}
+
+		std::string option_value;
+		std::string raw_value = trim_nonescaped(line.substr(assignment_position + 1));
+		original_line_data.value_start_ = line.begin() + line.find_first_not_of(' ', assignment_position);
+		original_line_data.value_end_ = original_line_data.value_start_ + raw_value.length();
+		if(!ResolveLink(raw_value, link_values, &option_value, &dependancies, &unresolved_link))
+		{
+			postponed_options.emplace(unresolved_link, index);
+			return;
+		}
+
+		option->Load(option_value);
+
+		Link link = { option->Name(), option->Section().Name() };
+		link_values.emplace(link, option);
+		for(auto it_range = postponed_sections.equal_range(link); it_range.first != it_range.second; ++it_range.first)
+		{
+			ProcessSection(it_range.first->second, link_values, postponed_sections, postponed_options);
+		}
+		for(auto it_range = postponed_options.equal_range(link); it_range.first != it_range.second; ++it_range.first)
+		{
+			ProcessOption(it_range.first->second, link_values, postponed_sections, postponed_options);
+		}
+	}
+
+
   void Configuration::Open(std::istream& input_stream)
   {
 		loaded_ = true;
@@ -20,7 +257,8 @@ namespace ConfigManager
 		std::string line;
 		while(std::getline(input_stream, line))
 		{
-			original_lines_.push_back(line);
+			original_lines_.emplace_back(line);
+			auto& original_line = original_lines_.back();
 
 			auto semilocon_position = find_first_nonespaced(line, ';');
 			if(semilocon_position != std::string::npos)

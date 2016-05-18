@@ -75,6 +75,46 @@ namespace ConfigManager
 		return value;
 	}
 
+	std::size_t find_first_nonespaced_unscoped(const std::string& s, char character, std::size_t offset, char scope_start, char scope_end)
+	{
+		std::size_t scope_level = 0;
+
+		bool skip_next = false;
+		for(std::size_t char_index = offset; char_index < s.length(); ++char_index)
+		{
+			char ch = s[char_index];
+			if(skip_next)
+			{
+				skip_next = false;
+				continue;
+			}
+
+			if(ch == '\\')
+			{
+				skip_next = true;
+				continue;
+			}
+
+			if(ch == character && scope_level == 0)
+			{
+				return char_index;
+			}
+			else if(ch == scope_start)
+			{
+				++scope_level;
+			}
+			else if(ch == scope_end)
+			{
+				if(scope_level == 0)
+				{
+					break;
+				}
+				--scope_level;
+			}
+		}
+		return std::string::npos;
+	}
+
 	std::size_t find_first_nonespaced(const std::string& s, char character, std::size_t offset)
 	{
 		while(offset < s.length())
