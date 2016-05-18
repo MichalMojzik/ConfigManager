@@ -680,6 +680,99 @@ void SectionTestSuite::BasicTests()
 OptionTestSuite::OptionTestSuite()
 {
 	TEST_ADD(OptionTestSuite::BasicTest)
+	TEST_ADD(OptionTestSuite::SavingTest)
+	TEST_ADD(OptionTestSuite::LinksTest)
+}
+
+void OptionTestSuite::SavingTest()
+{
+	typedef OptionTestSuite::TestEnum enumType;
+	try
+	{
+		{// saving various types:
+			ConfigManager::Configuration config;
+			Section section = config.SpecifySection("section", ConfigManager::OPTIONAL, "comments");
+			OptionProxy<BooleanSpecifier> boolOption = section.SpecifyOption("boolOpt", BooleanSpecifier(), true, OPTIONAL, "commentsBool");
+			OptionProxy<IntegerSpecifier> intOption = section.SpecifyOption("intOpt", IntegerSpecifier(), -1, OPTIONAL, "commentsInt");
+			OptionProxy<UnsignedSpecifier> uintOption = section.SpecifyOption("uintOpt", UnsignedSpecifier(), 1, OPTIONAL, "commentsUint");
+			OptionProxy<FloatSpecifier> floatOption = section.SpecifyOption("floatOpt", FloatSpecifier(), 3.14, OPTIONAL, "commentsFloat");
+			map<std::string, enumType> valueMap;
+			valueMap.insert(std::pair <std::string, enumType>("FIRST_VALUE_STR", enumType::FIRST_VAL));
+			valueMap.insert(std::pair <std::string, enumType>("SECOND_VALUE_STR", enumType::SECOND_VAL));
+			valueMap.insert(std::pair <std::string, enumType>("THIRD_VALUE_STR", enumType::THIRD_VAL));
+			OptionProxy<EnumSpecifier< OptionTestSuite::TestEnum > > enumOption = section.SpecifyOption("enumOpt", 
+					EnumSpecifier<enumType>(valueMap), enumType::THIRD_VAL , OPTIONAL, "commentsEnum");
+			{
+				stringstream output;
+				config.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
+				string oLine;
+				output >> oLine; // throw away the section line
+				output >> oLine;
+				TEST_ASSERT_EQUALS("boolOpt=enabled;commentsBool", oLine)
+				output >> oLine;
+				TEST_ASSERT_EQUALS("intOpt=-1;commentsInt", oLine)
+				output >> oLine;
+				TEST_ASSERT_EQUALS("uintOpt=1;commentsUint", oLine)
+				output >> oLine;
+				TEST_ASSERT_EQUALS("floatOpt=3.14;commentsFloat", oLine)
+				output >> oLine;
+				TEST_ASSERT_EQUALS("enumOpt=THIRD_VALUE_STR;commentsEnum", oLine)
+			}
+			// now let us change values:
+			boolOption.Set(false);
+			intOption.Set(-2);
+			uintOption.Set(2);
+			floatOption.Set(2.72);
+			enumOption.Set(enumType::FIRST_VAL);
+		    {
+				stringstream output;
+				config.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
+				string oLine;
+				output >> oLine; // section line is not needed
+				output >> oLine;
+				TEST_ASSERT_EQUALS("boolOpt=disabled;commentsBool", oLine)
+				output >> oLine;
+				TEST_ASSERT_EQUALS("intOpt=-2;commentsInt", oLine)
+				output >> oLine;
+				TEST_ASSERT_EQUALS("uintOpt=2;commentsUint", oLine)
+				output >> oLine;
+				TEST_ASSERT_EQUALS("floatOpt=2.72;commentsFloat", oLine)
+				output >> oLine;
+				TEST_ASSERT_EQUALS("enumOpt=FIRST_VALUE_STR;commentsEnum", oLine)
+			}	
+		}
+		{// test preserving of formating:
+			ConfigManager::Configuration config;
+			stringstream inputText;
+			inputText << "[section] ; arbitrarily formatted comment \n";
+			inputText << "boolOpt = enabled; comments Bool\n";
+			inputText << "intOpt=-2;comme ntsInt\n";
+			inputText << "uintOpt=2;  comm entsUint\n";
+			inputText << "floatOpt=2.72;comments Float";
+			inputText << "enumOpt=FIRST_VALUE_STR;commentsEnum";
+			config.Open(inputText);
+			Section section = config.SpecifySection("section", ConfigManager::Mandatory, "comments");
+			stringstream output;
+			config.Save(output);
+			string oLine;
+			output >> oLine;
+			TEST_ASSERT_EQUALS("[section] ; arbitrarily formatted comment ", oLine)
+			output >> oLine;
+			TEST_ASSERT_EQUALS("boolOpt=disabled;commentsBool", oLine)
+			output >> oLine;
+			TEST_ASSERT_EQUALS("intOpt=-2;commentsInt", oLine)
+			output >> oLine;
+			TEST_ASSERT_EQUALS("uintOpt=2;commentsUint", oLine)
+			output >> oLine;
+			TEST_ASSERT_EQUALS("floatOpt=2.72;commentsFloat", oLine)
+			output >> oLine;
+			TEST_ASSERT_EQUALS("enumOpt=FIRST_VALUE_STR;commentsEnum", oLine)
+		}
+	}
+	catch (...)
+	{
+		TEST_FAIL("Unexpected exception")
+	}
 }
 
 void OptionTestSuite::BasicTest()
@@ -744,5 +837,28 @@ void OptionTestSuite::BasicTest()
 	catch (...)
 	{
 		TEST_FAIL("Unexpected exception.")
+	}
+}
+
+void OptionTestSuite::LinksTest()
+{
+	try 
+	{
+		{
+			stringstream inputText;
+			inputText << "[section1]\n";
+			inputText << "option=value\n";
+			inputText << "[section2]\n";
+			inputText << "option=${secion1#option}\n";
+			Configuration config;
+			config.Open(inputText);
+			Section section2 = config.SpecifySection("section2", ConfigManager::MANDATORY);
+			OptionProxy<StringSpecifier> opt2 = section2.SpecifyOption("option", StringSpecifier(), "defaultVal", OPTIONAL);
+			TEST_ASSERT_EQUALS("value", opt2.Get());
+		}
+	}
+	catch (...)
+	{
+		TEST_FAIL("Unexpected exception.");
 	}
 }
