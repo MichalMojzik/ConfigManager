@@ -3,6 +3,8 @@
 
 namespace ConfigManager
 {
+	std::string NOT_AVAILABLE_STRING = "n/a";
+	
 	AbstractOptionProxy::AbstractOptionProxy()
 		: option_node_(nullptr)
 	{
@@ -40,24 +42,24 @@ namespace ConfigManager
 
 	void AbstractOptionProxy::AssignValueData(const std::string & data)
 	{
-		if(option_node_ == nullptr)
-			throw InvalidOperationException();
-		option_node_->Value() = data;
+		if(option_node_ != nullptr)
+			option_node_->Value() = data;
 	}
 
 	const std::string& AbstractOptionProxy::GetName()
 	{
-		return option_node_->Name();
+		if(option_node_ != nullptr)
+			return option_node_->Name();
+		else
+			return NOT_AVAILABLE_STRING;
 	}
 
 	const std::string& AbstractOptionProxy::GetSectionName()
 	{
-		return option_node_->Section().Name();
+		if(option_node_ != nullptr)
+			return option_node_->Section().Name();
+		else
+			return NOT_AVAILABLE_STRING;
 	}
-	
-	/*Configuration& AbstractOptionProxy::getConfiguration()
-	{
-		return parentConfiguration_;
-	}*/
 }
 

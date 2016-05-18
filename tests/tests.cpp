@@ -850,7 +850,7 @@ void OptionTestSuite::LinksTest()
 			inputText << "[section1]\n";
 			inputText << "option=value\n";
 			inputText << "[section2]\n";
-			inputText << "option=${secion1#option}\n";
+			inputText << "option=${section1#option}\n";
 			Configuration config;
 			config.Open(inputText);
 			Section section2 = config.SpecifySection("section2", ConfigManager::MANDATORY);
