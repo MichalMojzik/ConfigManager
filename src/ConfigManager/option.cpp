@@ -1,48 +1,58 @@
 #include "option.h"
+#include "configuration.h"
 
 namespace ConfigManager
 {
 	AbstractOptionProxy::AbstractOptionProxy()
+		: option_node_(nullptr)
+	{
+	}
+
+	AbstractOptionProxy::AbstractOptionProxy(OptionNode& option_node)
+		: option_node_(&option_node)
 	{
 	}
 
 	AbstractOptionProxy::AbstractOptionProxy(AbstractOptionProxy && other)
+		: option_node_(other.option_node_)
 	{
+		if(option_node_ != nullptr)
+			option_node_->SetProxy(nullptr);
+		other.option_node_ = nullptr;
+		option_node_->SetProxy(this);
 	}
 
-	AbstractOptionProxy & ConfigManager::AbstractOptionProxy::operator=(AbstractOptionProxy && other)
+	AbstractOptionProxy & AbstractOptionProxy::operator=(AbstractOptionProxy && other)
 	{
-		return other;
+		if(option_node_ != nullptr)
+			option_node_->SetProxy(nullptr);
+		option_node_ = other.option_node_;
+		other.option_node_ = nullptr;
+		option_node_->SetProxy(this);
+		return *this;
 	}
 
 	AbstractOptionProxy::~AbstractOptionProxy()
 	{
+		if(option_node_ != nullptr)
+			option_node_->SetProxy(nullptr);
 	}
 
 	void AbstractOptionProxy::AssignValueData(const std::string & data)
 	{
+		if(option_node_ == nullptr)
+			throw InvalidOperationException();
+		option_node_->Value() = data;
 	}
 
-	void AbstractOptionProxy::AssignValueData(const std::string & data, int from_index, int count)
+	const std::string& AbstractOptionProxy::GetName()
 	{
+		return option_node_->Name();
 	}
 
-	void AbstractOptionProxy::AssignLink(const AbstractOptionProxy & data)
+	const std::string& AbstractOptionProxy::GetSectionName()
 	{
-	}
-
-	void AbstractOptionProxy::AssignLink(const AbstractOptionProxy & data, int from_index, int count)
-	{
-	}
-
-	std::string AbstractOptionProxy::GetName()
-	{
-		return std::string();
-	}
-
-	std::string AbstractOptionProxy::GetSectionName()
-	{
-		return std::string();
+		return option_node_->Section().Name();
 	}
 	
 	/*Configuration& AbstractOptionProxy::getConfiguration()

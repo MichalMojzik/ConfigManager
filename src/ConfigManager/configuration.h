@@ -11,6 +11,67 @@
 
 namespace ConfigManager
 {
+	/* tridy pro interni reprezentaci sekci a voleb, se kterymi komunikuji Section a Option */
+	class OptionNode;
+
+	class SectionNode
+	{
+	public:
+		SectionNode(const SectionNode& other) = delete;
+		SectionNode& operator=(const SectionNode& other) = delete;
+
+		OptionNode& operator[](const std::string& option_name);
+		const OptionNode& operator[](const std::string& option_name) const;
+
+		const std::string& Name() const;
+	private:
+		SectionNode(Configuration& configuration);
+		Configuration& configuration_;
+
+		std::string name_;
+		bool loaded_;
+		bool is_specified_;
+		Requirement requirement_;
+		std::string comment_;
+
+		std::map<std::string, std::unique_ptr<OptionNode>> data_;
+
+		friend Configuration;
+	};
+
+	class OptionNode
+	{
+	public:
+		void SetProxy(AbstractOptionProxy* proxy);
+		void SetRequirement(Requirement requirement);
+		void SetComment(const std::string& comment);
+
+		const std::string& Name() const;
+
+		std::string& Value();
+		const std::string& Value() const;
+
+		SectionNode& Section();
+		const SectionNode& Section() const;
+	private:
+		void Load(const std::string& value);
+
+		OptionNode(SectionNode& section);
+		SectionNode& section_;
+
+		std::string name_;
+		bool loaded_;
+		bool changed_;
+		AbstractOptionProxy* proxy_;
+		Requirement requirement_;
+		std::string comment_;
+
+		std::string value_;
+
+		friend SectionNode;
+		friend Configuration;
+	};
+
 	/**
 	* Trida spravujici soubory s nastavenim.
 	* Vzhledem k tomu, ze soubory maji format ".ini" a jejich format tedy neni uplne specifikovany, uchovava tato trida puvodni retezcove hodnoty.
@@ -52,14 +113,15 @@ namespace ConfigManager
 		* \param requirement Povinnost dane sekce.
 		* \param comments Komentare k dane sekci. 
 		*/
-		Section SpecifySection(std::string section_name, Requirement requirement = Requirement::OPTIONAL, const std::string comments = "");
+		Section SpecifySection(const std::string& section_name, Requirement requirement = Requirement::OPTIONAL, const std::string& comments = "");
 
-		Section operator[](std::string section_name) const;
+		Section operator[](const std::string& section_name);
 
 	private:
-		typedef std::pair<std::string, AbstractOptionProxy*> OptionData;
-		typedef std::map<std::string, OptionData> SectionData;
-		std::map<std::string, SectionData> data_;
+		SectionNode& RetrieveSection(const std::string& section_name);
+
+		std::vector<std::string> original_lines_;
+		std::map<std::string, std::unique_ptr<SectionNode>> data_;
 	};
 
 

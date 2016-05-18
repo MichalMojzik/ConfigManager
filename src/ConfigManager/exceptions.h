@@ -20,6 +20,7 @@ namespace ConfigManager
 	class InvalidOperationException : public ConfigurationException
 	{
 	public:
+		InvalidOperationException() : ConfigurationException("Invalid operation.") {}
 		InvalidOperationException(const char* message) : ConfigurationException(message) {}
 	};
 

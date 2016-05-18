@@ -8,6 +8,8 @@
 
 namespace ConfigManager
 {
+	class SectionNode;
+
 	/** 
 	* Trida realizujici sekci voleb. Predavana ven z knihovny. 
 	*/
@@ -25,7 +27,7 @@ namespace ConfigManager
 		*/
 		template<typename TypeSpecifier>
 		OptionProxy<TypeSpecifier> SpecifyOption(
-			std::string name,
+			std::string option_name,
 			const TypeSpecifier& type_specifier,
 			const typename TypeSpecifier::ValueType& default_value,
 			Requirement optional = Requirement::OPTIONAL,
@@ -41,7 +43,7 @@ namespace ConfigManager
 		*/
 		template<typename TypeSpecifier>
 		ListOptionProxy<TypeSpecifier> SpecifyListOption(
-			std::string name,
+			std::string option_name,
 			const TypeSpecifier& type_specifier,
 			const std::vector<typename TypeSpecifier::ValueType>& default_value,
 			Requirement optional = Requirement::OPTIONAL, 
@@ -53,14 +55,21 @@ namespace ConfigManager
 		/**
 		* Metoda pro pristup k jmenu sekce. 
 		*/
-		std::string GetName();
+		const std::string& GetName();
+
+		/**
+		* Primy pristup ke retezcove reprezentaci volby.
+		*/
+		std::string operator[](const std::string& option_name);
 
 	private:
 		/**
 		* Soukromy konstruktor pouzivany pri specifikaci sekce. 
 		* \param name Jmeno sekce.
 		*/
-		Section(std::string name) {}
+		Section(SectionNode& section_node);
+
+		SectionNode* section_node_;
 
 		friend class Configuration;
 	};

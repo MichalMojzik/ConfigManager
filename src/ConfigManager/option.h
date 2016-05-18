@@ -6,6 +6,8 @@
 
 namespace ConfigManager
 {
+	class OptionNode;
+		
 	/** 
 	* Spolecny predek trid OptionProxy a ListOptionProxy. Virtualni trida. Zastresuje spolecne chovani trid OptionProxy a ListOptionProxy. 
 	* Specialni konstruktory zajistuji pouze "non-copyable" chovani. 
@@ -16,11 +18,11 @@ namespace ConfigManager
 		/**
 		* Tato metoda vraci nazev optionu.
 		*/
-		std::string GetName();
+		const std::string& GetName();
 		/**
 		* Metoda zpristupnujici jmeno sekce do ktere tento option prislusi.
 		*/
-		std::string GetSectionName();
+		const std::string& GetSectionName();
 
 		// /**
 		// * Vraci objekt Configuration do ktereho option prislusi. 
@@ -32,6 +34,8 @@ namespace ConfigManager
 		*Zakladní konstruktor.
 		*/
 		AbstractOptionProxy();
+
+		AbstractOptionProxy(OptionNode& option_node);
 		/**
 		*Neni povoleno kopirovani instanci teto tridy. 
 		*/
@@ -70,33 +74,12 @@ namespace ConfigManager
 		* \param Textova data ktera maji prepsat retezcove hodnoty v Configuration.
 		*/
 		void AssignValueData(const std::string& data);
-		/**
-		* Metoda pro komunikaci s Configuration slouzici k nastaveni hodnoty z OptionProxyu do konkretniho mista v retezcove hodnote v Configuration, iniciovane v potomcich OptionProxyu.
-		* Muze vyhodit WrongFormatException vyjimku (kvuli existenci referenci).
-		* \param data nova hodnota
-		* \param from_index pocatecni index
-		* \param count delka nahrazovaneho useku
-		*/
-		void AssignValueData(const std::string& data, int from_index, int count);
-		/**
-		* Metoda pro komunikaci s Configuration slouzici k nastaveni reference na jiny OptionProxy do retezcove hodnoty v Configuration, iniciovane v potomcich OptionProxyu.
-		* Muze vyhodit WrongFormatException vyjimku (kvuli existenci referenci).
-		* \param data novy OptionProxy
-		*/
-		void AssignLink(const AbstractOptionProxy& data);
-		/**
-		* Metoda pro komunikaci s Configuration slouzici k nastaveni reference na jiny OptionProxy do konkretniho mista v retezcove hodnote v Configuration, iniciovane v potomcich OptionProxyu.
-		* Muze vyhodit WrongFormatException vyjimku (kvuli existenci referenci).
-		* \param data  novy OptionProxy
-		* \param from_index pocatecni index
-		* \param count delka nahrazovaneho useku
-		*/
-		void AssignLink(const AbstractOptionProxy& data, int from_index, int count);
 
 	private:
+		OptionNode* option_node_;
+
 		friend class Section;
-		friend class Configuration;
-		//Configuration& parentConfiguration_;
+		friend class OptionNode;
 	};
 
 	/** 
@@ -108,26 +91,16 @@ namespace ConfigManager
 		typedef typename TypeSpecifier::ValueType ValueType;
 	public:
 		OptionProxy() {}
-    
-		/**
-		* Hlavni kontruktor, specifikujici format dane volby. 
-		* \param default_value Prednastavena hodnota.
-		* \param type_specifier Trida prirazena pro preklad z retezcove reprezentace.
-		* \param comments Komentare. 
-		*/
-		OptionProxy(const ValueType& default_value,
-			TypeSpecifier type_specifier = TypeSpecifier(),
-			const std::string comments = "") {}
 		/**
 		* \copydoc AbstractOptionProxy::operator=(const AbstractOptionProxy& other)
 		*
 		*/
-		OptionProxy(OptionProxy&& other) {}
+		OptionProxy(OptionProxy&& other);
 		/**
 		* \copydoc AbstractOptionProxy::operator=(const AbstractOptionProxy& other)
 		*
 		*/
-		OptionProxy& operator=(OptionProxy&& other) {}
+		OptionProxy& operator=(OptionProxy&& other);
 		/** Metoda vracejici nastavenou hodnotu. 
 		*
 		*/
@@ -138,24 +111,30 @@ namespace ConfigManager
 		* \param value nova hodnota.
 		*/
 		void Set(const ValueType& value);
-		/** 
-		* Tato metoda realizuje volbu odkazem (ve vstupnim souboru uvedene znakem $).
-		* Muze vyhodit WrongFormatException vyjimku (kvuli existenci referenci).
-		* \param option Volba ke ktere odkaz vede.
-		*/
-		void Link(const AbstractOptionProxy& option) { }
+
 	protected:
-		/** 
+		/**
 		* \copydoc AbstractOptionProxy::RegenerateValueData()
 		* 
 		*/
-		virtual void RegenerateValueData() override {}
+		virtual void RegenerateValueData() override;
 		/** 
 		* \copydoc AbstractOptionProxy::ProcessValueData()
 		*
 		*/
-		virtual void ProcessValueData(const std::string& data) override {}
+		virtual void ProcessValueData(const std::string& data) override;
 	private:
+		/**
+		* Hlavni kontruktor, specifikujici format dane volby.
+		* \param default_value Prednastavena hodnota.
+		* \param type_specifier Trida prirazena pro preklad z retezcove reprezentace.
+		* \param comments Komentare.
+		*/
+		OptionProxy(OptionNode& option_node,
+			const ValueType& default_value,
+			TypeSpecifier type_specifier = TypeSpecifier(),
+			const std::string comments = "");
+
 		ValueType value_;
 	};
 
@@ -286,9 +265,21 @@ namespace ConfigManager
 	};
 };
 
+
 /* ================ OptionProxy */
 namespace ConfigManager
 {
+	template<typename TypeSpecifier>
+	OptionProxy<TypeSpecifier>::OptionProxy(
+		OptionNode& option_node,
+		const ValueType& default_value,
+		TypeSpecifier type_specifier = TypeSpecifier(),
+		const std::string comments = ""
+		)
+		: AbstractOptionProxy(option_node), value_(default_value)
+	{
+	}
+
 	template<typename TypeSpecifier>
 	auto OptionProxy<TypeSpecifier>::Get() const -> const ValueType&
 	{
@@ -300,6 +291,7 @@ namespace ConfigManager
 	{
 		value_ = value;
 	}
+
 }
 
 #endif
