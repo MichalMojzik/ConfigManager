@@ -110,7 +110,9 @@
   <ItemGroup>
     <ClCompile Include="configmanager\configuration.cpp" />
     <ClCompile Include="ConfigManager\option.cpp" />
+    <ClCompile Include="ConfigManager\optionnode.cpp" />
     <ClCompile Include="ConfigManager\section.cpp" />
+    <ClCompile Include="ConfigManager\sectionnode.cpp" />
     <ClCompile Include="ConfigManager\typespecifiers.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -118,8 +120,10 @@
     <ClInclude Include="configmanager\configuration.h" />
     <ClInclude Include="configmanager\enums.h" />
     <ClInclude Include="configmanager\exceptions.h" />
+    <ClInclude Include="ConfigManager\optionnode.h" />
     <ClInclude Include="configmanager\option.h" />
     <ClInclude Include="configmanager\section.h" />
+    <ClInclude Include="ConfigManager\sectionnode.h" />
     <ClInclude Include="configmanager\typespecifiers.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,0 +1,47 @@
+#
+# ConfigManager is library for program interaction with
+# configuration files ".ini".
+# There are two build options: the library itself
+#                              library with tests
+# (Unit testing is done in cppTest framework 
+#  http://cpptest.sourceforge.net/index.html  )
+#
+SOURCEDIR=./src/ConfigManager/
+INCDIR=./src
+CC=gcc
+STD=-std=c++14
+MAXERROR=-fmax-errors=1
+LSTD=-lstdc++
+OPTIONS=${STD} -I ${INCDIR} ${MAXERROR} ${LSTD} -c
+
+all: ConfigManager
+
+typespecifiers.obj:
+	${CC} ${SOURCEDIR}typespecifiers.cpp -o typespecifiers.obj ${OPTIONS}
+
+option.obj:
+	${CC}	${SOURCEDIR}option.cpp -o option.obj ${OPTIONS}
+	
+optionnode.obj:
+	${CC} ${SOURCEDIR}optionnode.cpp -o optionnode.obj ${OPTIONS}
+
+sectionnode.obj:
+	${CC} ${SOURCEDIR}sectionnode.cpp -o sectionnode.obj ${OPTIONS}
+	
+section.obj:
+	${CC} ${SOURCEDIR}section.cpp -o section.obj ${OPTIONS}
+
+
+configuration.obj:
+	${CC} ${SOURCEDIR}configuration.cpp -o configuration.obj ${OPTIONS}
+
+
+	
+
+
+ConfigManager: configuration.obj option.obj section.obj typespecifiers.obj sectionnode.obj optionnode.obj
+	ar rvs *.obj -o libconfigmanager.a
+	#${CC} ./src/configmanager.h -o ConfigManager.dll  ${STD} -I$(INCDIR)
+	
+#ConfigManagerTests.exe:
+#	gcc...

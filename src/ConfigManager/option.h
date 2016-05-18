@@ -3,10 +3,11 @@
 
 #include <string>
 #include <vector>
+#include "optionnode.h"
+#include "sectionnode.h"
 
 namespace ConfigManager
 {
-	class OptionNode;
 
 	/**
 	* Spolecny predek trid OptionProxy a ListOptionProxy. Virtualni trida. Zastresuje spolecne chovani trid OptionProxy a ListOptionProxy.
