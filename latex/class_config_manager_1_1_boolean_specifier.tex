@@ -1,0 +1,104 @@
+\hypertarget{class_config_manager_1_1_boolean_specifier}{}\section{Config\+Manager\+:\+:Boolean\+Specifier Class Reference}
+\label{class_config_manager_1_1_boolean_specifier}\index{Config\+Manager\+::\+Boolean\+Specifier@{Config\+Manager\+::\+Boolean\+Specifier}}
+
+
+{\ttfamily \#include $<$typespecifiers.\+h$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef bool \hyperlink{class_config_manager_1_1_boolean_specifier_a765f3a2d8461a647ba1a84434665b54b}{Value\+Type}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_config_manager_1_1_boolean_specifier_ab8c8434a5de2cccb032cb6c7fbf3ae1c}{Boolean\+Specifier} ()
+\item 
+\hyperlink{class_config_manager_1_1_boolean_specifier_a765f3a2d8461a647ba1a84434665b54b}{Value\+Type} \hyperlink{class_config_manager_1_1_boolean_specifier_aa2964b687c6614053a9441b8f16eadcd}{From\+String} (const std\+::string \&data)
+\item 
+std\+::string \hyperlink{class_config_manager_1_1_boolean_specifier_a79947088ce64f51e90b42fc27587e503}{To\+String} (\hyperlink{class_config_manager_1_1_boolean_specifier_a765f3a2d8461a647ba1a84434665b54b}{Value\+Type} value)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Trida realizujici prevod z textu do typu boolean a zpet. 
+
+Definition at line 65 of file typespecifiers.\+h.
+
+
+
+\subsection{Member Typedef Documentation}
+\index{Config\+Manager\+::\+Boolean\+Specifier@{Config\+Manager\+::\+Boolean\+Specifier}!Value\+Type@{Value\+Type}}
+\index{Value\+Type@{Value\+Type}!Config\+Manager\+::\+Boolean\+Specifier@{Config\+Manager\+::\+Boolean\+Specifier}}
+\subsubsection[{\texorpdfstring{Value\+Type}{ValueType}}]{\setlength{\rightskip}{0pt plus 5cm}typedef bool {\bf Config\+Manager\+::\+Boolean\+Specifier\+::\+Value\+Type}}\hypertarget{class_config_manager_1_1_boolean_specifier_a765f3a2d8461a647ba1a84434665b54b}{}\label{class_config_manager_1_1_boolean_specifier_a765f3a2d8461a647ba1a84434665b54b}
+
+
+
+
+Tato definice typu urcuje navratovy typ. 
+
+Definition at line 71 of file typespecifiers.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{Config\+Manager\+::\+Boolean\+Specifier@{Config\+Manager\+::\+Boolean\+Specifier}!Boolean\+Specifier@{Boolean\+Specifier}}
+\index{Boolean\+Specifier@{Boolean\+Specifier}!Config\+Manager\+::\+Boolean\+Specifier@{Config\+Manager\+::\+Boolean\+Specifier}}
+\subsubsection[{\texorpdfstring{Boolean\+Specifier()}{BooleanSpecifier()}}]{\setlength{\rightskip}{0pt plus 5cm}Config\+Manager\+::\+Boolean\+Specifier\+::\+Boolean\+Specifier (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_manager_1_1_boolean_specifier_ab8c8434a5de2cccb032cb6c7fbf3ae1c}{}\label{class_config_manager_1_1_boolean_specifier_ab8c8434a5de2cccb032cb6c7fbf3ae1c}
+Zakladni konstruktor. 
+
+Definition at line 42 of file typespecifiers.\+cpp.
+
+
+
+\subsection{Member Function Documentation}
+\index{Config\+Manager\+::\+Boolean\+Specifier@{Config\+Manager\+::\+Boolean\+Specifier}!From\+String@{From\+String}}
+\index{From\+String@{From\+String}!Config\+Manager\+::\+Boolean\+Specifier@{Config\+Manager\+::\+Boolean\+Specifier}}
+\subsubsection[{\texorpdfstring{From\+String(const std\+::string \&data)}{FromString(const std::string &data)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Boolean\+Specifier\+::\+Value\+Type} Config\+Manager\+::\+Boolean\+Specifier\+::\+From\+String (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{data}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_manager_1_1_boolean_specifier_aa2964b687c6614053a9441b8f16eadcd}{}\label{class_config_manager_1_1_boolean_specifier_aa2964b687c6614053a9441b8f16eadcd}
+
+
+
+
+Metoda prevadejici text na vyslednou hodnotu. Muze vyhodit \hyperlink{class_config_manager_1_1_wrong_format_exception}{Wrong\+Format\+Exception} vyjimku. 
+\begin{DoxyParams}{Parameters}
+{\em data} & Vstupni data. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 46 of file typespecifiers.\+cpp.
+
+\index{Config\+Manager\+::\+Boolean\+Specifier@{Config\+Manager\+::\+Boolean\+Specifier}!To\+String@{To\+String}}
+\index{To\+String@{To\+String}!Config\+Manager\+::\+Boolean\+Specifier@{Config\+Manager\+::\+Boolean\+Specifier}}
+\subsubsection[{\texorpdfstring{To\+String(\+Value\+Type value)}{ToString(ValueType value)}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::string Config\+Manager\+::\+Boolean\+Specifier\+::\+To\+String (
+\begin{DoxyParamCaption}
+\item[{{\bf Boolean\+Specifier\+::\+Value\+Type}}]{value}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_manager_1_1_boolean_specifier_a79947088ce64f51e90b42fc27587e503}{}\label{class_config_manager_1_1_boolean_specifier_a79947088ce64f51e90b42fc27587e503}
+
+
+
+
+Metoda prevadejici nastavenou/zmenenou hodnotu zpet do textoveho formatu. Muze vyhodit \hyperlink{class_config_manager_1_1_wrong_format_exception}{Wrong\+Format\+Exception} vyjimku. 
+\begin{DoxyParams}{Parameters}
+{\em Hodnota} & preveditelna na string. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 76 of file typespecifiers.\+cpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Config\+Manager/typespecifiers.\+h\item 
+src/\+Config\+Manager/typespecifiers.\+cpp\end{DoxyCompactItemize}

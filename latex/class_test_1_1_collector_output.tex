@@ -1,0 +1,253 @@
+\hypertarget{class_test_1_1_collector_output}{}\section{Test\+:\+:Collector\+Output Class Reference}
+\label{class_test_1_1_collector_output}\index{Test\+::\+Collector\+Output@{Test\+::\+Collector\+Output}}
+
+
+Collector output.  
+
+
+
+
+{\ttfamily \#include $<$cpptest-\/collectoroutput.\+h$>$}
+
+Inheritance diagram for Test\+:\+:Collector\+Output\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_test_1_1_collector_output}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct_test_1_1_collector_output_1_1_suite_info}{Suite\+Info}
+\item 
+struct \hyperlink{struct_test_1_1_collector_output_1_1_test_info}{Test\+Info}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \hyperlink{class_test_1_1_collector_output_a758efaaf1e348636cb3877c622d2b5d0}{finished} (int tests, const \hyperlink{class_test_1_1_time}{Time} \&time)
+\item 
+virtual void \hyperlink{class_test_1_1_collector_output_ab4ea305009efd9e56c0549a04c9d55e6}{suite\+\_\+start} (int tests, const std\+::string \&name)
+\item 
+virtual void \hyperlink{class_test_1_1_collector_output_a25d129d55214c92189265a7bccd5b2cd}{suite\+\_\+end} (int tests, const std\+::string \&name, const \hyperlink{class_test_1_1_time}{Time} \&time)
+\item 
+virtual void \hyperlink{class_test_1_1_collector_output_a512aa60f06439a22c41dc5c3bfca15ff}{test\+\_\+start} (const std\+::string \&name)
+\item 
+virtual void \hyperlink{class_test_1_1_collector_output_aa6f64879932cde17fc0098b8fc197c62}{test\+\_\+end} (const std\+::string \&name, bool ok, const \hyperlink{class_test_1_1_time}{Time} \&time)
+\item 
+virtual void \hyperlink{class_test_1_1_collector_output_a201ecd71ad6e443b0be2e987d2dc3b39}{assertment} (const \hyperlink{class_test_1_1_source}{Source} \&s)
+\end{DoxyCompactItemize}
+\subsection*{Protected Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef std\+::list$<$ \hyperlink{class_test_1_1_source}{Source} $>$ {\bfseries Sources}\hypertarget{class_test_1_1_collector_output_a1921f35e0da596bd75da5824afe872c9}{}\label{class_test_1_1_collector_output_a1921f35e0da596bd75da5824afe872c9}
+
+\item 
+typedef std\+::vector$<$ \hyperlink{struct_test_1_1_collector_output_1_1_test_info}{Test\+Info} $>$ {\bfseries Tests}\hypertarget{class_test_1_1_collector_output_a54a7b7c9b6d181102bc8934190b06e86}{}\label{class_test_1_1_collector_output_a54a7b7c9b6d181102bc8934190b06e86}
+
+\item 
+typedef std\+::list$<$ \hyperlink{struct_test_1_1_collector_output_1_1_suite_info}{Suite\+Info} $>$ {\bfseries Suites}\hypertarget{class_test_1_1_collector_output_a0879ce3b51f1e3b3fe14aa5665dccd30}{}\label{class_test_1_1_collector_output_a0879ce3b51f1e3b3fe14aa5665dccd30}
+
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_test_1_1_collector_output_a852bde8f194b4f81ca36f222257adc53}{Collector\+Output} ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+Suites {\bfseries \+\_\+suites}\hypertarget{class_test_1_1_collector_output_a9f79c0fa5abf1d6248a85e7ae4701c5f}{}\label{class_test_1_1_collector_output_a9f79c0fa5abf1d6248a85e7ae4701c5f}
+
+\item 
+int {\bfseries \+\_\+total\+\_\+errors}\hypertarget{class_test_1_1_collector_output_a7d8ec4ad0316b57aa96ae50a548c94d2}{}\label{class_test_1_1_collector_output_a7d8ec4ad0316b57aa96ae50a548c94d2}
+
+\item 
+int {\bfseries \+\_\+total\+\_\+tests}\hypertarget{class_test_1_1_collector_output_ace6c1fc02a6ac7a6c15b982b96f5f68f}{}\label{class_test_1_1_collector_output_ace6c1fc02a6ac7a6c15b982b96f5f68f}
+
+\item 
+\hyperlink{class_test_1_1_time}{Time} {\bfseries \+\_\+total\+\_\+time}\hypertarget{class_test_1_1_collector_output_af1e014fde4bf5b4e6c89de748630aa79}{}\label{class_test_1_1_collector_output_af1e014fde4bf5b4e6c89de748630aa79}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Collector output. 
+
+Base class for output handlers that need to report status when all tests have executed. 
+
+Definition at line 47 of file cpptest-\/collectoroutput.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{Test\+::\+Collector\+Output@{Test\+::\+Collector\+Output}!Collector\+Output@{Collector\+Output}}
+\index{Collector\+Output@{Collector\+Output}!Test\+::\+Collector\+Output@{Test\+::\+Collector\+Output}}
+\subsubsection[{\texorpdfstring{Collector\+Output()}{CollectorOutput()}}]{\setlength{\rightskip}{0pt plus 5cm}Test\+::\+Collector\+Output\+::\+Collector\+Output (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{class_test_1_1_collector_output_a852bde8f194b4f81ca36f222257adc53}{}\label{class_test_1_1_collector_output_a852bde8f194b4f81ca36f222257adc53}
+Constructs a collector object. 
+
+Definition at line 52 of file collectoroutput.\+cpp.
+
+
+
+\subsection{Member Function Documentation}
+\index{Test\+::\+Collector\+Output@{Test\+::\+Collector\+Output}!assertment@{assertment}}
+\index{assertment@{assertment}!Test\+::\+Collector\+Output@{Test\+::\+Collector\+Output}}
+\subsubsection[{\texorpdfstring{assertment(const Source \&s)}{assertment(const Source &s)}}]{\setlength{\rightskip}{0pt plus 5cm}void Test\+::\+Collector\+Output\+::assertment (
+\begin{DoxyParamCaption}
+\item[{const {\bf Source} \&}]{s}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_test_1_1_collector_output_a201ecd71ad6e443b0be2e987d2dc3b39}{}\label{class_test_1_1_collector_output_a201ecd71ad6e443b0be2e987d2dc3b39}
+Called when an assertment is issued.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & Assert point information. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{class_test_1_1_output_a48c31f0baa7627d81939be840c9a7f65}{Test\+::\+Output}.
+
+
+
+Definition at line 100 of file collectoroutput.\+cpp.
+
+\index{Test\+::\+Collector\+Output@{Test\+::\+Collector\+Output}!finished@{finished}}
+\index{finished@{finished}!Test\+::\+Collector\+Output@{Test\+::\+Collector\+Output}}
+\subsubsection[{\texorpdfstring{finished(int tests, const Time \&time)}{finished(int tests, const Time &time)}}]{\setlength{\rightskip}{0pt plus 5cm}void Test\+::\+Collector\+Output\+::finished (
+\begin{DoxyParamCaption}
+\item[{int}]{tests, }
+\item[{const {\bf Time} \&}]{time}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_test_1_1_collector_output_a758efaaf1e348636cb3877c622d2b5d0}{}\label{class_test_1_1_collector_output_a758efaaf1e348636cb3877c622d2b5d0}
+Called when testing is finished.
+
+
+\begin{DoxyParams}{Parameters}
+{\em tests} & Total number of tests in all suites. \\
+\hline
+{\em time} & Total elapsed time for all tests. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{class_test_1_1_output_aeff8af8326a8c54a38199f76837f860a}{Test\+::\+Output}.
+
+
+
+Definition at line 58 of file collectoroutput.\+cpp.
+
+\index{Test\+::\+Collector\+Output@{Test\+::\+Collector\+Output}!suite\+\_\+end@{suite\+\_\+end}}
+\index{suite\+\_\+end@{suite\+\_\+end}!Test\+::\+Collector\+Output@{Test\+::\+Collector\+Output}}
+\subsubsection[{\texorpdfstring{suite\+\_\+end(int tests, const std\+::string \&name, const Time \&time)}{suite_end(int tests, const std::string &name, const Time &time)}}]{\setlength{\rightskip}{0pt plus 5cm}void Test\+::\+Collector\+Output\+::suite\+\_\+end (
+\begin{DoxyParamCaption}
+\item[{int}]{tests, }
+\item[{const std\+::string \&}]{name, }
+\item[{const {\bf Time} \&}]{time}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_test_1_1_collector_output_a25d129d55214c92189265a7bccd5b2cd}{}\label{class_test_1_1_collector_output_a25d129d55214c92189265a7bccd5b2cd}
+Called when a suite is finished.
+
+
+\begin{DoxyParams}{Parameters}
+{\em tests} & Number of tests in this suite. \\
+\hline
+{\em name} & Name of the suite. \\
+\hline
+{\em time} & Total elapsed time for all tests in this suite. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{class_test_1_1_output_a6dbf4c0adb2bd4a7364c629179f788a6}{Test\+::\+Output}.
+
+
+
+Definition at line 75 of file collectoroutput.\+cpp.
+
+\index{Test\+::\+Collector\+Output@{Test\+::\+Collector\+Output}!suite\+\_\+start@{suite\+\_\+start}}
+\index{suite\+\_\+start@{suite\+\_\+start}!Test\+::\+Collector\+Output@{Test\+::\+Collector\+Output}}
+\subsubsection[{\texorpdfstring{suite\+\_\+start(int tests, const std\+::string \&name)}{suite_start(int tests, const std::string &name)}}]{\setlength{\rightskip}{0pt plus 5cm}void Test\+::\+Collector\+Output\+::suite\+\_\+start (
+\begin{DoxyParamCaption}
+\item[{int}]{tests, }
+\item[{const std\+::string \&}]{name}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_test_1_1_collector_output_ab4ea305009efd9e56c0549a04c9d55e6}{}\label{class_test_1_1_collector_output_ab4ea305009efd9e56c0549a04c9d55e6}
+Called when a suite is entered.
+
+
+\begin{DoxyParams}{Parameters}
+{\em tests} & Number of tests in this suite. \\
+\hline
+{\em name} & Name of the suite. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{class_test_1_1_output_a7022c32c5a1577b10b93d3942746f17d}{Test\+::\+Output}.
+
+
+
+Definition at line 65 of file collectoroutput.\+cpp.
+
+\index{Test\+::\+Collector\+Output@{Test\+::\+Collector\+Output}!test\+\_\+end@{test\+\_\+end}}
+\index{test\+\_\+end@{test\+\_\+end}!Test\+::\+Collector\+Output@{Test\+::\+Collector\+Output}}
+\subsubsection[{\texorpdfstring{test\+\_\+end(const std\+::string \&name, bool ok, const Time \&time)}{test_end(const std::string &name, bool ok, const Time &time)}}]{\setlength{\rightskip}{0pt plus 5cm}void Test\+::\+Collector\+Output\+::test\+\_\+end (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{name, }
+\item[{bool}]{ok, }
+\item[{const {\bf Time} \&}]{time}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_test_1_1_collector_output_aa6f64879932cde17fc0098b8fc197c62}{}\label{class_test_1_1_collector_output_aa6f64879932cde17fc0098b8fc197c62}
+Called when a test if finished, regardless if an assertment was issued.
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & Name of the test function. \\
+\hline
+{\em ok} & True if the test was successful; false otherwise. \\
+\hline
+{\em time} & Execution time. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{class_test_1_1_output_a3796943e3b56373492c957212a21454e}{Test\+::\+Output}.
+
+
+
+Definition at line 92 of file collectoroutput.\+cpp.
+
+\index{Test\+::\+Collector\+Output@{Test\+::\+Collector\+Output}!test\+\_\+start@{test\+\_\+start}}
+\index{test\+\_\+start@{test\+\_\+start}!Test\+::\+Collector\+Output@{Test\+::\+Collector\+Output}}
+\subsubsection[{\texorpdfstring{test\+\_\+start(const std\+::string \&name)}{test_start(const std::string &name)}}]{\setlength{\rightskip}{0pt plus 5cm}void Test\+::\+Collector\+Output\+::test\+\_\+start (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{name}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_test_1_1_collector_output_a512aa60f06439a22c41dc5c3bfca15ff}{}\label{class_test_1_1_collector_output_a512aa60f06439a22c41dc5c3bfca15ff}
+Called when a tests is executed.
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & Name of the test function. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{class_test_1_1_output_a52d43b97609febc5abbc6da9aa0abac2}{Test\+::\+Output}.
+
+
+
+Definition at line 85 of file collectoroutput.\+cpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+lib/cpptest-\/1.\+1.\+2/src/\hyperlink{cpptest-collectoroutput_8h}{cpptest-\/collectoroutput.\+h}\item 
+lib/cpptest-\/1.\+1.\+2/src/collectoroutput.\+cpp\end{DoxyCompactItemize}

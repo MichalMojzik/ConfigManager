@@ -1,0 +1,82 @@
+\hypertarget{class_config_manager_1_1_type_specifier}{}\section{Config\+Manager\+:\+:Type\+Specifier$<$ T\+Value\+Type $>$ Class Template Reference}
+\label{class_config_manager_1_1_type_specifier}\index{Config\+Manager\+::\+Type\+Specifier$<$ T\+Value\+Type $>$@{Config\+Manager\+::\+Type\+Specifier$<$ T\+Value\+Type $>$}}
+
+
+{\ttfamily \#include $<$typespecifiers.\+h$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef T\+Value\+Type \hyperlink{class_config_manager_1_1_type_specifier_a30331e624a3c4a1c18eb5b838e93acea}{Value\+Type}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_config_manager_1_1_type_specifier_a11763b8857f9d1d00e72f4376749ac62}{Type\+Specifier} ()
+\item 
+\hyperlink{class_config_manager_1_1_type_specifier_a30331e624a3c4a1c18eb5b838e93acea}{Value\+Type} \hyperlink{class_config_manager_1_1_type_specifier_a4298803c2b4c3ca21f0861572ae917a3}{From\+String} (const std\+::string \&data)
+\item 
+std\+::string \hyperlink{class_config_manager_1_1_type_specifier_ae674750fb5e002cbd524adf80bfb7bc7}{To\+String} (const \hyperlink{class_config_manager_1_1_type_specifier_a30331e624a3c4a1c18eb5b838e93acea}{Value\+Type} \&value)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename T\+Value\+Type$>$\\*
+class Config\+Manager\+::\+Type\+Specifier$<$ T\+Value\+Type $>$}
+
+Trida realizujici prevod z textu do nejakoho typu a zpet. Tato trida slouzi pouze jako ukazka rozhrani, ktere musi Type\+Specifiery splnovat. 
+
+Definition at line 35 of file typespecifiers.\+h.
+
+
+
+\subsection{Member Typedef Documentation}
+\index{Config\+Manager\+::\+Type\+Specifier@{Config\+Manager\+::\+Type\+Specifier}!Value\+Type@{Value\+Type}}
+\index{Value\+Type@{Value\+Type}!Config\+Manager\+::\+Type\+Specifier@{Config\+Manager\+::\+Type\+Specifier}}
+\subsubsection[{\texorpdfstring{Value\+Type}{ValueType}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T\+Value\+Type $>$ typedef T\+Value\+Type {\bf Config\+Manager\+::\+Type\+Specifier}$<$ T\+Value\+Type $>$\+::{\bf Value\+Type}}\hypertarget{class_config_manager_1_1_type_specifier_a30331e624a3c4a1c18eb5b838e93acea}{}\label{class_config_manager_1_1_type_specifier_a30331e624a3c4a1c18eb5b838e93acea}
+Tato definice typu urcuje navratovy typ. 
+
+Definition at line 41 of file typespecifiers.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{Config\+Manager\+::\+Type\+Specifier@{Config\+Manager\+::\+Type\+Specifier}!Type\+Specifier@{Type\+Specifier}}
+\index{Type\+Specifier@{Type\+Specifier}!Config\+Manager\+::\+Type\+Specifier@{Config\+Manager\+::\+Type\+Specifier}}
+\subsubsection[{\texorpdfstring{Type\+Specifier()}{TypeSpecifier()}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T\+Value\+Type $>$ {\bf Config\+Manager\+::\+Type\+Specifier}$<$ T\+Value\+Type $>$\+::{\bf Type\+Specifier} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_manager_1_1_type_specifier_a11763b8857f9d1d00e72f4376749ac62}{}\label{class_config_manager_1_1_type_specifier_a11763b8857f9d1d00e72f4376749ac62}
+Vychozi konstruktor je zapotrebi v pripadech, jelikoz musi byt nektere tridy, ktere Type\+Specifiery obsahuji, default inicializovany. 
+
+\subsection{Member Function Documentation}
+\index{Config\+Manager\+::\+Type\+Specifier@{Config\+Manager\+::\+Type\+Specifier}!From\+String@{From\+String}}
+\index{From\+String@{From\+String}!Config\+Manager\+::\+Type\+Specifier@{Config\+Manager\+::\+Type\+Specifier}}
+\subsubsection[{\texorpdfstring{From\+String(const std\+::string \&data)}{FromString(const std::string &data)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T\+Value\+Type $>$ {\bf Value\+Type} {\bf Config\+Manager\+::\+Type\+Specifier}$<$ T\+Value\+Type $>$\+::From\+String (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{data}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_manager_1_1_type_specifier_a4298803c2b4c3ca21f0861572ae917a3}{}\label{class_config_manager_1_1_type_specifier_a4298803c2b4c3ca21f0861572ae917a3}
+Metoda prevadejici text na vyslednou hodnotu. Muze vyhodit \hyperlink{class_config_manager_1_1_wrong_format_exception}{Wrong\+Format\+Exception} vyjimku. 
+\begin{DoxyParams}{Parameters}
+{\em data} & Vstupni data. \\
+\hline
+\end{DoxyParams}
+\index{Config\+Manager\+::\+Type\+Specifier@{Config\+Manager\+::\+Type\+Specifier}!To\+String@{To\+String}}
+\index{To\+String@{To\+String}!Config\+Manager\+::\+Type\+Specifier@{Config\+Manager\+::\+Type\+Specifier}}
+\subsubsection[{\texorpdfstring{To\+String(const Value\+Type \&value)}{ToString(const ValueType &value)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename T\+Value\+Type $>$ std\+::string {\bf Config\+Manager\+::\+Type\+Specifier}$<$ T\+Value\+Type $>$\+::To\+String (
+\begin{DoxyParamCaption}
+\item[{const {\bf Value\+Type} \&}]{value}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_manager_1_1_type_specifier_ae674750fb5e002cbd524adf80bfb7bc7}{}\label{class_config_manager_1_1_type_specifier_ae674750fb5e002cbd524adf80bfb7bc7}
+Metoda prevadejici nastavenou/zmenenou hodnotu zpet do textoveho formatu. Muze vyhodit \hyperlink{class_config_manager_1_1_wrong_format_exception}{Wrong\+Format\+Exception} vyjimku. 
+\begin{DoxyParams}{Parameters}
+{\em Hodnota} & preveditelna na string. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Config\+Manager/typespecifiers.\+h\end{DoxyCompactItemize}

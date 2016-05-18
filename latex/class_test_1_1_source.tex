@@ -1,0 +1,160 @@
+\hypertarget{class_test_1_1_source}{}\section{Test\+:\+:Source Class Reference}
+\label{class_test_1_1_source}\index{Test\+::\+Source@{Test\+::\+Source}}
+
+
+Assertment source information.  
+
+
+
+
+{\ttfamily \#include $<$cpptest-\/source.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_test_1_1_source_abe0f303fe92270aa12a4a749ae0395ef}{Source} ()
+\item 
+\hyperlink{class_test_1_1_source_ac764beb685a574b81527d0f90ae9e428}{Source} (const char $\ast$\hyperlink{class_test_1_1_source_abb9d618ed57da70f177289b4bb035f02}{file}, unsigned int \hyperlink{class_test_1_1_source_aa61df0b07337fb411d67222669a8bc16}{line}, const char $\ast$msg)
+\item 
+const std\+::string \& \hyperlink{class_test_1_1_source_abb9d618ed57da70f177289b4bb035f02}{file} () const 
+\item 
+unsigned int \hyperlink{class_test_1_1_source_aa61df0b07337fb411d67222669a8bc16}{line} () const 
+\item 
+const std\+::string \& \hyperlink{class_test_1_1_source_adc700711d70f29ead5f5608dd6327ef2}{message} () const 
+\item 
+const std\+::string \& \hyperlink{class_test_1_1_source_a16e0a118d2d7af145a6169ff2b342290}{suite} () const 
+\item 
+const std\+::string \& \hyperlink{class_test_1_1_source_ab92c88c2842efb33daf97fe601a3653b}{test} () const 
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+class {\bfseries Suite}\hypertarget{class_test_1_1_source_a7de7b0dd89982bdae285f3a3b6197f9c}{}\label{class_test_1_1_source_a7de7b0dd89982bdae285f3a3b6197f9c}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Assertment source information. 
+
+Contains information about an assertment point. 
+
+Definition at line 42 of file cpptest-\/source.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{Test\+::\+Source@{Test\+::\+Source}!Source@{Source}}
+\index{Source@{Source}!Test\+::\+Source@{Test\+::\+Source}}
+\subsubsection[{\texorpdfstring{Source()}{Source()}}]{\setlength{\rightskip}{0pt plus 5cm}Test\+::\+Source\+::\+Source (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_test_1_1_source_abe0f303fe92270aa12a4a749ae0395ef}{}\label{class_test_1_1_source_abe0f303fe92270aa12a4a749ae0395ef}
+Constructs an invalid source object, which filename and message are empty strings and the line equals zero. 
+
+Definition at line 36 of file source.\+cpp.
+
+\index{Test\+::\+Source@{Test\+::\+Source}!Source@{Source}}
+\index{Source@{Source}!Test\+::\+Source@{Test\+::\+Source}}
+\subsubsection[{\texorpdfstring{Source(const char $\ast$file, unsigned int line, const char $\ast$msg)}{Source(const char *file, unsigned int line, const char *msg)}}]{\setlength{\rightskip}{0pt plus 5cm}Test\+::\+Source\+::\+Source (
+\begin{DoxyParamCaption}
+\item[{const char $\ast$}]{file, }
+\item[{unsigned int}]{line, }
+\item[{const char $\ast$}]{msg}
+\end{DoxyParamCaption}
+)}\hypertarget{class_test_1_1_source_ac764beb685a574b81527d0f90ae9e428}{}\label{class_test_1_1_source_ac764beb685a574b81527d0f90ae9e428}
+Constructs a source object.
+
+
+\begin{DoxyParams}{Parameters}
+{\em file} & Name of the file containing the failing function. \\
+\hline
+{\em line} & Line where the function starts. \\
+\hline
+{\em msg} & Expression (or message) that caused the failure. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 46 of file source.\+cpp.
+
+
+
+\subsection{Member Function Documentation}
+\index{Test\+::\+Source@{Test\+::\+Source}!file@{file}}
+\index{file@{file}!Test\+::\+Source@{Test\+::\+Source}}
+\subsubsection[{\texorpdfstring{file() const }{file() const }}]{\setlength{\rightskip}{0pt plus 5cm}const string \& Test\+::\+Source\+::file (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\hypertarget{class_test_1_1_source_abb9d618ed57da70f177289b4bb035f02}{}\label{class_test_1_1_source_abb9d618ed57da70f177289b4bb035f02}
+\begin{DoxyReturn}{Returns}
+Name of the file containing the failing function. 
+\end{DoxyReturn}
+
+
+Definition at line 55 of file source.\+cpp.
+
+\index{Test\+::\+Source@{Test\+::\+Source}!line@{line}}
+\index{line@{line}!Test\+::\+Source@{Test\+::\+Source}}
+\subsubsection[{\texorpdfstring{line() const }{line() const }}]{\setlength{\rightskip}{0pt plus 5cm}unsigned int Test\+::\+Source\+::line (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\hypertarget{class_test_1_1_source_aa61df0b07337fb411d67222669a8bc16}{}\label{class_test_1_1_source_aa61df0b07337fb411d67222669a8bc16}
+\begin{DoxyReturn}{Returns}
+Line where the function starts. 
+\end{DoxyReturn}
+
+
+Definition at line 63 of file source.\+cpp.
+
+\index{Test\+::\+Source@{Test\+::\+Source}!message@{message}}
+\index{message@{message}!Test\+::\+Source@{Test\+::\+Source}}
+\subsubsection[{\texorpdfstring{message() const }{message() const }}]{\setlength{\rightskip}{0pt plus 5cm}const string \& Test\+::\+Source\+::message (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\hypertarget{class_test_1_1_source_adc700711d70f29ead5f5608dd6327ef2}{}\label{class_test_1_1_source_adc700711d70f29ead5f5608dd6327ef2}
+\begin{DoxyReturn}{Returns}
+Descriptive message. 
+\end{DoxyReturn}
+
+
+Definition at line 71 of file source.\+cpp.
+
+\index{Test\+::\+Source@{Test\+::\+Source}!suite@{suite}}
+\index{suite@{suite}!Test\+::\+Source@{Test\+::\+Source}}
+\subsubsection[{\texorpdfstring{suite() const }{suite() const }}]{\setlength{\rightskip}{0pt plus 5cm}const string \& Test\+::\+Source\+::suite (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\hypertarget{class_test_1_1_source_a16e0a118d2d7af145a6169ff2b342290}{}\label{class_test_1_1_source_a16e0a118d2d7af145a6169ff2b342290}
+\begin{DoxyReturn}{Returns}
+Name of the suite, which the test belongs to. 
+\end{DoxyReturn}
+
+
+Definition at line 79 of file source.\+cpp.
+
+\index{Test\+::\+Source@{Test\+::\+Source}!test@{test}}
+\index{test@{test}!Test\+::\+Source@{Test\+::\+Source}}
+\subsubsection[{\texorpdfstring{test() const }{test() const }}]{\setlength{\rightskip}{0pt plus 5cm}const string \& Test\+::\+Source\+::test (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\hypertarget{class_test_1_1_source_ab92c88c2842efb33daf97fe601a3653b}{}\label{class_test_1_1_source_ab92c88c2842efb33daf97fe601a3653b}
+\begin{DoxyReturn}{Returns}
+Name of failing test. 
+\end{DoxyReturn}
+
+
+Definition at line 87 of file source.\+cpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+lib/cpptest-\/1.\+1.\+2/src/\hyperlink{cpptest-source_8h}{cpptest-\/source.\+h}\item 
+lib/cpptest-\/1.\+1.\+2/src/source.\+cpp\end{DoxyCompactItemize}

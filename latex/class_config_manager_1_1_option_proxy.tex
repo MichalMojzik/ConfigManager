@@ -1,0 +1,157 @@
+\hypertarget{class_config_manager_1_1_option_proxy}{}\section{Config\+Manager\+:\+:Option\+Proxy$<$ Type\+Specifier $>$ Class Template Reference}
+\label{class_config_manager_1_1_option_proxy}\index{Config\+Manager\+::\+Option\+Proxy$<$ Type\+Specifier $>$@{Config\+Manager\+::\+Option\+Proxy$<$ Type\+Specifier $>$}}
+
+
+{\ttfamily \#include $<$option.\+h$>$}
+
+Inheritance diagram for Config\+Manager\+:\+:Option\+Proxy$<$ Type\+Specifier $>$\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_config_manager_1_1_option_proxy}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_config_manager_1_1_option_proxy_ac72f87c50e3a887efb370d3d1249de8c}{Option\+Proxy} (\hyperlink{class_config_manager_1_1_option_proxy}{Option\+Proxy} \&\&other)
+\item 
+\hyperlink{class_config_manager_1_1_option_proxy}{Option\+Proxy} \& \hyperlink{class_config_manager_1_1_option_proxy_af571eb1d01be954f718adf22a6affcd1}{operator=} (\hyperlink{class_config_manager_1_1_option_proxy}{Option\+Proxy} \&\&other)
+\item 
+const Value\+Type \& \hyperlink{class_config_manager_1_1_option_proxy_a6c305bd6065c63e8b263660bf46ec727}{Get} () const 
+\item 
+void \hyperlink{class_config_manager_1_1_option_proxy_aa2be6bc353562df57f88ab222d38a2a3}{Set} (const Value\+Type \&value)
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \hyperlink{class_config_manager_1_1_option_proxy_a6f0f8c517701e7f55c2572e2deae6ad9}{Regenerate\+Value\+Data} () override
+\item 
+virtual void \hyperlink{class_config_manager_1_1_option_proxy_a41e884af79ba112250af76538cc38dc1}{Process\+Value\+Data} (const std\+::string \&data) override
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+class {\bfseries Section}\hypertarget{class_config_manager_1_1_option_proxy_a0bd6fc422149e1c8416770631b28d40c}{}\label{class_config_manager_1_1_option_proxy_a0bd6fc422149e1c8416770631b28d40c}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\subsubsection*{template$<$typename Type\+Specifier$>$\\*
+class Config\+Manager\+::\+Option\+Proxy$<$ Type\+Specifier $>$}
+
+Tato trida je realizuje volbu majici jednu hodnotu. 
+
+Definition at line 95 of file option.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{Config\+Manager\+::\+Option\+Proxy@{Config\+Manager\+::\+Option\+Proxy}!Option\+Proxy@{Option\+Proxy}}
+\index{Option\+Proxy@{Option\+Proxy}!Config\+Manager\+::\+Option\+Proxy@{Config\+Manager\+::\+Option\+Proxy}}
+\subsubsection[{\texorpdfstring{Option\+Proxy(\+Option\+Proxy \&\&other)}{OptionProxy(OptionProxy &&other)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Type\+Specifier $>$ {\bf Config\+Manager\+::\+Option\+Proxy}$<$ {\bf Type\+Specifier} $>$\+::{\bf Option\+Proxy} (
+\begin{DoxyParamCaption}
+\item[{{\bf Option\+Proxy}$<$ {\bf Type\+Specifier} $>$ \&\&}]{other}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_manager_1_1_option_proxy_ac72f87c50e3a887efb370d3d1249de8c}{}\label{class_config_manager_1_1_option_proxy_ac72f87c50e3a887efb370d3d1249de8c}
+
+
+
+
+Neni povoleno kopirovani instanci teto tridy. 
+
+Definition at line 317 of file option.\+h.
+
+
+
+\subsection{Member Function Documentation}
+\index{Config\+Manager\+::\+Option\+Proxy@{Config\+Manager\+::\+Option\+Proxy}!Get@{Get}}
+\index{Get@{Get}!Config\+Manager\+::\+Option\+Proxy@{Config\+Manager\+::\+Option\+Proxy}}
+\subsubsection[{\texorpdfstring{Get() const }{Get() const }}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Type\+Specifier $>$ auto {\bf Config\+Manager\+::\+Option\+Proxy}$<$ {\bf Type\+Specifier} $>$\+::Get (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\hypertarget{class_config_manager_1_1_option_proxy_a6c305bd6065c63e8b263660bf46ec727}{}\label{class_config_manager_1_1_option_proxy_a6c305bd6065c63e8b263660bf46ec727}
+Metoda vracejici nastavenou hodnotu. 
+
+Definition at line 332 of file option.\+h.
+
+\index{Config\+Manager\+::\+Option\+Proxy@{Config\+Manager\+::\+Option\+Proxy}!operator=@{operator=}}
+\index{operator=@{operator=}!Config\+Manager\+::\+Option\+Proxy@{Config\+Manager\+::\+Option\+Proxy}}
+\subsubsection[{\texorpdfstring{operator=(\+Option\+Proxy \&\&other)}{operator=(OptionProxy &&other)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Type\+Specifier $>$ {\bf Option\+Proxy}$<$ {\bf Type\+Specifier} $>$ \& {\bf Config\+Manager\+::\+Option\+Proxy}$<$ {\bf Type\+Specifier} $>$\+::operator= (
+\begin{DoxyParamCaption}
+\item[{{\bf Option\+Proxy}$<$ {\bf Type\+Specifier} $>$ \&\&}]{other}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_manager_1_1_option_proxy_af571eb1d01be954f718adf22a6affcd1}{}\label{class_config_manager_1_1_option_proxy_af571eb1d01be954f718adf22a6affcd1}
+
+
+
+
+Neni povoleno kopirovani instanci teto tridy. 
+
+Definition at line 323 of file option.\+h.
+
+\index{Config\+Manager\+::\+Option\+Proxy@{Config\+Manager\+::\+Option\+Proxy}!Process\+Value\+Data@{Process\+Value\+Data}}
+\index{Process\+Value\+Data@{Process\+Value\+Data}!Config\+Manager\+::\+Option\+Proxy@{Config\+Manager\+::\+Option\+Proxy}}
+\subsubsection[{\texorpdfstring{Process\+Value\+Data(const std\+::string \&data) override}{ProcessValueData(const std::string &data) override}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Type\+Specifier $>$ void {\bf Config\+Manager\+::\+Option\+Proxy}$<$ {\bf Type\+Specifier} $>$\+::Process\+Value\+Data (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{data}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}\hypertarget{class_config_manager_1_1_option_proxy_a41e884af79ba112250af76538cc38dc1}{}\label{class_config_manager_1_1_option_proxy_a41e884af79ba112250af76538cc38dc1}
+
+
+
+
+Metoda pro komunikaci s \hyperlink{class_config_manager_1_1_configuration}{Configuration} slouzici k aktualizaci hodnoty v Option\+Proxyu dle retezcove hodnoty v \hyperlink{class_config_manager_1_1_configuration}{Configuration}, iniciovane v \hyperlink{class_config_manager_1_1_configuration}{Configuration} (pripadne \hyperlink{class_config_manager_1_1_section}{Section}). Muze vyhodit \hyperlink{class_config_manager_1_1_wrong_format_exception}{Wrong\+Format\+Exception} vyjimku. 
+\begin{DoxyParams}{Parameters}
+{\em data} & Text ze ktereho ma byt hodnota prectena. \\
+\hline
+\end{DoxyParams}
+
+
+Implements \hyperlink{class_config_manager_1_1_abstract_option_proxy_aeac427f8ddac8a9c17822022a3b1aaf1}{Config\+Manager\+::\+Abstract\+Option\+Proxy}.
+
+
+
+Definition at line 351 of file option.\+h.
+
+\index{Config\+Manager\+::\+Option\+Proxy@{Config\+Manager\+::\+Option\+Proxy}!Regenerate\+Value\+Data@{Regenerate\+Value\+Data}}
+\index{Regenerate\+Value\+Data@{Regenerate\+Value\+Data}!Config\+Manager\+::\+Option\+Proxy@{Config\+Manager\+::\+Option\+Proxy}}
+\subsubsection[{\texorpdfstring{Regenerate\+Value\+Data() override}{RegenerateValueData() override}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Type\+Specifier $>$ void {\bf Config\+Manager\+::\+Option\+Proxy}$<$ {\bf Type\+Specifier} $>$\+::Regenerate\+Value\+Data (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}\hypertarget{class_config_manager_1_1_option_proxy_a6f0f8c517701e7f55c2572e2deae6ad9}{}\label{class_config_manager_1_1_option_proxy_a6f0f8c517701e7f55c2572e2deae6ad9}
+
+
+
+
+Metoda pro komunikaci s \hyperlink{class_config_manager_1_1_configuration}{Configuration} slouzici pro vyvolani prepsani aktualni hodnoty v \hyperlink{class_config_manager_1_1_configuration}{Configuration} retezcovou reprezentaci hodnoty v Option\+Proxyu (lze tim zapsat default), iniciovane v \hyperlink{class_config_manager_1_1_configuration}{Configuration}. Muze vyhodit \hyperlink{class_config_manager_1_1_wrong_format_exception}{Wrong\+Format\+Exception} vyjimku. 
+
+Implements \hyperlink{class_config_manager_1_1_abstract_option_proxy_aceb7b5e86f60c3dbd5b0622a230da1b3}{Config\+Manager\+::\+Abstract\+Option\+Proxy}.
+
+
+
+Definition at line 345 of file option.\+h.
+
+\index{Config\+Manager\+::\+Option\+Proxy@{Config\+Manager\+::\+Option\+Proxy}!Set@{Set}}
+\index{Set@{Set}!Config\+Manager\+::\+Option\+Proxy@{Config\+Manager\+::\+Option\+Proxy}}
+\subsubsection[{\texorpdfstring{Set(const Value\+Type \&value)}{Set(const ValueType &value)}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Type\+Specifier $>$ void {\bf Config\+Manager\+::\+Option\+Proxy}$<$ {\bf Type\+Specifier} $>$\+::Set (
+\begin{DoxyParamCaption}
+\item[{const Value\+Type \&}]{value}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_manager_1_1_option_proxy_aa2be6bc353562df57f88ab222d38a2a3}{}\label{class_config_manager_1_1_option_proxy_aa2be6bc353562df57f88ab222d38a2a3}
+Metoda pro nastaveni nove hodnoty volby. Muze vyhodit \hyperlink{class_config_manager_1_1_wrong_format_exception}{Wrong\+Format\+Exception} vyjimku (kvuli existenci referenci). 
+\begin{DoxyParams}{Parameters}
+{\em value} & nova hodnota. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 338 of file option.\+h.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+src/\+Config\+Manager/option.\+h\end{DoxyCompactItemize}

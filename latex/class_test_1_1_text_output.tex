@@ -1,0 +1,229 @@
+\hypertarget{class_test_1_1_text_output}{}\section{Test\+:\+:Text\+Output Class Reference}
+\label{class_test_1_1_text_output}\index{Test\+::\+Text\+Output@{Test\+::\+Text\+Output}}
+
+
+Text output handler that outputs to the a stream.  
+
+
+
+
+{\ttfamily \#include $<$cpptest-\/textoutput.\+h$>$}
+
+Inheritance diagram for Test\+:\+:Text\+Output\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_test_1_1_text_output}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{class_test_1_1_text_output_ae7b22c9458e6c566996bf4517c73feb1}{Mode} \{ \hyperlink{class_test_1_1_text_output_ae7b22c9458e6c566996bf4517c73feb1ae63930203459836dfc6e0939f92a9fb2}{Terse}, 
+\hyperlink{class_test_1_1_text_output_ae7b22c9458e6c566996bf4517c73feb1a85dd6e42f6261a23fd504201f5cc2792}{Verbose}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_test_1_1_text_output_ab9bdd9b2d9b362ca5fb148b766ecdd02}{Text\+Output} (\hyperlink{class_test_1_1_text_output_ae7b22c9458e6c566996bf4517c73feb1}{Mode} mode, std\+::ostream \&stream=std\+::cout)
+\item 
+virtual void \hyperlink{class_test_1_1_text_output_ad139154d84e75aaaabed7b718b0ff106}{finished} (int tests, const \hyperlink{class_test_1_1_time}{Time} \&time)
+\item 
+virtual void \hyperlink{class_test_1_1_text_output_afa4d83846a506b7a26622711cbd69ad1}{suite\+\_\+start} (int tests, const std\+::string \&name)
+\item 
+virtual void \hyperlink{class_test_1_1_text_output_a7687ec2e87ccaa901e2b7d391937a71e}{suite\+\_\+end} (int tests, const std\+::string \&name, const \hyperlink{class_test_1_1_time}{Time} \&time)
+\item 
+virtual void \hyperlink{class_test_1_1_text_output_a61336a8ef939a9d826d4630da8020d72}{test\+\_\+end} (const std\+::string \&name, bool ok, const \hyperlink{class_test_1_1_time}{Time} \&time)
+\item 
+virtual void \hyperlink{class_test_1_1_text_output_a9acf66ddd0a5f584a86e5fbdd98e5f1a}{assertment} (const \hyperlink{class_test_1_1_source}{Source} \&s)
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Text output handler that outputs to the a stream. 
+
+Test suite output handler that writes its information as text to a a stream. It it possible to select between two different operational modes that controls the detail level, see Mode. 
+
+Definition at line 46 of file cpptest-\/textoutput.\+h.
+
+
+
+\subsection{Member Enumeration Documentation}
+\index{Test\+::\+Text\+Output@{Test\+::\+Text\+Output}!Mode@{Mode}}
+\index{Mode@{Mode}!Test\+::\+Text\+Output@{Test\+::\+Text\+Output}}
+\subsubsection[{\texorpdfstring{Mode}{Mode}}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf Test\+::\+Text\+Output\+::\+Mode}}\hypertarget{class_test_1_1_text_output_ae7b22c9458e6c566996bf4517c73feb1}{}\label{class_test_1_1_text_output_ae7b22c9458e6c566996bf4517c73feb1}
+\hyperlink{class_test_1_1_output}{Output} mode. \begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{Terse@{Terse}!Test\+::\+Text\+Output@{Test\+::\+Text\+Output}}\index{Test\+::\+Text\+Output@{Test\+::\+Text\+Output}!Terse@{Terse}}\item[{\em 
+Terse\hypertarget{class_test_1_1_text_output_ae7b22c9458e6c566996bf4517c73feb1ae63930203459836dfc6e0939f92a9fb2}{}\label{class_test_1_1_text_output_ae7b22c9458e6c566996bf4517c73feb1ae63930203459836dfc6e0939f92a9fb2}
+}]Terse output mode, which only shows the number of correct tests. \index{Verbose@{Verbose}!Test\+::\+Text\+Output@{Test\+::\+Text\+Output}}\index{Test\+::\+Text\+Output@{Test\+::\+Text\+Output}!Verbose@{Verbose}}\item[{\em 
+Verbose\hypertarget{class_test_1_1_text_output_ae7b22c9458e6c566996bf4517c73feb1a85dd6e42f6261a23fd504201f5cc2792}{}\label{class_test_1_1_text_output_ae7b22c9458e6c566996bf4517c73feb1a85dd6e42f6261a23fd504201f5cc2792}
+}]Verbose output mode, which also shows extended assert information for each test that failed. \end{description}
+\end{Desc}
+
+
+Definition at line 51 of file cpptest-\/textoutput.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{Test\+::\+Text\+Output@{Test\+::\+Text\+Output}!Text\+Output@{Text\+Output}}
+\index{Text\+Output@{Text\+Output}!Test\+::\+Text\+Output@{Test\+::\+Text\+Output}}
+\subsubsection[{\texorpdfstring{Text\+Output(\+Mode mode, std\+::ostream \&stream=std\+::cout)}{TextOutput(Mode mode, std::ostream &stream=std::cout)}}]{\setlength{\rightskip}{0pt plus 5cm}Test\+::\+Text\+Output\+::\+Text\+Output (
+\begin{DoxyParamCaption}
+\item[{{\bf Mode}}]{mode, }
+\item[{std\+::ostream \&}]{stream = {\ttfamily std\+:\+:cout}}
+\end{DoxyParamCaption}
+)}\hypertarget{class_test_1_1_text_output_ab9bdd9b2d9b362ca5fb148b766ecdd02}{}\label{class_test_1_1_text_output_ab9bdd9b2d9b362ca5fb148b766ecdd02}
+Constructs a text output handler.
+
+
+\begin{DoxyParams}{Parameters}
+{\em mode} & \hyperlink{class_test_1_1_output}{Output} mode. \\
+\hline
+{\em stream} & Stream to output to. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 69 of file textoutput.\+cpp.
+
+
+
+\subsection{Member Function Documentation}
+\index{Test\+::\+Text\+Output@{Test\+::\+Text\+Output}!assertment@{assertment}}
+\index{assertment@{assertment}!Test\+::\+Text\+Output@{Test\+::\+Text\+Output}}
+\subsubsection[{\texorpdfstring{assertment(const Source \&s)}{assertment(const Source &s)}}]{\setlength{\rightskip}{0pt plus 5cm}void Test\+::\+Text\+Output\+::assertment (
+\begin{DoxyParamCaption}
+\item[{const {\bf Source} \&}]{s}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_test_1_1_text_output_a9acf66ddd0a5f584a86e5fbdd98e5f1a}{}\label{class_test_1_1_text_output_a9acf66ddd0a5f584a86e5fbdd98e5f1a}
+Called when an assertment is issued.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & Assert point information. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{class_test_1_1_output_a48c31f0baa7627d81939be840c9a7f65}{Test\+::\+Output}.
+
+
+
+Definition at line 127 of file textoutput.\+cpp.
+
+\index{Test\+::\+Text\+Output@{Test\+::\+Text\+Output}!finished@{finished}}
+\index{finished@{finished}!Test\+::\+Text\+Output@{Test\+::\+Text\+Output}}
+\subsubsection[{\texorpdfstring{finished(int tests, const Time \&time)}{finished(int tests, const Time &time)}}]{\setlength{\rightskip}{0pt plus 5cm}void Test\+::\+Text\+Output\+::finished (
+\begin{DoxyParamCaption}
+\item[{int}]{tests, }
+\item[{const {\bf Time} \&}]{time}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_test_1_1_text_output_ad139154d84e75aaaabed7b718b0ff106}{}\label{class_test_1_1_text_output_ad139154d84e75aaaabed7b718b0ff106}
+Called when testing is finished.
+
+
+\begin{DoxyParams}{Parameters}
+{\em tests} & Total number of tests in all suites. \\
+\hline
+{\em time} & Total elapsed time for all tests. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{class_test_1_1_output_aeff8af8326a8c54a38199f76837f860a}{Test\+::\+Output}.
+
+
+
+Definition at line 76 of file textoutput.\+cpp.
+
+\index{Test\+::\+Text\+Output@{Test\+::\+Text\+Output}!suite\+\_\+end@{suite\+\_\+end}}
+\index{suite\+\_\+end@{suite\+\_\+end}!Test\+::\+Text\+Output@{Test\+::\+Text\+Output}}
+\subsubsection[{\texorpdfstring{suite\+\_\+end(int tests, const std\+::string \&name, const Time \&time)}{suite_end(int tests, const std::string &name, const Time &time)}}]{\setlength{\rightskip}{0pt plus 5cm}void Test\+::\+Text\+Output\+::suite\+\_\+end (
+\begin{DoxyParamCaption}
+\item[{int}]{tests, }
+\item[{const std\+::string \&}]{name, }
+\item[{const {\bf Time} \&}]{time}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_test_1_1_text_output_a7687ec2e87ccaa901e2b7d391937a71e}{}\label{class_test_1_1_text_output_a7687ec2e87ccaa901e2b7d391937a71e}
+Called when a suite is finished.
+
+
+\begin{DoxyParams}{Parameters}
+{\em tests} & Number of tests in this suite. \\
+\hline
+{\em name} & Name of the suite. \\
+\hline
+{\em time} & Total elapsed time for all tests in this suite. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{class_test_1_1_output_a6dbf4c0adb2bd4a7364c629179f788a6}{Test\+::\+Output}.
+
+
+
+Definition at line 100 of file textoutput.\+cpp.
+
+\index{Test\+::\+Text\+Output@{Test\+::\+Text\+Output}!suite\+\_\+start@{suite\+\_\+start}}
+\index{suite\+\_\+start@{suite\+\_\+start}!Test\+::\+Text\+Output@{Test\+::\+Text\+Output}}
+\subsubsection[{\texorpdfstring{suite\+\_\+start(int tests, const std\+::string \&name)}{suite_start(int tests, const std::string &name)}}]{\setlength{\rightskip}{0pt plus 5cm}void Test\+::\+Text\+Output\+::suite\+\_\+start (
+\begin{DoxyParamCaption}
+\item[{int}]{tests, }
+\item[{const std\+::string \&}]{name}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_test_1_1_text_output_afa4d83846a506b7a26622711cbd69ad1}{}\label{class_test_1_1_text_output_afa4d83846a506b7a26622711cbd69ad1}
+Called when a suite is entered.
+
+
+\begin{DoxyParams}{Parameters}
+{\em tests} & Number of tests in this suite. \\
+\hline
+{\em name} & Name of the suite. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{class_test_1_1_output_a7022c32c5a1577b10b93d3942746f17d}{Test\+::\+Output}.
+
+
+
+Definition at line 84 of file textoutput.\+cpp.
+
+\index{Test\+::\+Text\+Output@{Test\+::\+Text\+Output}!test\+\_\+end@{test\+\_\+end}}
+\index{test\+\_\+end@{test\+\_\+end}!Test\+::\+Text\+Output@{Test\+::\+Text\+Output}}
+\subsubsection[{\texorpdfstring{test\+\_\+end(const std\+::string \&name, bool ok, const Time \&time)}{test_end(const std::string &name, bool ok, const Time &time)}}]{\setlength{\rightskip}{0pt plus 5cm}void Test\+::\+Text\+Output\+::test\+\_\+end (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{name, }
+\item[{bool}]{ok, }
+\item[{const {\bf Time} \&}]{time}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_test_1_1_text_output_a61336a8ef939a9d826d4630da8020d72}{}\label{class_test_1_1_text_output_a61336a8ef939a9d826d4630da8020d72}
+Called when a test if finished, regardless if an assertment was issued.
+
+
+\begin{DoxyParams}{Parameters}
+{\em name} & Name of the test function. \\
+\hline
+{\em ok} & True if the test was successful; false otherwise. \\
+\hline
+{\em time} & Execution time. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{class_test_1_1_output_a3796943e3b56373492c957212a21454e}{Test\+::\+Output}.
+
+
+
+Definition at line 117 of file textoutput.\+cpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+lib/cpptest-\/1.\+1.\+2/src/\hyperlink{cpptest-textoutput_8h}{cpptest-\/textoutput.\+h}\item 
+lib/cpptest-\/1.\+1.\+2/src/textoutput.\+cpp\end{DoxyCompactItemize}

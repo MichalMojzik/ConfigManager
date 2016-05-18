@@ -2,12 +2,11 @@
 #define CONFIGMANAGER_OPTIONNODE_H
 
 #include "configuration.h"
-//#include "sectionnode.h"
+#include "sectionnode.h"
 #include "option.h"
 
 namespace ConfigManager
 {
-	class AbstractOptionProxy;
 	class OptionNode
 	{
 	public:

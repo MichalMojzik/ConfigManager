@@ -1,0 +1,251 @@
+\hypertarget{class_test_1_1_suite}{}\section{Test\+:\+:Suite Class Reference}
+\label{class_test_1_1_suite}\index{Test\+::\+Suite@{Test\+::\+Suite}}
+
+
+Unit testing suite.  
+
+
+
+
+{\ttfamily \#include $<$cpptest-\/suite.\+h$>$}
+
+Inheritance diagram for Test\+:\+:Suite\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=1.025641cm]{class_test_1_1_suite}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct_test_1_1_suite_1_1_do_run}{Do\+Run}
+\item 
+struct \hyperlink{struct_test_1_1_suite_1_1_exec_tests}{Exec\+Tests}
+\item 
+struct \hyperlink{struct_test_1_1_suite_1_1_sub_suite_tests}{Sub\+Suite\+Tests}
+\item 
+struct \hyperlink{struct_test_1_1_suite_1_1_sub_suite_time}{Sub\+Suite\+Time}
+\item 
+struct \hyperlink{struct_test_1_1_suite_1_1_suite_time}{Suite\+Time}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_test_1_1_suite_a8cb51a002cf4e675820f91fe03ec9117}{Suite} ()
+\item 
+virtual \hyperlink{class_test_1_1_suite_a7a62f450d1e6c86cd6058e1c457aa4b7}{$\sim$\+Suite} ()
+\item 
+void \hyperlink{class_test_1_1_suite_a0237b63fc694ecb133d023cf2d6ab271}{add} (std\+::auto\+\_\+ptr$<$ \hyperlink{class_test_1_1_suite}{Suite} $>$ suite)
+\item 
+bool \hyperlink{class_test_1_1_suite_ad17746e218da79c537bc9d21e389f570}{run} (\hyperlink{class_test_1_1_output}{Output} \&output, bool cont\+\_\+after\+\_\+fail=true)
+\end{DoxyCompactItemize}
+\subsection*{Protected Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef void(Suite\+::$\ast$ \hyperlink{class_test_1_1_suite_a87c40a9c763fc3221bee0e70c431038f}{Func}) ()
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool {\bfseries continue\+\_\+after\+\_\+failure} () const \hypertarget{class_test_1_1_suite_a76d5fbd5dafa352f6086f8ab0db3089f}{}\label{class_test_1_1_suite_a76d5fbd5dafa352f6086f8ab0db3089f}
+
+\item 
+virtual void \hyperlink{class_test_1_1_suite_afb4c733e6c46a011818bb02f2e8d5bb8}{setup} ()
+\item 
+virtual void \hyperlink{class_test_1_1_suite_a37d3595625cff09b8e43bf6c414ff610}{tear\+\_\+down} ()
+\item 
+void \hyperlink{class_test_1_1_suite_a11e542d1d45905b817b00c35660700b9}{register\+\_\+test} (\hyperlink{class_test_1_1_suite_a87c40a9c763fc3221bee0e70c431038f}{Func} func, const std\+::string \&name)
+\item 
+void \hyperlink{class_test_1_1_suite_a1851ad75aed6141a19a06eeeb0fe0d3c}{assertment} (\hyperlink{class_test_1_1_source}{Source} s)
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+struct {\bfseries Do\+Run}\hypertarget{class_test_1_1_suite_a843435d7ee79d23ed13e6eec5c7ac6bb}{}\label{class_test_1_1_suite_a843435d7ee79d23ed13e6eec5c7ac6bb}
+
+\item 
+struct {\bfseries Exec\+Tests}\hypertarget{class_test_1_1_suite_ab4730d33c1241aba407b71f8eafb7bcc}{}\label{class_test_1_1_suite_ab4730d33c1241aba407b71f8eafb7bcc}
+
+\item 
+struct {\bfseries Sub\+Suite\+Tests}\hypertarget{class_test_1_1_suite_a901d2d72cc93e087c94d99680f65fa8e}{}\label{class_test_1_1_suite_a901d2d72cc93e087c94d99680f65fa8e}
+
+\item 
+struct {\bfseries Sub\+Suite\+Time}\hypertarget{class_test_1_1_suite_a5933776e455e5bd9ad1d4a8b1c591aa2}{}\label{class_test_1_1_suite_a5933776e455e5bd9ad1d4a8b1c591aa2}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Unit testing suite. 
+
+Base class for all suites. Derive from this class to create own test suites.
+
+Test functions in derived classes are registered as tests using the \hyperlink{cpptest-suite_8h_abe8c3e0a2cf3893ebc1c265264ed9cb8}{T\+E\+S\+T\+\_\+\+A\+D\+D(func)}. Testing is started by \hyperlink{class_test_1_1_suite_ad17746e218da79c537bc9d21e389f570}{run()}. Note that suites may be embedded in other suites using \hyperlink{class_test_1_1_suite_a0237b63fc694ecb133d023cf2d6ab271}{add()}. 
+
+Definition at line 52 of file cpptest-\/suite.\+h.
+
+
+
+\subsection{Member Typedef Documentation}
+\index{Test\+::\+Suite@{Test\+::\+Suite}!Func@{Func}}
+\index{Func@{Func}!Test\+::\+Suite@{Test\+::\+Suite}}
+\subsubsection[{\texorpdfstring{Func}{Func}}]{\setlength{\rightskip}{0pt plus 5cm}typedef void(Suite\+::$\ast$ Test\+::\+Suite\+::\+Func) ()\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{class_test_1_1_suite_a87c40a9c763fc3221bee0e70c431038f}{}\label{class_test_1_1_suite_a87c40a9c763fc3221bee0e70c431038f}
+Pointer to a test function. 
+
+Definition at line 65 of file cpptest-\/suite.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{Test\+::\+Suite@{Test\+::\+Suite}!Suite@{Suite}}
+\index{Suite@{Suite}!Test\+::\+Suite@{Test\+::\+Suite}}
+\subsubsection[{\texorpdfstring{Suite()}{Suite()}}]{\setlength{\rightskip}{0pt plus 5cm}Test\+::\+Suite\+::\+Suite (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_test_1_1_suite_a8cb51a002cf4e675820f91fe03ec9117}{}\label{class_test_1_1_suite_a8cb51a002cf4e675820f91fe03ec9117}
+Constructs an empty test suite. 
+
+Definition at line 63 of file suite.\+cpp.
+
+\index{Test\+::\+Suite@{Test\+::\+Suite}!````~Suite@{$\sim$\+Suite}}
+\index{````~Suite@{$\sim$\+Suite}!Test\+::\+Suite@{Test\+::\+Suite}}
+\subsubsection[{\texorpdfstring{$\sim$\+Suite()}{~Suite()}}]{\setlength{\rightskip}{0pt plus 5cm}Test\+::\+Suite\+::$\sim$\+Suite (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_test_1_1_suite_a7a62f450d1e6c86cd6058e1c457aa4b7}{}\label{class_test_1_1_suite_a7a62f450d1e6c86cd6058e1c457aa4b7}
+Destroys this suite object. 
+
+Definition at line 71 of file suite.\+cpp.
+
+
+
+\subsection{Member Function Documentation}
+\index{Test\+::\+Suite@{Test\+::\+Suite}!add@{add}}
+\index{add@{add}!Test\+::\+Suite@{Test\+::\+Suite}}
+\subsubsection[{\texorpdfstring{add(std\+::auto\+\_\+ptr$<$ Suite $>$ suite)}{add(std::auto_ptr< Suite > suite)}}]{\setlength{\rightskip}{0pt plus 5cm}void Test\+::\+Suite\+::add (
+\begin{DoxyParamCaption}
+\item[{std\+::auto\+\_\+ptr$<$ {\bf Suite} $>$}]{suite}
+\end{DoxyParamCaption}
+)}\hypertarget{class_test_1_1_suite_a0237b63fc694ecb133d023cf2d6ab271}{}\label{class_test_1_1_suite_a0237b63fc694ecb133d023cf2d6ab271}
+Adds a suite to this suite. Tests in added suites will be executed when \hyperlink{class_test_1_1_suite_ad17746e218da79c537bc9d21e389f570}{run()} of the top-\/level suite is called.
+
+
+\begin{DoxyParams}{Parameters}
+{\em suite} & Test suite to add. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 120 of file suite.\+cpp.
+
+\index{Test\+::\+Suite@{Test\+::\+Suite}!assertment@{assertment}}
+\index{assertment@{assertment}!Test\+::\+Suite@{Test\+::\+Suite}}
+\subsubsection[{\texorpdfstring{assertment(\+Source s)}{assertment(Source s)}}]{\setlength{\rightskip}{0pt plus 5cm}void Test\+::\+Suite\+::assertment (
+\begin{DoxyParamCaption}
+\item[{{\bf Source}}]{s}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{class_test_1_1_suite_a1851ad75aed6141a19a06eeeb0fe0d3c}{}\label{class_test_1_1_suite_a1851ad75aed6141a19a06eeeb0fe0d3c}
+Issues an assertment to the output handler.
+
+Do not call this function directly, use one of the available assertment macros instead, see \hyperlink{asserts}{Available asserts}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & Assert point information. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 152 of file suite.\+cpp.
+
+\index{Test\+::\+Suite@{Test\+::\+Suite}!register\+\_\+test@{register\+\_\+test}}
+\index{register\+\_\+test@{register\+\_\+test}!Test\+::\+Suite@{Test\+::\+Suite}}
+\subsubsection[{\texorpdfstring{register\+\_\+test(\+Func func, const std\+::string \&name)}{register_test(Func func, const std::string &name)}}]{\setlength{\rightskip}{0pt plus 5cm}void Test\+::\+Suite\+::register\+\_\+test (
+\begin{DoxyParamCaption}
+\item[{{\bf Func}}]{func, }
+\item[{const std\+::string \&}]{name}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [protected]}}\hypertarget{class_test_1_1_suite_a11e542d1d45905b817b00c35660700b9}{}\label{class_test_1_1_suite_a11e542d1d45905b817b00c35660700b9}
+Registers a test function.
+
+{\bfseries Note\+:} Do not call this function directly, use the \hyperlink{cpptest-suite_8h_abe8c3e0a2cf3893ebc1c265264ed9cb8}{T\+E\+S\+T\+\_\+\+A\+D\+D(func)} macro instead.
+
+
+\begin{DoxyParams}{Parameters}
+{\em func} & Pointer to a test function. \\
+\hline
+{\em name} & Class and function name of the function. The format {\bfseries must} equal {\itshape class\+::func}. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 135 of file suite.\+cpp.
+
+\index{Test\+::\+Suite@{Test\+::\+Suite}!run@{run}}
+\index{run@{run}!Test\+::\+Suite@{Test\+::\+Suite}}
+\subsubsection[{\texorpdfstring{run(\+Output \&output, bool cont\+\_\+after\+\_\+fail=true)}{run(Output &output, bool cont_after_fail=true)}}]{\setlength{\rightskip}{0pt plus 5cm}bool Test\+::\+Suite\+::run (
+\begin{DoxyParamCaption}
+\item[{{\bf Output} \&}]{output, }
+\item[{bool}]{cont\+\_\+after\+\_\+fail = {\ttfamily true}}
+\end{DoxyParamCaption}
+)}\hypertarget{class_test_1_1_suite_ad17746e218da79c537bc9d21e389f570}{}\label{class_test_1_1_suite_ad17746e218da79c537bc9d21e389f570}
+Starts the testing. All tests in this suite and embedded suites will be executed.
+
+
+\begin{DoxyParams}{Parameters}
+{\em output} & Progress report destination. \\
+\hline
+{\em cont\+\_\+after\+\_\+fail} & Continue functions despite failures.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+True if no test failed; false otherwise. 
+\end{DoxyReturn}
+
+
+Definition at line 85 of file suite.\+cpp.
+
+\index{Test\+::\+Suite@{Test\+::\+Suite}!setup@{setup}}
+\index{setup@{setup}!Test\+::\+Suite@{Test\+::\+Suite}}
+\subsubsection[{\texorpdfstring{setup()}{setup()}}]{\setlength{\rightskip}{0pt plus 5cm}void Test\+::\+Suite\+::setup (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}\hypertarget{class_test_1_1_suite_afb4c733e6c46a011818bb02f2e8d5bb8}{}\label{class_test_1_1_suite_afb4c733e6c46a011818bb02f2e8d5bb8}
+Setups a test fixture. This function is called before each test, in this suite, is executed.
+
+This function should be overloaded by derived classes to provide specialized behavior.
+
+\begin{DoxySeeAlso}{See also}
+\hyperlink{class_test_1_1_suite_a37d3595625cff09b8e43bf6c414ff610}{tear\+\_\+down()} 
+\end{DoxySeeAlso}
+
+
+Definition at line 69 of file cpptest-\/suite.\+h.
+
+\index{Test\+::\+Suite@{Test\+::\+Suite}!tear\+\_\+down@{tear\+\_\+down}}
+\index{tear\+\_\+down@{tear\+\_\+down}!Test\+::\+Suite@{Test\+::\+Suite}}
+\subsubsection[{\texorpdfstring{tear\+\_\+down()}{tear_down()}}]{\setlength{\rightskip}{0pt plus 5cm}void Test\+::\+Suite\+::tear\+\_\+down (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [protected]}, {\ttfamily [virtual]}}\hypertarget{class_test_1_1_suite_a37d3595625cff09b8e43bf6c414ff610}{}\label{class_test_1_1_suite_a37d3595625cff09b8e43bf6c414ff610}
+Tears down a test fixture. This function is called after each test, in this suite, have been executed.
+
+This function should be overloaded by derived classes to provide specialized behavior.
+
+\begin{DoxySeeAlso}{See also}
+\hyperlink{class_test_1_1_suite_afb4c733e6c46a011818bb02f2e8d5bb8}{setup()} 
+\end{DoxySeeAlso}
+
+
+Definition at line 70 of file cpptest-\/suite.\+h.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+lib/cpptest-\/1.\+1.\+2/src/\hyperlink{cpptest-suite_8h}{cpptest-\/suite.\+h}\item 
+lib/cpptest-\/1.\+1.\+2/src/suite.\+cpp\end{DoxyCompactItemize}

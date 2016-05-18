@@ -1,0 +1,86 @@
+\hypertarget{class_test_1_1_html_output}{}\section{Test\+:\+:Html\+Output Class Reference}
+\label{class_test_1_1_html_output}\index{Test\+::\+Html\+Output@{Test\+::\+Html\+Output}}
+
+
+H\+T\+ML output.  
+
+
+
+
+{\ttfamily \#include $<$cpptest-\/htmloutput.\+h$>$}
+
+Inheritance diagram for Test\+:\+:Html\+Output\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_test_1_1_html_output}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct_test_1_1_html_output_1_1_suite_row}{Suite\+Row}
+\item 
+struct \hyperlink{struct_test_1_1_html_output_1_1_suite_test_result}{Suite\+Test\+Result}
+\item 
+struct \hyperlink{struct_test_1_1_html_output_1_1_test_result}{Test\+Result}
+\item 
+struct \hyperlink{struct_test_1_1_html_output_1_1_test_result_all}{Test\+Result\+All}
+\item 
+struct \hyperlink{struct_test_1_1_html_output_1_1_test_row}{Test\+Row}
+\item 
+struct \hyperlink{struct_test_1_1_html_output_1_1_test_suite_row}{Test\+Suite\+Row}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{class_test_1_1_html_output_a589e4e59aee4da0f70f3f6568daaf0f0}{generate} (std\+::ostream \&os, bool incl\+\_\+ok\+\_\+tests=true, const std\+::string \&name=\char`\"{}\char`\"{})
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+struct {\bfseries Test\+Suite\+Row}\hypertarget{class_test_1_1_html_output_a1e37e043f56a53b521955598f3366682}{}\label{class_test_1_1_html_output_a1e37e043f56a53b521955598f3366682}
+
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+H\+T\+ML output. 
+
+Output handler that creates a H\+T\+ML table with detailed information about all tests. 
+
+Definition at line 44 of file cpptest-\/htmloutput.\+h.
+
+
+
+\subsection{Member Function Documentation}
+\index{Test\+::\+Html\+Output@{Test\+::\+Html\+Output}!generate@{generate}}
+\index{generate@{generate}!Test\+::\+Html\+Output@{Test\+::\+Html\+Output}}
+\subsubsection[{\texorpdfstring{generate(std\+::ostream \&os, bool incl\+\_\+ok\+\_\+tests=true, const std\+::string \&name="""")}{generate(std::ostream &os, bool incl_ok_tests=true, const std::string &name="")}}]{\setlength{\rightskip}{0pt plus 5cm}void Test\+::\+Html\+Output\+::generate (
+\begin{DoxyParamCaption}
+\item[{std\+::ostream \&}]{os, }
+\item[{bool}]{incl\+\_\+ok\+\_\+tests = {\ttfamily true}, }
+\item[{const std\+::string \&}]{name = {\ttfamily \char`\"{}\char`\"{}}}
+\end{DoxyParamCaption}
+)}\hypertarget{class_test_1_1_html_output_a589e4e59aee4da0f70f3f6568daaf0f0}{}\label{class_test_1_1_html_output_a589e4e59aee4da0f70f3f6568daaf0f0}
+Generates the H\+T\+ML table. This function should only be called after run(), when all tests have been executed.
+
+
+\begin{DoxyParams}{Parameters}
+{\em os} & \hyperlink{class_test_1_1_output}{Output} stream. \\
+\hline
+{\em incl\+\_\+ok\+\_\+tests} & Set if successful tests should be shown; false otherwise. \\
+\hline
+{\em name} & Name of generated report. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 389 of file htmloutput.\+cpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+lib/cpptest-\/1.\+1.\+2/src/\hyperlink{cpptest-htmloutput_8h}{cpptest-\/htmloutput.\+h}\item 
+lib/cpptest-\/1.\+1.\+2/src/htmloutput.\+cpp\end{DoxyCompactItemize}

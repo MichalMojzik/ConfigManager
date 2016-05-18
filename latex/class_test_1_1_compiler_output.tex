@@ -1,0 +1,113 @@
+\hypertarget{class_test_1_1_compiler_output}{}\section{Test\+:\+:Compiler\+Output Class Reference}
+\label{class_test_1_1_compiler_output}\index{Test\+::\+Compiler\+Output@{Test\+::\+Compiler\+Output}}
+
+
+Compiler-\/like output handler.  
+
+
+
+
+{\ttfamily \#include $<$cpptest-\/compileroutput.\+h$>$}
+
+Inheritance diagram for Test\+:\+:Compiler\+Output\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_test_1_1_compiler_output}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{class_test_1_1_compiler_output_1_1_invalid_format}{Invalid\+Format}
+\begin{DoxyCompactList}\small\item\em Compiler output exception. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+enum \hyperlink{class_test_1_1_compiler_output_ab34cf506804cefbc67545a256af196ff}{Format} \{ \hyperlink{class_test_1_1_compiler_output_ab34cf506804cefbc67545a256af196ffa1a83926858dfb1bab06bc0a313a49dac}{Generic}, 
+\hyperlink{class_test_1_1_compiler_output_ab34cf506804cefbc67545a256af196ffa9ad6dc16df2c992e8b77a3f6ee2247d8}{B\+CC}, 
+\hyperlink{class_test_1_1_compiler_output_ab34cf506804cefbc67545a256af196ffa7d077829f643d60a87a022d39989dd3b}{G\+CC}, 
+\hyperlink{class_test_1_1_compiler_output_ab34cf506804cefbc67545a256af196ffae4f7af0eaa05253ea35484384deeb86b}{M\+S\+VC}
+ \}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Compiler\+Output} (\hyperlink{class_test_1_1_compiler_output_ab34cf506804cefbc67545a256af196ff}{Format} format=\hyperlink{class_test_1_1_compiler_output_ab34cf506804cefbc67545a256af196ffa1a83926858dfb1bab06bc0a313a49dac}{Generic}, std\+::ostream \&stream=std\+::cout)\hypertarget{class_test_1_1_compiler_output_a816ae9a0ff2fb6cbb95c7cd815a6e621}{}\label{class_test_1_1_compiler_output_a816ae9a0ff2fb6cbb95c7cd815a6e621}
+
+\item 
+{\bfseries Compiler\+Output} (const std\+::string \&format, std\+::ostream \&stream=std\+::cout)\hypertarget{class_test_1_1_compiler_output_a49f7092d23ce60e3b83fa30fb5ab9ab7}{}\label{class_test_1_1_compiler_output_a49f7092d23ce60e3b83fa30fb5ab9ab7}
+
+\item 
+virtual void \hyperlink{class_test_1_1_compiler_output_ae276b6874eb54c8b1e3d8e3c610522dc}{assertment} (const \hyperlink{class_test_1_1_source}{Source} \&s)
+\end{DoxyCompactItemize}
+\subsection*{Additional Inherited Members}
+
+
+\subsection{Detailed Description}
+Compiler-\/like output handler. 
+
+Test suite output handler that only outputs failures in compiler warning/error format. This way, you can use your I\+DE to browse between failures.
+
+The output format is configurable to be able to emulate different compiler outputs. The following modifiers exist\+:
+\begin{DoxyItemize}
+\item {\itshape file} Outputs the file containing the test function.
+\item {\itshape line} Line number for the the test function.
+\item {\itshape text} Expression (or message) that caused the assertment. Note that each modifier can only be specified once. 
+\end{DoxyItemize}
+
+Definition at line 52 of file cpptest-\/compileroutput.\+h.
+
+
+
+\subsection{Member Enumeration Documentation}
+\index{Test\+::\+Compiler\+Output@{Test\+::\+Compiler\+Output}!Format@{Format}}
+\index{Format@{Format}!Test\+::\+Compiler\+Output@{Test\+::\+Compiler\+Output}}
+\subsubsection[{\texorpdfstring{Format}{Format}}]{\setlength{\rightskip}{0pt plus 5cm}enum {\bf Test\+::\+Compiler\+Output\+::\+Format}}\hypertarget{class_test_1_1_compiler_output_ab34cf506804cefbc67545a256af196ff}{}\label{class_test_1_1_compiler_output_ab34cf506804cefbc67545a256af196ff}
+Pre-\/defined compiler output formats. \begin{Desc}
+\item[Enumerator]\par
+\begin{description}
+\index{Generic@{Generic}!Test\+::\+Compiler\+Output@{Test\+::\+Compiler\+Output}}\index{Test\+::\+Compiler\+Output@{Test\+::\+Compiler\+Output}!Generic@{Generic}}\item[{\em 
+Generic\hypertarget{class_test_1_1_compiler_output_ab34cf506804cefbc67545a256af196ffa1a83926858dfb1bab06bc0a313a49dac}{}\label{class_test_1_1_compiler_output_ab34cf506804cefbc67545a256af196ffa1a83926858dfb1bab06bc0a313a49dac}
+}]Generic compiler format, which equals\+: {\ttfamily \%file\+:\%line\+: \%text} \index{B\+CC@{B\+CC}!Test\+::\+Compiler\+Output@{Test\+::\+Compiler\+Output}}\index{Test\+::\+Compiler\+Output@{Test\+::\+Compiler\+Output}!B\+CC@{B\+CC}}\item[{\em 
+B\+CC\hypertarget{class_test_1_1_compiler_output_ab34cf506804cefbc67545a256af196ffa9ad6dc16df2c992e8b77a3f6ee2247d8}{}\label{class_test_1_1_compiler_output_ab34cf506804cefbc67545a256af196ffa9ad6dc16df2c992e8b77a3f6ee2247d8}
+}]\href{http://www.borland.com/products/downloads/download_cbuilder.html}{\tt Borland C++ Compiler} (B\+CC) format, which equals\+: {\ttfamily Error cpptest \%file \%line\+: \%text}. \index{G\+CC@{G\+CC}!Test\+::\+Compiler\+Output@{Test\+::\+Compiler\+Output}}\index{Test\+::\+Compiler\+Output@{Test\+::\+Compiler\+Output}!G\+CC@{G\+CC}}\item[{\em 
+G\+CC\hypertarget{class_test_1_1_compiler_output_ab34cf506804cefbc67545a256af196ffa7d077829f643d60a87a022d39989dd3b}{}\label{class_test_1_1_compiler_output_ab34cf506804cefbc67545a256af196ffa7d077829f643d60a87a022d39989dd3b}
+}]\href{http://gcc.gnu.org}{\tt G\+NU Compiler Collection} (G\+CC) format, which equals\+: {\ttfamily \%file\+:\%line\+: \%text} \index{M\+S\+VC@{M\+S\+VC}!Test\+::\+Compiler\+Output@{Test\+::\+Compiler\+Output}}\index{Test\+::\+Compiler\+Output@{Test\+::\+Compiler\+Output}!M\+S\+VC@{M\+S\+VC}}\item[{\em 
+M\+S\+VC\hypertarget{class_test_1_1_compiler_output_ab34cf506804cefbc67545a256af196ffae4f7af0eaa05253ea35484384deeb86b}{}\label{class_test_1_1_compiler_output_ab34cf506804cefbc67545a256af196ffae4f7af0eaa05253ea35484384deeb86b}
+}]\href{http://www.microsoft.com}{\tt Microsoft Visual C++} (M\+S\+VC) format, which equals\+: {\ttfamily \%file(\%line) \+: \%text} \end{description}
+\end{Desc}
+
+
+Definition at line 70 of file cpptest-\/compileroutput.\+h.
+
+
+
+\subsection{Member Function Documentation}
+\index{Test\+::\+Compiler\+Output@{Test\+::\+Compiler\+Output}!assertment@{assertment}}
+\index{assertment@{assertment}!Test\+::\+Compiler\+Output@{Test\+::\+Compiler\+Output}}
+\subsubsection[{\texorpdfstring{assertment(const Source \&s)}{assertment(const Source &s)}}]{\setlength{\rightskip}{0pt plus 5cm}void Test\+::\+Compiler\+Output\+::assertment (
+\begin{DoxyParamCaption}
+\item[{const {\bf Source} \&}]{s}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [virtual]}}\hypertarget{class_test_1_1_compiler_output_ae276b6874eb54c8b1e3d8e3c610522dc}{}\label{class_test_1_1_compiler_output_ae276b6874eb54c8b1e3d8e3c610522dc}
+Called when an assertment is issued.
+
+
+\begin{DoxyParams}{Parameters}
+{\em s} & Assert point information. \\
+\hline
+\end{DoxyParams}
+
+
+Reimplemented from \hyperlink{class_test_1_1_output_a48c31f0baa7627d81939be840c9a7f65}{Test\+::\+Output}.
+
+
+
+Definition at line 109 of file compileroutput.\+cpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+lib/cpptest-\/1.\+1.\+2/src/\hyperlink{cpptest-compileroutput_8h}{cpptest-\/compileroutput.\+h}\item 
+lib/cpptest-\/1.\+1.\+2/src/compileroutput.\+cpp\end{DoxyCompactItemize}
