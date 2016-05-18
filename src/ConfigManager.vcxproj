@@ -114,6 +114,7 @@
     <ClCompile Include="ConfigManager\section.cpp" />
     <ClCompile Include="ConfigManager\sectionnode.cpp" />
     <ClCompile Include="ConfigManager\typespecifiers.cpp" />
+    <ClCompile Include="ConfigManager\utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="configmanager.h" />
@@ -125,6 +126,7 @@
     <ClInclude Include="configmanager\section.h" />
     <ClInclude Include="ConfigManager\sectionnode.h" />
     <ClInclude Include="configmanager\typespecifiers.h" />
+    <ClInclude Include="ConfigManager\utilities.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -289,6 +289,7 @@ namespace ConfigManager
 	};
 };
 
+#include "utilities.h"
 
 /* ================ OptionProxy */
 namespace ConfigManager
@@ -336,20 +337,20 @@ namespace ConfigManager
 		template<typename TypeSpecifier>
 	void OptionProxy<TypeSpecifier>::Set(const ValueType& value)
 	{
-		AssignValueData(type_specifier_.ToString(value));
+		AssignValueData(escape(type_specifier_.ToString(value)));
 		value_ = value;
 	}
 
 	template<typename TypeSpecifier>
 	void OptionProxy<TypeSpecifier>::RegenerateValueData()
 	{
-		AssignValueData(type_specifier_.ToString(value_));
+		AssignValueData(escape(type_specifier_.ToString(value_)));
 	}
 
 	template<typename TypeSpecifier>
 	void OptionProxy<TypeSpecifier>::ProcessValueData(const std::string& data)
 	{
-		value_ = type_specifier_.FromString(data);
+		value_ = type_specifier_.FromString(unescape(data));
 	}
 }
 
@@ -491,7 +492,7 @@ namespace ConfigManager
 			{
 				result += chosen_delimiter_;
 			}
-			std::string data = type_specifier_.ToString(*it);
+			std::string data = unescape(type_specifier_.ToString(*it));
 			result += data;
 		}
 		AssignValueData(result);
@@ -500,8 +501,8 @@ namespace ConfigManager
 	template<typename TypeSpecifier>
 	void ListOptionProxy<TypeSpecifier>::ProcessValueData(const std::string& data)
 	{
-		auto first_comma_position = data.find_first_of(',');
-		auto first_colon_position = data.find_first_of(':');
+		auto first_comma_position = find_first_nonespaced(data, ',');
+		auto first_colon_position = find_first_nonespaced(data, ':');
 		if(first_comma_position == std::string::npos)
 		{
 			chosen_delimiter_ = ':';
@@ -524,13 +525,13 @@ namespace ConfigManager
 		std::size_t offset = 0;
 		while(offset < data.length())
 		{
-			std::size_t next = data.find_first_of(chosen_delimiter_, offset);
+			std::size_t next = find_first_nonespaced(data, chosen_delimiter_, offset);
 			if(next == std::string::npos)
 			{
 				next = data.length();
 			}
 			std::string item_data = data.substr(offset, next - offset);
-			ValueType item_value = type_specifier_.FromString(item_data);
+			ValueType item_value = type_specifier_.FromString(unescape(item_data));
 			list_.push_back(item_value);
 			offset = next + 1;
 		}
