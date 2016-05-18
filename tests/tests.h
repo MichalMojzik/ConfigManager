@@ -16,7 +16,9 @@ private:
 	/* 
 	* Test proverujici spravne cteni formatu vstupnich dat.
 	*/
-	void FormatReadingTest();
+	void CommentsSyntaxTest();
+	void SectionSyntaxTest();
+	void OptionSyntaxTest();
 };
 
 class SectionTestSuite : public Test::Suite
@@ -40,6 +42,12 @@ public:
 	OptionTestSuite();
 private:
 	/*
+	* Test metody getName a getSectionName.
+	*/
+	void InputNameOptionTest();
+	void SpecNameOption();
+	void InputNameListOptionTest();
+	/*
 	* Test ukladani sekci..
 	*/
 	void SavingBoolTest();
@@ -48,20 +56,19 @@ private:
 	void SavingFloatTest();
 	void SavingStringTest();
 	void SavingEnumTest();
-
+	void SavingListTest();
 	void PreservingFormatTest();
+	
 	/*
-	* Test metody getName a getSectionName.
+	* Adding and removing elements.
 	*/
-	void InputNameOptionTest();
-	void SpecNameOption();
-
+	void ListModificationTest();
 	/*
 	* Test link functionality.
 	*/
 	void LinksTest();
+	void ListLinkTest();
 
-	void InputNameLOptionTest();
 
 	/*
 	* Enum class for testing purposes.

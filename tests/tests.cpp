@@ -85,12 +85,14 @@ int main(int argc, char* argv[])
 
 ConfigurationTestSuite::ConfigurationTestSuite()
 {
-	TEST_ADD(ConfigurationTestSuite::FormatReadingTest)
+	TEST_ADD(ConfigurationTestSuite::CommentsSyntaxTest)
+	TEST_ADD(ConfigurationTestSuite::SectionSyntaxTest)
+	TEST_ADD(ConfigurationTestSuite::OptionSyntaxTest)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void ConfigurationTestSuite::FormatReadingTest()
+void ConfigurationTestSuite::CommentsSyntaxTest()
 {
 	// 
 	{// funguji komentare ? (= jsou ignorovany ?  ) 
@@ -107,7 +109,7 @@ void ConfigurationTestSuite::FormatReadingTest()
 		Section dummySection = config.SpecifySection("section", Requirement::MANDATORY, "this section should be there");
 			// pokud tam tato sekce neni, nepujde ji specifikovat jako MANDATORY..
 		OptionProxy<StringSpecifier> dummyOpt =  dummySection.SpecifyOption<StringSpecifier>
-							("option", StringSpecifier() , "default", OPTIONAL,"this option should be there");
+			("option", StringSpecifier() , "default", OPTIONAL,"this option should be there");
 		// pokud nebude mit hodnotu "value, tak je to spatne..
 		string dummyValue = dummyOpt.Get();
 		TEST_ASSERT_EQUALS("value", dummyValue);
@@ -117,7 +119,6 @@ void ConfigurationTestSuite::FormatReadingTest()
 		TEST_THROWS(OptionProxy<StringSpecifier> commentedOption = dummySection.SpecifyOption
 			(";commentedOption", StringSpecifier(), "default", ConfigManager::MANDATORY, 
 				"this option should not be in configuration"), MandatoryMissingException )
-
 	}
 	// co se stane s nekorektnim vstupem
 	{// nesmysl
@@ -126,12 +127,7 @@ void ConfigurationTestSuite::FormatReadingTest()
 		testText << "asdf";
 		TEST_THROWS(config.Open(testText), MalformedInputException);
 	}
-	{// spatne zadane sekce
-		ConfigManager::Configuration config;
-		stringstream testText;
-		testText << "[sectionName]asdf";
-		TEST_THROWS(config.Open(testText), MalformedInputException);
-	}
+
 	{// spatna sekce 
 		ConfigManager::Configuration config;
 		stringstream testText;
@@ -163,6 +159,58 @@ void ConfigurationTestSuite::FormatReadingTest()
 		testText << "[section]\n";
 		testText << "asdf";
 		TEST_THROWS(config.Open(testText), MalformedInputException);
+	}
+}
+
+void ConfigurationTestSuite::SectionSyntaxTest()
+{
+	try
+	{// spatne zadane sekce
+		{
+			ConfigManager::Configuration config;
+			stringstream testText;
+			testText << "[sectionName]asdf";
+			TEST_THROWS(config.Open(testText), MalformedInputException);
+		}
+		{
+			ConfigManager::Configuration config;
+			stringstream testText;
+			testText << "asdf[sectionName]";
+			TEST_THROWS(config.Open(testText), MalformedInputException);
+		}
+	}
+	catch (...)
+	{
+		TEST_FAIL("Unexpected exception")
+	}
+}
+
+void ConfigurationTestSuite::OptionSyntaxTest()
+{
+	try 
+	{
+		// test ingnoring whitespaces:
+		stringstream input;
+		input << "[section]\n";
+		input << "    option1   =option name with spaces\n";
+		input << "option2=      value with spaces     \n";
+		input << " \ option3\  =with valid spaces in name\n";
+		input << "option4= \ valid spaces in value\ \n";
+		Configuration config;
+		config.Open(input);
+		Section section = config.SpecifySection("section", MANDATORY);
+		TEST_THROWS_NOTHING(OptionProxy<StringSpecifier> option1 = section.SpecifyOption("option1", StringSpecifier(), "default1", MANDATORY))
+		OptionProxy<StringSpecifier> option2 = section.SpecifyOption("option2", StringSpecifier(), "default2", MANDATORY);
+		TEST_ASSERT_EQUALS("value with spaces", option2.Get())
+		TEST_THROWS_NOTHING(OptionProxy<StringSpecifier> option3 = section.SpecifyOption(" option3 ", StringSpecifier(), "default3", MANDATORY))
+		OptionProxy<StringSpecifier> option4 = section.SpecifyOption("option4", StringSpecifier(), "default", MANDATORY);
+		TEST_ASSERT_EQUALS(" valid psaces in value ", option4.Get())
+		// now test the saving:
+		
+	}
+	catch (...)
+	{
+		TEST_FAIL("Unexpected exception.");
 	}
 }
 
@@ -377,16 +425,17 @@ void TypeSpecifiersTestSuite::FloatSpecTest()
 	}
 
 }
-void TypeSpecifiersTestSuite::StringSpecTest()
+void TypeSpecifiersTestSuite::StringSpecTest()	
 {
 	// there is not much to test, is it??
 	StringSpecifier strSpec;
-	std::string data = "hello!@#$%^&*()_+}{|\":?><";
+	std::string data = "hello!@#%^&*()_+}{|\":?><\.\,\;\$";
+	// will transform into:
+	std::string expected = "hello!@#%^&*()_+}{|\":?><.,;$";
 	std::string result = strSpec.FromString(data);
-	TEST_ASSERT_EQUALS(data, result)
-	std::string backConversion = strSpec.ToString(result);
+	TEST_ASSERT_EQUALS(expected, result)
+	std::string backConversion = strSpec.ToString(expected);
 	TEST_ASSERT_EQUALS(data, backConversion)
-
 }
 void TypeSpecifiersTestSuite::EnumSpecTest()
 {
@@ -453,7 +502,7 @@ void SectionTestSuite::SavingTests()
 			config.Open(input);
 			Section newSection = config.SpecifySection("section", ConfigManager::MANDATORY, "default");
 			stringstream output;
-			config.Save(output);
+			config.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
 			string resultingLine;
 			output >> resultingLine;
 			TEST_ASSERT_EQUALS("[section];comment", resultingLine)
@@ -534,9 +583,10 @@ OptionTestSuite::OptionTestSuite()
 	TEST_ADD(OptionTestSuite::SavingFloatTest)
 	TEST_ADD(OptionTestSuite::SavingStringTest)
 	TEST_ADD(OptionTestSuite::SavingEnumTest)
-	// savingListTest
+	//TEST_ADD(OptionTestSuit::SavingListTest) not implemented
 	TEST_ADD(OptionTestSuite::PreservingFormatTest)
-
+    //TEST_ADD(OptionTestSuite::ListModificationTest) not implemented
+	//TEST_ADD(OptionTestSuite::ListLinkTest ) not implemented
 	TEST_ADD(OptionTestSuite::LinksTest)
 
 }
@@ -695,6 +745,15 @@ void OptionTestSuite::SavingStringTest()
 			output >> oLine;
 			TEST_ASSERT_EQUALS("stringOpt=anotherString;commentsString", oLine)
 		}
+		stringOption.Set(" anotherString  "); // white spaces at beginning and end, need escape characted
+		{
+			stringstream output;
+			config.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
+			string oLine;
+			output >> oLine; // section line is not needed
+			output >> oLine;
+			TEST_ASSERT_EQUALS("stringOpt=\ anotherString\ \ ;commentsString", oLine)
+		}
 	}
 	catch (...)
 	{
@@ -736,6 +795,43 @@ void OptionTestSuite::SavingEnumTest()
 	catch (...)
 	{
 		TEST_FAIL("Unexpected exception")
+	}
+}
+
+void OptionTestSuite::SavingListTest()
+{
+	try
+	{ // try if it gets name correctly from input
+		ConfigManager::Configuration homeConfig;
+		// takovy vstup by mel byt korektni. 
+		Section section = homeConfig.SpecifySection("sectionName", ConfigManager::OPTIONAL, "commentsSection");
+		vector<StringSpecifier::ValueType> defaultValues;
+		defaultValues.push_back("defaultValue");
+		defaultValues.push_back("valueDefault");
+		ListOptionProxy<StringSpecifier> listOption = section.SpecifyListOption("optionList", StringSpecifier(), defaultValues,
+			ConfigManager::OPTIONAL, "commentsOption");
+		{ // saving 
+			stringstream output;
+			homeConfig.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
+			string oLine;
+			output >> oLine; // section line is not target of test
+			output >> oLine;
+			TEST_ASSERT_EQUALS("optionList=defaultValue,valueDefault;commentsOption", oLine)
+		}
+		// change one option:
+		listOption[1].Set("changedValue");
+		{ // saving 
+			stringstream output;
+			homeConfig.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
+			string oLine;
+			output >> oLine; // section line is not target of test
+			output >> oLine;
+			TEST_ASSERT_EQUALS("optionList=defaultValue,changedValue;commentsOption", oLine)
+		}
+	}
+	catch (...)
+	{
+		TEST_FAIL("Unexpected exception.");
 	}
 }
 
@@ -834,7 +930,7 @@ void OptionTestSuite::SpecNameOption()
 		OptionProxy<StringSpecifier> newOption = newSection.SpecifyOption("optionTwo", StringSpecifier(), 
 			"defaultValueTwo", ConfigManager::OPTIONAL, "testing new option in old section");
 		TEST_ASSERT_EQUALS("optionTwo", newOption.GetName())
-			TEST_ASSERT_EQUALS("newSectionName", newOption.GetSectionName())
+		TEST_ASSERT_EQUALS("newSectionName", newOption.GetSectionName())
 	}
 	catch(...)
 	{
@@ -842,6 +938,36 @@ void OptionTestSuite::SpecNameOption()
 	}
 }
 
+/*
+void OptionTestSuite::ListModificationTest()
+{
+	try {
+		Configuration configuration;
+		Section section = configuration.SpecifySection("section", ConfigManager::OPTIONAL, "sectionComments");
+		vector<BooleanSpecifier::ValueType> initialList;
+		initialList.push_back(true);
+		initialList.push_back(true);
+		ListOptionProxy<BooleanSpecifier> boolList = section.SpecifyListOption("boolListOption", BooleanSpecifier(), initialList, ConfigManager::OPTIONAL, "optionComments");
+		// list size
+		TEST_ASSERT_EQUALS(2, boolList.Count())
+			// adding to list
+			boolList.Add(false);
+		TEST_ASSERT_EQUALS(false, boolList[boolList.Count()].Get());
+		// removing element
+		boolList[0].Remove();
+		// checking that list contain (true, false)
+		TEST_ASSERT_EQUALS(2, boolList.Count())
+			TEST_ASSERT_EQUALS(true, boolList[0].Get())
+			TEST_ASSERT_EQUALS(false, boolList[1].Get())
+			boolList[0].Set(false);
+		TEST_ASSERT_EQUALS(false, boolList[0].Get())
+	}
+	catch(...)
+	{
+		TEST_FAIL("Unexpected exception.")
+	}
+}
+*/
 void OptionTestSuite::LinksTest()
 {
 	try 
@@ -865,7 +991,40 @@ void OptionTestSuite::LinksTest()
 	}
 }
 
-void OptionTestSuite::InputNameLOptionTest()
+/* commented out cause is not working yet
+void OptionTestSuite::ListLinkTest()
+{
+	try
+	{
+		// test two variants of list links:
+		stringstream inputText;
+		inputText << "[section1]\n";
+		inputText << "option=linkedValue\n";
+		inputText << "[section2]\n";
+		inputText << "option=inPlaceValue,${section1#option}\n";
+		inputText << "secondOption = ${secion2#option}\n";
+		Configuration config;
+		config.Open(inputText);
+		Section section2 = config.SpecifySection("section2", ConfigManager::MANDATORY);
+		vector<StringSpecifier::ValueType> defValues;
+		defValues.push_back("default1");
+		ListOptionProxy<StringSpecifier> listOption = section2.SpecifyListOption
+			("option", StringSpecifier(), defValues, OPTIONAL);
+		TEST_ASSERT_EQUALS("linkedValue", listOption[0].Get());
+		TEST_ASSERT_EQUALS("inPlaceValue", listOption[0].Get());
+		ListOptionProxy<StringSpecifier> listOption2 = section2.SpecifyListOption
+			("option", StringSpecifier(), defValues, OPTIONAL);
+		TEST_ASSERT_EQUALS("linkedValue", listOption[0].Get());
+		TEST_ASSERT_EQUALS("inPlaceValue", listOption[0].Get());
+	}
+	catch (...)
+	{
+		TEST_FAIL("Unexpected exception.");
+	}
+}
+*/
+
+void OptionTestSuite::InputNameListOptionTest()
 {
 	try
 	{ // try if it gets name correctly from input
