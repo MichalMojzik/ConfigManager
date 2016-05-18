@@ -426,7 +426,7 @@ void TypeSpecifiersTestSuite::StringSpecTest()
 {
 	// there is not much to test, is it??
 	StringSpecifier strSpec;
-	std::string data = "hello!@#%^&*()_+}{|\":?><\\.\\,\\;\\$";
+	std::string data = "hello!@#%^&*()_+}{|\":?><.,;$";
 	// will transform into:
 	std::string expected = "hello!@#%^&*()_+}{|\":?><.,;$";
 	std::string result = strSpec.FromString(data);
