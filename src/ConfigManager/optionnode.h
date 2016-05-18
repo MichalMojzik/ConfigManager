@@ -1,12 +1,16 @@
 #ifndef CONFIGMANAGER_OPTIONNODE_H
 #define CONFIGMANAGER_OPTIONNODE_H
 
-#include "configuration.h"
-#include "sectionnode.h"
-#include "option.h"
+#include "enums.h"
+
+#include <string>
 
 namespace ConfigManager
 {
+	class AbstractOptionProxy;
+	class SectionNode;
+	class Configuration;
+
 	class OptionNode
 	{
 	public:

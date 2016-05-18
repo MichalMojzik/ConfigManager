@@ -1,10 +1,10 @@
 #ifndef CONFIGMANAGER_OPTION_H
 #define CONFIGMANAGER_OPTION_H
 
+#include "optionnode.h"
+
 #include <string>
 #include <vector>
-#include "optionnode.h"
-#include "sectionnode.h"
 
 namespace ConfigManager
 {
