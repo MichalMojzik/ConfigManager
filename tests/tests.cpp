@@ -492,7 +492,7 @@ void SectionTestSuite::SavingTests()
 			stringstream output;
 			config.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
 			string resultingLine;
-			output >> resultingLine;
+			std::getline(output, resultingLine);
 			TEST_ASSERT_EQUALS("[newSection];comments", resultingLine)
 		}
 		{// saving old section:
@@ -504,7 +504,7 @@ void SectionTestSuite::SavingTests()
 			stringstream output;
 			config.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
 			string resultingLine;
-			output >> resultingLine;
+			std::getline(output, resultingLine);
 			TEST_ASSERT_EQUALS("[section];comment", resultingLine)
 		}
 		{// if section is not needed, it should stay in given format
@@ -515,7 +515,7 @@ void SectionTestSuite::SavingTests()
 			stringstream output;
 			config.Save(output);
 			string resultingLine;
-			output >> resultingLine;
+			std::getline(output, resultingLine);
 			TEST_ASSERT_EQUALS("[section]; untouched  comment", resultingLine)
 		}
 	}
@@ -602,8 +602,8 @@ void OptionTestSuite::SavingBoolTest()
 				stringstream output;
 				config.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
 				string oLine;
-				output >> oLine; // throw away the section line
-				output >> oLine;
+				std::getline(output, oLine); // throw away the section line
+				std::getline(output, oLine);
 				TEST_ASSERT_EQUALS("boolOpt=on;commentsBool", oLine)
 			}
 			// now let us change values:
@@ -612,8 +612,8 @@ void OptionTestSuite::SavingBoolTest()
 				stringstream output;
 				config.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
 				string oLine;
-				output >> oLine; // section line is not needed
-				output >> oLine;
+				std::getline(output, oLine); // section line is not needed
+				std::getline(output, oLine);
 				TEST_ASSERT_EQUALS("boolOpt=off;commentsBool", oLine)
 			}	
 	}
@@ -635,8 +635,8 @@ void OptionTestSuite::SavingIntTest()
 				stringstream output;
 				config.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
 				string oLine;
-				output >> oLine; // throw away the section line
-				output >> oLine;
+				std::getline(output, oLine); // throw away the section line
+				std::getline(output, oLine);
 				TEST_ASSERT_EQUALS("intOpt=-1;commentsInt", oLine)
 			}
 			// now we change the value
@@ -645,8 +645,8 @@ void OptionTestSuite::SavingIntTest()
 				stringstream output;
 				config.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
 				string oLine;
-				output >> oLine; // section line is not needed
-				output >> oLine;
+				std::getline(output, oLine); // section line is not needed
+				std::getline(output, oLine);
 				TEST_ASSERT_EQUALS("intOpt=-2;commentsInt", oLine)
 			}
 		}
@@ -669,8 +669,8 @@ void OptionTestSuite::SavingUintTest()
 			stringstream output;
 			config.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
 			string oLine;
-			output >> oLine; // throw away the section line
-			output >> oLine;
+			std::getline(output, oLine); // throw away the section line
+			std::getline(output, oLine);
 			TEST_ASSERT_EQUALS("uintOpt=1;commentsUint", oLine)
 		}
 		// now, lets change the value
@@ -679,8 +679,8 @@ void OptionTestSuite::SavingUintTest()
 			stringstream output;
 			config.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
 			string oLine;
-			output >> oLine; // section line is not needed
-			output >> oLine;
+			std::getline(output, oLine); // section line is not needed
+			std::getline(output, oLine);
 			TEST_ASSERT_EQUALS("uintOpt=2;commentsUint", oLine)
 		}
 	}
@@ -701,8 +701,8 @@ void OptionTestSuite::SavingFloatTest()
 			stringstream output;
 			config.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
 			string oLine;
-			output >> oLine; // throw away the section line
-			output >> oLine;
+			std::getline(output, oLine); // throw away the section line
+			std::getline(output, oLine);
 			TEST_ASSERT_EQUALS("floatOpt=3.14;commentsFloat", oLine)
 		}
 		floatOption.Set(2.72);
@@ -710,8 +710,8 @@ void OptionTestSuite::SavingFloatTest()
 			stringstream output;
 			config.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
 			string oLine;
-			output >> oLine; // section line is not needed
-			output >> oLine;
+			std::getline(output, oLine); // section line is not needed
+			std::getline(output, oLine);
 			TEST_ASSERT_EQUALS("floatOpt=2.72;commentsFloat", oLine)
 		}
 	}
@@ -772,7 +772,7 @@ void OptionTestSuite::SavingEnumTest()
 		valueMap.insert(std::pair <std::string, enumType>("FIRST_VALUE_STR", enumType::FIRST_VAL));
 		valueMap.insert(std::pair <std::string, enumType>("SECOND_VALUE_STR", enumType::SECOND_VAL));
 		valueMap.insert(std::pair <std::string, enumType>("THIRD_VALUE_STR", enumType::THIRD_VAL));
-		OptionProxy<EnumSpecifier<OptionTestSuite::TestEnum>> enumOption = section.SpecifyOption("enumOpt",
+		OptionProxy<EnumSpecifier<OptionTestSuite::TestEnum> > enumOption = section.SpecifyOption("enumOpt",
 			EnumSpecifier<enumType>(valueMap), enumType::THIRD_VAL, OPTIONAL, "commentsEnum");
 		{
 			stringstream output;
@@ -824,8 +824,8 @@ void OptionTestSuite::SavingListTest()
 			stringstream output;
 			homeConfig.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
 			string oLine;
-			output >> oLine; // section line is not target of test
-			output >> oLine;
+			std::getline(output, oLine); // section line is not target of test
+			std::getline(output, oLine);
 			TEST_ASSERT_EQUALS("optionList=defaultValue,changedValue;commentsOption", oLine)
 		}
 	}
