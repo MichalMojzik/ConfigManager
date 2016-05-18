@@ -154,6 +154,56 @@ namespace ConfigManager
 	class ListOptionProxy : public AbstractOptionProxy
 	{
 		typedef typename TypeSpecifier::ValueType ValueType;
+
+		/**
+		* Trida pro navrat z operatoru [] v pripade konstantniho pristupu, ekvivalent metody get.
+		*/
+		class ConstItem
+		{
+		public:
+			/**
+			* Konstruktor ze seznamu a indexu.
+			* \param parent Seznam ze ktereho prvek pochazi.
+			* \param index Pozice v seznamu.
+			*/
+			ConstItem(const ListOptionProxy<TypeSpecifier>& parent, std::size_t index);
+
+			/**
+			* Metoda pro pristup k hodnote.
+			*/
+			const ValueType& Get() const;
+		protected:
+			const ListOptionProxy<TypeSpecifier>& parent_;
+			std::size_t index_;
+		};
+
+		/**
+		* Trida pro navrat z operatoru [] v pripade pristupu, ekvivalent metody set.
+		*/
+		class Item
+		{
+		public:
+			/**
+			* \copydoc ConstItem::ConstItem(const ListOptionProxy<TypeSpecifier>& parent, int index)
+			*
+			*/
+			Item(ListOptionProxy<TypeSpecifier>& parent, std::size_t index);
+
+			/**
+			* Metoda pro pristup k hodnote.
+			*/
+			const ValueType& Get() const;
+			/**
+			* Metoda pro nastavovani nove hodnoty.
+			* Muze vyhodit WrongFormatException vyjimku (kvuli existenci referenci).
+			* \param value Nova hodnota.
+			*/
+			void Set(const ValueType& value);
+		protected:
+			ListOptionProxy<TypeSpecifier>& parent_;
+			std::size_t index_;
+		};
+
 	public:
 		ListOptionProxy();
 
@@ -168,82 +218,44 @@ namespace ConfigManager
 		*/
 		ListOptionProxy& operator=(ListOptionProxy&& other);
 
-		/**
-		* Trida pro navrat z operatoru [] v pripade konstantniho pristupu, ekvivalent metody get.
-		*/
-		class ConstItem
-		{
-		public:
-			/**
-			* Konstruktor ze seznamu a indexu. 
-			* \param parent Seznam ze ktereho prvek pochazi.
-			* \param index Pozice v seznamu. 
-			*/
-			ConstItem(const ListOptionProxy<TypeSpecifier>& parent, int index) : parent_(parent), index_(index) {}
 
-			/**
-			* Metoda pro pristup k hodnote. 
-			*/
-			const ValueType& Get() const { return list_[index_]; }
-		private:
-			const ListOptionProxy<TypeSpecifier>& parent_;
-			int index_;
-		};
-
-		/**
-		* Trida pro navrat z operatoru [] v pripade pristupu, ekvivalent metody set.
-		*/
-		class Item
-		{
-		public:
-			/**
-			* \copydoc ConstItem::ConstItem(const ListOptionProxy<TypeSpecifier>& parent, int index) 
-			* 
-			*/
-			Item(ListOptionProxy<TypeSpecifier>& parent, int index) : parent_(parent), index_(index) {}
-			/**
-			* Metoda pro pristup k hodne.
-			*/
-			const ValueType& Get() const { return list_[index_]; }
-			/**
-			* Metoda pro nastavovani nove hodnoty.
-			* Muze vyhodit WrongFormatException vyjimku (kvuli existenci referenci).
-			* \param value Nova hodnota.
-			*/
-			void Set(const ValueType& value) {}
-			/**
-			* Metoda pro odstraneni volby ze seznamu.
-			* Muze vyhodit WrongFormatException vyjimku (kvuli existenci referenci).
-			*/
-			void Remove() {}
-		private:
-			ListOptionProxy<TypeSpecifier>& parent_;
-			int index_;
-		};
 		/**
 		* Metoda vracejici pocet voleb v seznamu.
 		*
 		*/
-		int Count() { return 0; }
+		std::size_t Count();
 		/**
 		* Operator pro pristup k jednotlivym volbam ze seznamu.
 		* Muze vyhodit OutOfBoundsException vyjimku.
 		* \param index Pozice pozadovane volby.
 		*/
-		Item operator[] (int index) { return Item(*this, index); }
+		Item operator[] (std::size_t index);
 		/**
 		* Operator pro konstantni pristup k jednotlivym volbam ze seznamu.
 		* Muze vyhodit OutOfBoundsException vyjimku.
 		* \param index Pozice pozadovane volby.
 		*/
-		ConstItem operator[] (int index) const { return ConstItem(*this, index); }
+		ConstItem operator[] (std::size_t index) const;
 
 		/**
 		* Metoda pro pridani nove volby do seznamu.
 		* Muze vyhodit WrongFormatException vyjimku (kvuli existenci referenci).
 		* \param value Nova volba.
 		*/
-		Item Add(const ValueType& value) { return Item(*this, 0); }
+		Item Add(const ValueType& value);
+
+		/**
+		* Metoda pro pridani nove volby do seznamu.
+		* Muze vyhodit WrongFormatException vyjimku (kvuli existenci referenci).
+		* \param value Nova volba.
+		*/
+		Item Insert(std::size_t index, const ValueType& value);
+
+		/**
+		* Metoda pro odstraneni volby ze seznamu.
+		* Muze vyhodit WrongFormatException vyjimku (kvuli existenci referenci).
+		*/
+		void Remove(std::size_t index);
 
 	protected:
 		/**
@@ -387,6 +399,90 @@ namespace ConfigManager
 		chosen_delimiter_ = other.chosen_delimiter_;
 		type_specifier_ = std::move(other.type_specifier_);
 		return *this;
+	}
+
+	template<typename TypeSpecifier>
+	std::size_t ListOptionProxy<TypeSpecifier>::Count()
+	{
+		return list_.size();
+	}
+
+	template<typename TypeSpecifier>
+	ListOptionProxy<TypeSpecifier>::ConstItem::ConstItem(
+		const ListOptionProxy<TypeSpecifier>& parent,
+		std::size_t index
+		)	: parent_(parent), index_(index)
+	{
+	}
+	template<typename TypeSpecifier>
+	ListOptionProxy<TypeSpecifier>::Item::Item(
+		ListOptionProxy<TypeSpecifier>& parent,
+		std::size_t index
+		) : parent_(parent), index_(index)
+	{
+	}
+
+	template<typename TypeSpecifier>
+	auto ListOptionProxy<TypeSpecifier>::ConstItem::Get() const -> const ValueType&
+	{
+		return parent_.list_[index_];
+	}
+
+	template<typename TypeSpecifier>
+	auto ListOptionProxy<TypeSpecifier>::Item::Get() const -> const ValueType&
+	{
+		return parent_.list_[index_];
+	}
+
+	template<typename TypeSpecifier>
+	void ListOptionProxy<TypeSpecifier>::Item::Set(const ValueType& value)
+	{
+		parent_.list_[index_] = value;
+		parent_.RegenerateValueData();
+	}
+
+	template<typename TypeSpecifier>
+	auto ListOptionProxy<TypeSpecifier>::operator[](std::size_t index) -> Item
+	{
+		if(index < 0 || index >= list_.size())
+			throw OutOfBoundsException();
+
+		return Item(*this, index);
+	}
+	template<typename TypeSpecifier>
+	auto ListOptionProxy<TypeSpecifier>::operator[](std::size_t index) const -> ConstItem
+	{
+		if(index < 0 || index >= list_.size())
+			throw OutOfBoundsException();
+
+		return ConstItem(*this, index);
+	}
+
+	template<typename TypeSpecifier>
+	auto ListOptionProxy<TypeSpecifier>::Add(const ValueType& value) -> Item
+	{
+		if(index < 0 || index >= list_.size())
+			throw OutOfBoundsException();
+
+		list_.push_back(value);
+		RegenerateValueData();
+	}
+	template<typename TypeSpecifier>
+	auto ListOptionProxy<TypeSpecifier>::Insert(std::size_t index, const ValueType& value) -> Item
+	{
+		if(index < 0 || index >= list_.size())
+			throw OutOfBoundsException();
+		list_.insert(list_.begin() + index, value);
+		RegenerateValueData();
+	}
+	template<typename TypeSpecifier>
+	void ListOptionProxy<TypeSpecifier>::Remove(std::size_t index)
+	{
+		if(index < 0 || index >= list_.size())
+			throw OutOfBoundsException();
+
+		list_.erase(list_.begin() + index);
+		RegenerateValueData();
 	}
 
 	template<typename TypeSpecifier>

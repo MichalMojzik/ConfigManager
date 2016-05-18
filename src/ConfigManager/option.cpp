@@ -24,7 +24,7 @@ namespace ConfigManager
 		option_node_->SetProxy(this);
 	}
 
-	AbstractOptionProxy & AbstractOptionProxy::operator=(AbstractOptionProxy && other)
+	AbstractOptionProxy& AbstractOptionProxy::operator=(AbstractOptionProxy && other)
 	{
 		if(option_node_ != nullptr)
 			option_node_->SetProxy(nullptr);
