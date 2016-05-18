@@ -428,6 +428,10 @@ namespace ConfigManager
 		while(offset < data.length())
 		{
 			std::size_t next = data.find_first_of(chosen_delimiter_, offset);
+			if(next == std::string::npos)
+			{
+				next = data.length();
+			}
 			std::string item_data = data.substr(offset, next - offset);
 			ValueType item_value = type_specifier_.FromString(item_data);
 			list_.push_back(item_value);
