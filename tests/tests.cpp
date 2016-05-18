@@ -582,9 +582,10 @@ OptionTestSuite::OptionTestSuite()
 	TEST_ADD(OptionTestSuite::SavingEnumTest)
 	//TEST_ADD(OptionTestSuit::SavingListTest) not implemented
 	TEST_ADD(OptionTestSuite::PreservingFormatTest)
-  TEST_ADD(OptionTestSuite::ListModificationTest)
+    TEST_ADD(OptionTestSuite::ListModificationTest)
 	TEST_ADD(OptionTestSuite::ListLinkTest )
 	TEST_ADD(OptionTestSuite::LinksTest)
+	TEST_ADD(OptionTestSuite::CopyingTest)
 
 }
 
@@ -885,6 +886,35 @@ void OptionTestSuite::PreservingFormatTest()
 	{
 		TEST_FAIL("Unexpected exception.")
 	}
+}
+
+void OptionTestSuite::CopyingTest()
+{
+	try 
+	{
+		Configuration config;
+		Section section = config.SpecifySection("section");
+		OptionProxy<StringSpecifier> optionOrig = section.SpecifyOption("optionOrig", StringSpecifier(), 
+			"defaultValue", OPTIONAL, "comments");
+		auto optionMoved = std::move(optionOrig);
+		TEST_THROWS(optionOrig.GetName(), exception)
+		TEST_ASSERT_EQUALS("optionOrig", optionMoved.GetName())
+		TEST_ASSERT_EQUALS("section", optionMoved.GetSectionName())
+		TEST_ASSERT_EQUALS("defaultValue", optionMoved.Get())
+		optionMoved.Set("newValue");
+		TEST_ASSERT_EQUALS("newValue", optionMoved.Get())
+		stringstream output;
+		config.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
+		string oLine;
+		std::getline(output,oLine); // section line
+		std::getline(output, oLine);
+		TEST_ASSERT_EQUALS("optionOrig=newValue;comments", oLine);
+	}
+	catch(...)
+	{
+		TEST_FAIL("Unexpected value.")
+	}
+
 }
 
 void OptionTestSuite::InputNameOptionTest()

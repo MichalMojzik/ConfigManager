@@ -1,0 +1,108 @@
+\hypertarget{class_config_manager_1_1_section}{}\section{Config\+Manager\+:\+:Section Class Reference}
+\label{class_config_manager_1_1_section}\index{Config\+Manager\+::\+Section@{Config\+Manager\+::\+Section}}
+
+
+{\ttfamily \#include $<$section.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename Type\+Specifier $>$ }\\\hyperlink{class_config_manager_1_1_option_proxy}{Option\+Proxy}$<$ \hyperlink{class_config_manager_1_1_type_specifier}{Type\+Specifier} $>$ \hyperlink{class_config_manager_1_1_section_a94e7c5fe73d725c5cfdab6773f2ec00e}{Specify\+Option} (std\+::string option\+\_\+name, const \hyperlink{class_config_manager_1_1_type_specifier}{Type\+Specifier} \&type\+\_\+specifier, const typename \hyperlink{class_config_manager_1_1_type_specifier_a30331e624a3c4a1c18eb5b838e93acea}{Type\+Specifier\+::\+Value\+Type} \&default\+\_\+value, Requirement optional=Requirement\+::\+O\+P\+T\+I\+O\+N\+AL, const std\+::string \&comment=\char`\"{}\char`\"{})
+\item 
+{\footnotesize template$<$typename Type\+Specifier $>$ }\\\hyperlink{class_config_manager_1_1_list_option_proxy}{List\+Option\+Proxy}$<$ \hyperlink{class_config_manager_1_1_type_specifier}{Type\+Specifier} $>$ \hyperlink{class_config_manager_1_1_section_a3ebb197102f277aec4a012e073c8a0ca}{Specify\+List\+Option} (std\+::string option\+\_\+name, const \hyperlink{class_config_manager_1_1_type_specifier}{Type\+Specifier} \&type\+\_\+specifier, const std\+::vector$<$ typename \hyperlink{class_config_manager_1_1_type_specifier_a30331e624a3c4a1c18eb5b838e93acea}{Type\+Specifier\+::\+Value\+Type} $>$ \&default\+\_\+value, Requirement optional=Requirement\+::\+O\+P\+T\+I\+O\+N\+AL, const std\+::string \&comment=\char`\"{}\char`\"{})
+\item 
+const std\+::string \& \hyperlink{class_config_manager_1_1_section_a416bce47977331d53358a888f6995900}{Get\+Name} ()
+\item 
+std\+::string \hyperlink{class_config_manager_1_1_section_a99a220aa7baafa9131117c6b08b47506}{operator\mbox{[}$\,$\mbox{]}} (const std\+::string \&option\+\_\+name)
+\end{DoxyCompactItemize}
+\subsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+class {\bfseries Configuration}\hypertarget{class_config_manager_1_1_section_a30221ddc558692a7b52598b963a74bc2}{}\label{class_config_manager_1_1_section_a30221ddc558692a7b52598b963a74bc2}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Trida realizujici sekci voleb. Predavana ven z knihovny. 
+
+Definition at line 17 of file section.\+h.
+
+
+
+\subsection{Member Function Documentation}
+\index{Config\+Manager\+::\+Section@{Config\+Manager\+::\+Section}!Get\+Name@{Get\+Name}}
+\index{Get\+Name@{Get\+Name}!Config\+Manager\+::\+Section@{Config\+Manager\+::\+Section}}
+\subsubsection[{\texorpdfstring{Get\+Name()}{GetName()}}]{\setlength{\rightskip}{0pt plus 5cm}const std\+::string \& Config\+Manager\+::\+Section\+::\+Get\+Name (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_manager_1_1_section_a416bce47977331d53358a888f6995900}{}\label{class_config_manager_1_1_section_a416bce47977331d53358a888f6995900}
+Metoda pro pristup k jmenu sekce. 
+
+Definition at line 11 of file section.\+cpp.
+
+\index{Config\+Manager\+::\+Section@{Config\+Manager\+::\+Section}!operator\mbox{[}$\,$\mbox{]}@{operator[]}}
+\index{operator\mbox{[}$\,$\mbox{]}@{operator[]}!Config\+Manager\+::\+Section@{Config\+Manager\+::\+Section}}
+\subsubsection[{\texorpdfstring{operator[](const std\+::string \&option\+\_\+name)}{operator[](const std::string &option_name)}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::string Config\+Manager\+::\+Section\+::operator\mbox{[}$\,$\mbox{]} (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{option\+\_\+name}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_manager_1_1_section_a99a220aa7baafa9131117c6b08b47506}{}\label{class_config_manager_1_1_section_a99a220aa7baafa9131117c6b08b47506}
+Primy pristup ke retezcove reprezentaci volby. 
+
+Definition at line 16 of file section.\+cpp.
+
+\index{Config\+Manager\+::\+Section@{Config\+Manager\+::\+Section}!Specify\+List\+Option@{Specify\+List\+Option}}
+\index{Specify\+List\+Option@{Specify\+List\+Option}!Config\+Manager\+::\+Section@{Config\+Manager\+::\+Section}}
+\subsubsection[{\texorpdfstring{Specify\+List\+Option(std\+::string option\+\_\+name, const Type\+Specifier \&type\+\_\+specifier, const std\+::vector$<$ typename Type\+Specifier\+::\+Value\+Type $>$ \&default\+\_\+value, Requirement optional=\+Requirement\+::\+O\+P\+T\+I\+O\+N\+A\+L, const std\+::string \&comment="""")}{SpecifyListOption(std::string option_name, const TypeSpecifier &type_specifier, const std::vector< typename TypeSpecifier::ValueType > &default_value, Requirement optional=Requirement::OPTIONAL, const std::string &comment="")}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Type\+Specifier $>$ {\bf List\+Option\+Proxy}$<$ {\bf Type\+Specifier} $>$ Config\+Manager\+::\+Section\+::\+Specify\+List\+Option (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{option\+\_\+name, }
+\item[{const {\bf Type\+Specifier} \&}]{type\+\_\+specifier, }
+\item[{const std\+::vector$<$ typename {\bf Type\+Specifier\+::\+Value\+Type} $>$ \&}]{default\+\_\+value, }
+\item[{Requirement}]{optional = {\ttfamily Requirement\+:\+:OPTIONAL}, }
+\item[{const std\+::string \&}]{comment = {\ttfamily \char`\"{}\char`\"{}}}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_manager_1_1_section_a3ebb197102f277aec4a012e073c8a0ca}{}\label{class_config_manager_1_1_section_a3ebb197102f277aec4a012e073c8a0ca}
+
+
+
+
+Muze vyhodit \hyperlink{class_config_manager_1_1_wrong_format_exception}{Wrong\+Format\+Exception}, \hyperlink{class_config_manager_1_1_mandatory_missing_exception}{Mandatory\+Missing\+Exception} vyjimky. 
+
+Definition at line 93 of file section.\+h.
+
+\index{Config\+Manager\+::\+Section@{Config\+Manager\+::\+Section}!Specify\+Option@{Specify\+Option}}
+\index{Specify\+Option@{Specify\+Option}!Config\+Manager\+::\+Section@{Config\+Manager\+::\+Section}}
+\subsubsection[{\texorpdfstring{Specify\+Option(std\+::string option\+\_\+name, const Type\+Specifier \&type\+\_\+specifier, const typename Type\+Specifier\+::\+Value\+Type \&default\+\_\+value, Requirement optional=\+Requirement\+::\+O\+P\+T\+I\+O\+N\+A\+L, const std\+::string \&comment="""")}{SpecifyOption(std::string option_name, const TypeSpecifier &type_specifier, const typename TypeSpecifier::ValueType &default_value, Requirement optional=Requirement::OPTIONAL, const std::string &comment="")}}]{\setlength{\rightskip}{0pt plus 5cm}template$<$typename Type\+Specifier $>$ {\bf Option\+Proxy}$<$ {\bf Type\+Specifier} $>$ Config\+Manager\+::\+Section\+::\+Specify\+Option (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{option\+\_\+name, }
+\item[{const {\bf Type\+Specifier} \&}]{type\+\_\+specifier, }
+\item[{const typename {\bf Type\+Specifier\+::\+Value\+Type} \&}]{default\+\_\+value, }
+\item[{Requirement}]{optional = {\ttfamily Requirement\+:\+:OPTIONAL}, }
+\item[{const std\+::string \&}]{comment = {\ttfamily \char`\"{}\char`\"{}}}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_manager_1_1_section_a94e7c5fe73d725c5cfdab6773f2ec00e}{}\label{class_config_manager_1_1_section_a94e7c5fe73d725c5cfdab6773f2ec00e}
+Metoda urcujici novou volbu v dane sekci. Muze vyhodit \hyperlink{class_config_manager_1_1_wrong_format_exception}{Wrong\+Format\+Exception}, \hyperlink{class_config_manager_1_1_mandatory_missing_exception}{Mandatory\+Missing\+Exception} vyjimky. 
+\begin{DoxyParams}{Parameters}
+{\em name} & Jmeno nove volby. \\
+\hline
+{\em type\+\_\+specifier} & Trida pro preklad volby z a do retezce. \\
+\hline
+{\em default\+\_\+value} & Prednastavena hodnota. \\
+\hline
+{\em optional} & Povinnost volby. \\
+\hline
+{\em comments} & Komentar. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 78 of file section.\+h.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+E\+:/\+I\+N\+F\+O\+R\+M\+A\+T\+I\+K\+A/doporucene\+Postupy/uloha4/repos/src/\+Config\+Manager/section.\+h\item 
+E\+:/\+I\+N\+F\+O\+R\+M\+A\+T\+I\+K\+A/doporucene\+Postupy/uloha4/repos/src/\+Config\+Manager/section.\+cpp\end{DoxyCompactItemize}

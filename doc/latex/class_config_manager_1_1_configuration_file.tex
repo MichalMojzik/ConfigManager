@@ -1,0 +1,61 @@
+\hypertarget{class_config_manager_1_1_configuration_file}{}\section{Config\+Manager\+:\+:Configuration\+File Class Reference}
+\label{class_config_manager_1_1_configuration_file}\index{Config\+Manager\+::\+Configuration\+File@{Config\+Manager\+::\+Configuration\+File}}
+Inheritance diagram for Config\+Manager\+:\+:Configuration\+File\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_config_manager_1_1_configuration_file}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_config_manager_1_1_configuration_file_a07d5355e097215f22a31f8e3e1d73aae}{Configuration\+File} (std\+::string filename, Input\+File\+Policy policy=Input\+File\+Policy\+::\+N\+O\+NE)
+\item 
+\hyperlink{class_config_manager_1_1_configuration_file_ab58c1860cb0d3b502f674975000736a5}{$\sim$\+Configuration\+File} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+
+
+Definition at line 78 of file configuration.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{Config\+Manager\+::\+Configuration\+File@{Config\+Manager\+::\+Configuration\+File}!Configuration\+File@{Configuration\+File}}
+\index{Configuration\+File@{Configuration\+File}!Config\+Manager\+::\+Configuration\+File@{Config\+Manager\+::\+Configuration\+File}}
+\subsubsection[{\texorpdfstring{Configuration\+File(std\+::string filename, Input\+File\+Policy policy=\+Input\+File\+Policy\+::\+N\+O\+N\+E)}{ConfigurationFile(std::string filename, InputFilePolicy policy=InputFilePolicy::NONE)}}]{\setlength{\rightskip}{0pt plus 5cm}Config\+Manager\+::\+Configuration\+File\+::\+Configuration\+File (
+\begin{DoxyParamCaption}
+\item[{std\+::string}]{filename, }
+\item[{Input\+File\+Policy}]{policy = {\ttfamily InputFilePolicy\+:\+:NONE}}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_manager_1_1_configuration_file_a07d5355e097215f22a31f8e3e1d73aae}{}\label{class_config_manager_1_1_configuration_file_a07d5355e097215f22a31f8e3e1d73aae}
+Konstruktor nacitajici nastaveni ze zvoleneho souboru. Muze vyhodit \hyperlink{class_config_manager_1_1_malformed_input_exception}{Malformed\+Input\+Exception}, \hyperlink{class_config_manager_1_1_io_exception}{Io\+Exception} vyjimky. 
+\begin{DoxyParams}{Parameters}
+{\em filename} & Jmeno souboru. (Ocekavany format \char`\"{}.\+ini\char`\"{}) \\
+\hline
+{\em policy} & Spefikuje pristup k vstupnimu souboru (relaxed/strict). \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 213 of file configuration.\+cpp.
+
+\index{Config\+Manager\+::\+Configuration\+File@{Config\+Manager\+::\+Configuration\+File}!````~Configuration\+File@{$\sim$\+Configuration\+File}}
+\index{````~Configuration\+File@{$\sim$\+Configuration\+File}!Config\+Manager\+::\+Configuration\+File@{Config\+Manager\+::\+Configuration\+File}}
+\subsubsection[{\texorpdfstring{$\sim$\+Configuration\+File()}{~ConfigurationFile()}}]{\setlength{\rightskip}{0pt plus 5cm}Config\+Manager\+::\+Configuration\+File\+::$\sim$\+Configuration\+File (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_manager_1_1_configuration_file_ab58c1860cb0d3b502f674975000736a5}{}\label{class_config_manager_1_1_configuration_file_ab58c1860cb0d3b502f674975000736a5}
+Zakladni dektruktor. Vsechny zmenene volby se program pokusi ulozit na urcene misto (soubor/istream). Muze selhat obdobne jako \hyperlink{class_config_manager_1_1_configuration_aa9922ac136da02f6588d60d731208d19}{Save()}, ale nevyhazuje vyjimky (jelikoz vyjimka z destruktoru by zpusobila pad programu, pokud jiz doslo k jine vyjimce). 
+
+Definition at line 220 of file configuration.\+cpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+E\+:/\+I\+N\+F\+O\+R\+M\+A\+T\+I\+K\+A/doporucene\+Postupy/uloha4/repos/src/\+Config\+Manager/configuration.\+h\item 
+E\+:/\+I\+N\+F\+O\+R\+M\+A\+T\+I\+K\+A/doporucene\+Postupy/uloha4/repos/src/\+Config\+Manager/configuration.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,99 @@
+\hypertarget{class_config_manager_1_1_string_specifier}{}\section{Config\+Manager\+:\+:String\+Specifier Class Reference}
+\label{class_config_manager_1_1_string_specifier}\index{Config\+Manager\+::\+String\+Specifier@{Config\+Manager\+::\+String\+Specifier}}
+
+
+{\ttfamily \#include $<$typespecifiers.\+h$>$}
+
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef std\+::string \hyperlink{class_config_manager_1_1_string_specifier_ac4bc384955f5da1874779f02c4ff757f}{Value\+Type}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_config_manager_1_1_string_specifier_a430e783d95729964c8a9a8755146805d}{String\+Specifier} ()
+\item 
+const \hyperlink{class_config_manager_1_1_string_specifier_ac4bc384955f5da1874779f02c4ff757f}{Value\+Type} \& \hyperlink{class_config_manager_1_1_string_specifier_aced30df1ae4ec0922f3fd87a98b4ca65}{From\+String} (const std\+::string \&data)
+\item 
+const std\+::string \& \hyperlink{class_config_manager_1_1_string_specifier_a86ad1a911411e7189c55056f7369355d}{To\+String} (const \hyperlink{class_config_manager_1_1_string_specifier_ac4bc384955f5da1874779f02c4ff757f}{Value\+Type} \&value)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Trida realizujici prevod z textu do typu string a zpet. 
+
+Definition at line 217 of file typespecifiers.\+h.
+
+
+
+\subsection{Member Typedef Documentation}
+\index{Config\+Manager\+::\+String\+Specifier@{Config\+Manager\+::\+String\+Specifier}!Value\+Type@{Value\+Type}}
+\index{Value\+Type@{Value\+Type}!Config\+Manager\+::\+String\+Specifier@{Config\+Manager\+::\+String\+Specifier}}
+\subsubsection[{\texorpdfstring{Value\+Type}{ValueType}}]{\setlength{\rightskip}{0pt plus 5cm}typedef std\+::string {\bf Config\+Manager\+::\+String\+Specifier\+::\+Value\+Type}}\hypertarget{class_config_manager_1_1_string_specifier_ac4bc384955f5da1874779f02c4ff757f}{}\label{class_config_manager_1_1_string_specifier_ac4bc384955f5da1874779f02c4ff757f}
+
+
+
+
+Tato definice typu urcuje navratovy typ. 
+
+Definition at line 223 of file typespecifiers.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{Config\+Manager\+::\+String\+Specifier@{Config\+Manager\+::\+String\+Specifier}!String\+Specifier@{String\+Specifier}}
+\index{String\+Specifier@{String\+Specifier}!Config\+Manager\+::\+String\+Specifier@{Config\+Manager\+::\+String\+Specifier}}
+\subsubsection[{\texorpdfstring{String\+Specifier()}{StringSpecifier()}}]{\setlength{\rightskip}{0pt plus 5cm}Config\+Manager\+::\+String\+Specifier\+::\+String\+Specifier (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_manager_1_1_string_specifier_a430e783d95729964c8a9a8755146805d}{}\label{class_config_manager_1_1_string_specifier_a430e783d95729964c8a9a8755146805d}
+Zakladni konstruktor. 
+
+Definition at line 198 of file typespecifiers.\+cpp.
+
+
+
+\subsection{Member Function Documentation}
+\index{Config\+Manager\+::\+String\+Specifier@{Config\+Manager\+::\+String\+Specifier}!From\+String@{From\+String}}
+\index{From\+String@{From\+String}!Config\+Manager\+::\+String\+Specifier@{Config\+Manager\+::\+String\+Specifier}}
+\subsubsection[{\texorpdfstring{From\+String(const std\+::string \&data)}{FromString(const std::string &data)}}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf String\+Specifier\+::\+Value\+Type} \& Config\+Manager\+::\+String\+Specifier\+::\+From\+String (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{data}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_manager_1_1_string_specifier_aced30df1ae4ec0922f3fd87a98b4ca65}{}\label{class_config_manager_1_1_string_specifier_aced30df1ae4ec0922f3fd87a98b4ca65}
+
+
+
+
+Metoda prevadejici text na vyslednou hodnotu. Muze vyhodit \hyperlink{class_config_manager_1_1_wrong_format_exception}{Wrong\+Format\+Exception} vyjimku. 
+\begin{DoxyParams}{Parameters}
+{\em data} & Vstupni data. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 202 of file typespecifiers.\+cpp.
+
+\index{Config\+Manager\+::\+String\+Specifier@{Config\+Manager\+::\+String\+Specifier}!To\+String@{To\+String}}
+\index{To\+String@{To\+String}!Config\+Manager\+::\+String\+Specifier@{Config\+Manager\+::\+String\+Specifier}}
+\subsubsection[{\texorpdfstring{To\+String(const Value\+Type \&value)}{ToString(const ValueType &value)}}]{\setlength{\rightskip}{0pt plus 5cm}const std\+::string \& Config\+Manager\+::\+String\+Specifier\+::\+To\+String (
+\begin{DoxyParamCaption}
+\item[{const {\bf Value\+Type} \&}]{value}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_manager_1_1_string_specifier_a86ad1a911411e7189c55056f7369355d}{}\label{class_config_manager_1_1_string_specifier_a86ad1a911411e7189c55056f7369355d}
+
+
+
+
+
+
+Definition at line 207 of file typespecifiers.\+cpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+E\+:/\+I\+N\+F\+O\+R\+M\+A\+T\+I\+K\+A/doporucene\+Postupy/uloha4/repos/src/\+Config\+Manager/typespecifiers.\+h\item 
+E\+:/\+I\+N\+F\+O\+R\+M\+A\+T\+I\+K\+A/doporucene\+Postupy/uloha4/repos/src/\+Config\+Manager/typespecifiers.\+cpp\end{DoxyCompactItemize}

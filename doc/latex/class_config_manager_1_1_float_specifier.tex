@@ -1,0 +1,130 @@
+\hypertarget{class_config_manager_1_1_float_specifier}{}\section{Config\+Manager\+:\+:Float\+Specifier Class Reference}
+\label{class_config_manager_1_1_float_specifier}\index{Config\+Manager\+::\+Float\+Specifier@{Config\+Manager\+::\+Float\+Specifier}}
+
+
+{\ttfamily \#include $<$typespecifiers.\+h$>$}
+
+Inheritance diagram for Config\+Manager\+:\+:Float\+Specifier\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_config_manager_1_1_float_specifier}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef double \hyperlink{class_config_manager_1_1_float_specifier_aa31aedae65d89c1c14d9b0aa6fbe697b}{Value\+Type}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_config_manager_1_1_float_specifier_aeaefabf4a53b45d70575e50a16ecff95}{Float\+Specifier} ()
+\item 
+\hyperlink{class_config_manager_1_1_float_specifier_a841c065d50fdedccac00822b4bc36e65}{Float\+Specifier} (double range\+\_\+start, double range\+\_\+end)
+\item 
+\hyperlink{class_config_manager_1_1_float_specifier_aa31aedae65d89c1c14d9b0aa6fbe697b}{Value\+Type} \hyperlink{class_config_manager_1_1_float_specifier_a557eaa40035aa402e0f4cd24e3ed5e17}{From\+String} (const std\+::string \&data)
+\item 
+std\+::string \hyperlink{class_config_manager_1_1_float_specifier_a161a99d1f205292ce0b4a17bb0a8daeb}{To\+String} (\hyperlink{class_config_manager_1_1_float_specifier_aa31aedae65d89c1c14d9b0aa6fbe697b}{Value\+Type} value)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Trida realizujici prevod z textu do typu float a zpet. 
+
+Definition at line 153 of file typespecifiers.\+h.
+
+
+
+\subsection{Member Typedef Documentation}
+\index{Config\+Manager\+::\+Float\+Specifier@{Config\+Manager\+::\+Float\+Specifier}!Value\+Type@{Value\+Type}}
+\index{Value\+Type@{Value\+Type}!Config\+Manager\+::\+Float\+Specifier@{Config\+Manager\+::\+Float\+Specifier}}
+\subsubsection[{\texorpdfstring{Value\+Type}{ValueType}}]{\setlength{\rightskip}{0pt plus 5cm}typedef double {\bf Config\+Manager\+::\+Float\+Specifier\+::\+Value\+Type}}\hypertarget{class_config_manager_1_1_float_specifier_aa31aedae65d89c1c14d9b0aa6fbe697b}{}\label{class_config_manager_1_1_float_specifier_aa31aedae65d89c1c14d9b0aa6fbe697b}
+
+
+
+
+Tato definice typu urcuje navratovy typ. 
+
+Definition at line 159 of file typespecifiers.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{Config\+Manager\+::\+Float\+Specifier@{Config\+Manager\+::\+Float\+Specifier}!Float\+Specifier@{Float\+Specifier}}
+\index{Float\+Specifier@{Float\+Specifier}!Config\+Manager\+::\+Float\+Specifier@{Config\+Manager\+::\+Float\+Specifier}}
+\subsubsection[{\texorpdfstring{Float\+Specifier()}{FloatSpecifier()}}]{\setlength{\rightskip}{0pt plus 5cm}Config\+Manager\+::\+Float\+Specifier\+::\+Float\+Specifier (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_manager_1_1_float_specifier_aeaefabf4a53b45d70575e50a16ecff95}{}\label{class_config_manager_1_1_float_specifier_aeaefabf4a53b45d70575e50a16ecff95}
+
+
+
+
+Konstruktor ktery neklade omezeni mezeni na rozsah hodnot. Rozsah hodnot je potom dan rozsahem zvoleneho typu. 
+
+Definition at line 162 of file typespecifiers.\+cpp.
+
+\index{Config\+Manager\+::\+Float\+Specifier@{Config\+Manager\+::\+Float\+Specifier}!Float\+Specifier@{Float\+Specifier}}
+\index{Float\+Specifier@{Float\+Specifier}!Config\+Manager\+::\+Float\+Specifier@{Config\+Manager\+::\+Float\+Specifier}}
+\subsubsection[{\texorpdfstring{Float\+Specifier(double range\+\_\+start, double range\+\_\+end)}{FloatSpecifier(double range_start, double range_end)}}]{\setlength{\rightskip}{0pt plus 5cm}Config\+Manager\+::\+Float\+Specifier\+::\+Float\+Specifier (
+\begin{DoxyParamCaption}
+\item[{double}]{range\+\_\+start, }
+\item[{double}]{range\+\_\+end}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_manager_1_1_float_specifier_a841c065d50fdedccac00822b4bc36e65}{}\label{class_config_manager_1_1_float_specifier_a841c065d50fdedccac00822b4bc36e65}
+Konstruktor se specifikovanym rozsahem pro parametr. 
+\begin{DoxyParams}{Parameters}
+{\em range\+\_\+start} & Spodni meze rozsahu. \\
+\hline
+{\em range\+\_\+end} & Horni meze rozsahu. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 166 of file typespecifiers.\+cpp.
+
+
+
+\subsection{Member Function Documentation}
+\index{Config\+Manager\+::\+Float\+Specifier@{Config\+Manager\+::\+Float\+Specifier}!From\+String@{From\+String}}
+\index{From\+String@{From\+String}!Config\+Manager\+::\+Float\+Specifier@{Config\+Manager\+::\+Float\+Specifier}}
+\subsubsection[{\texorpdfstring{From\+String(const std\+::string \&data)}{FromString(const std::string &data)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Float\+Specifier\+::\+Value\+Type} Config\+Manager\+::\+Float\+Specifier\+::\+From\+String (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{data}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_manager_1_1_float_specifier_a557eaa40035aa402e0f4cd24e3ed5e17}{}\label{class_config_manager_1_1_float_specifier_a557eaa40035aa402e0f4cd24e3ed5e17}
+
+
+
+
+Metoda prevadejici text na vyslednou hodnotu. Muze vyhodit \hyperlink{class_config_manager_1_1_wrong_format_exception}{Wrong\+Format\+Exception} vyjimku. 
+\begin{DoxyParams}{Parameters}
+{\em data} & Vstupni data. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 171 of file typespecifiers.\+cpp.
+
+\index{Config\+Manager\+::\+Float\+Specifier@{Config\+Manager\+::\+Float\+Specifier}!To\+String@{To\+String}}
+\index{To\+String@{To\+String}!Config\+Manager\+::\+Float\+Specifier@{Config\+Manager\+::\+Float\+Specifier}}
+\subsubsection[{\texorpdfstring{To\+String(\+Value\+Type value)}{ToString(ValueType value)}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::string Config\+Manager\+::\+Float\+Specifier\+::\+To\+String (
+\begin{DoxyParamCaption}
+\item[{{\bf Value\+Type}}]{value}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_manager_1_1_float_specifier_a161a99d1f205292ce0b4a17bb0a8daeb}{}\label{class_config_manager_1_1_float_specifier_a161a99d1f205292ce0b4a17bb0a8daeb}
+
+
+
+
+
+
+Definition at line 185 of file typespecifiers.\+cpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+E\+:/\+I\+N\+F\+O\+R\+M\+A\+T\+I\+K\+A/doporucene\+Postupy/uloha4/repos/src/\+Config\+Manager/typespecifiers.\+h\item 
+E\+:/\+I\+N\+F\+O\+R\+M\+A\+T\+I\+K\+A/doporucene\+Postupy/uloha4/repos/src/\+Config\+Manager/typespecifiers.\+cpp\end{DoxyCompactItemize}

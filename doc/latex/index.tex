@@ -1,0 +1,105 @@
+Knihovna (C++) umožňuje přístup k hodnotám voleb v souboru (.ini).
+
+\subsection*{Nástin použítí\+:}
+
+Uživatel vytvoří „\+Configuration“ a předá ji jméno souboru. Uživatel vytvoří „\+Section“. Dalším krokem je specifikace voleb v sekci (instance „\+Option\+Proxy“,či „\+List\+Option\+Proxy“). Jejich hodnoty si pak uživatel uloží do vlastních proměnných/atributů. Při ukládání konfugurace jsou potom hodnoty v "Option\+Proxy“ uloženy také.
+
+\subsection*{Mini příklad\+:}
+
+
+
+ 
+\begin{DoxyPre}{\ttfamily 
+Configuration config; 
+config.open(inpuStream); // nyni se nactou data z daneho srteamu}\end{DoxyPre}
+
+
+
+\begin{DoxyPre}{\ttfamily Section optionalSec = config.SpecifySection("optionalSection"); 
+toto najde blok dat odpovidajici sekci nazvane "optionalSection"}\end{DoxyPre}
+
+
+
+\begin{DoxyPre}{\ttfamily OptionProxy<StringSpecifier> optionFileName =  
+            dummySection.SpecifyOption<StringSpecifier>("Save File", StringSpecifier(), "defaultFileName" );
+nyni muze uzivatl prostrednictvim saveFileName cist a menit tuto volbu.}\end{DoxyPre}
+
+
+
+\begin{DoxyPre}{\ttfamily ...}\end{DoxyPre}
+
+
+
+\begin{DoxyPre}{\ttfamily optionFileName.Set("newFile.sav");}\end{DoxyPre}
+
+
+
+\begin{DoxyPre}{\ttfamily ...}\end{DoxyPre}
+
+
+
+\begin{DoxyPre}{\ttfamily cofing.save(outputStream); // timto se vsechny volby ulozi
+}\end{DoxyPre}
+ 
+
+
+
+\subsection*{Hlavní vlastnoti\+:}
+
+Datové typy (podle kterých se mají textová data interpretovat) jsou určeny pomocí specialních tříd tzv.\char`\"{}\+Type\+Specfiers\char`\"{} (v příkladu \char`\"{}\+String\+Specifier\char`\"{}). Vlastní implementace těchto tříd umožuje uživateli definovát vlastní přechodové funkce mezi textem a požadovanými daty.
+
+Třída „\+Configuration“ a „\+Option\+Proxy“ spolu komunikují po celou dobu. Po ukončení práce lze všechny aktuální hodnoty v specifikovaných \char`\"{}\+Option\+Proxy“ uložit pomocí \char`\"{}Configuration.\+save\char`\"{}. Konfliktům je zamezeno
+tím, že od každé volby je vydána maximálně jedna instance \char`\"{}Option\+Proxy".
+
+\subsection*{Příklad rendereru\+:}
+
+
+
+
+
+
+\begin{DoxyPre}{\ttfamily 
+class Upbp
+\{
+public:
+    Upbp(Configuration& configuration)  
+    \{
+        Section sectionUpbp = configuration.SpecifySection("UPBP", Requirement::MANDATORY);
+        beamDensity\_ = sectionUpbp.SpecifyOption("BeamDensity", FloatSpecifier(), 15.f);
+    \}
+    ...
+\};
+class Vcm
+\{
+public:
+    Vcm(Configuration& configuration)
+    \{
+        Section sectionVcm = configuration.SpecifySection("VCM", Requirement::MANDATORY);
+        radius\_ = sectionVcm.SpecifyOption("Radius", FloatSpecifier(), 15.f);
+    \}
+    ... 
+\};}\end{DoxyPre}
+
+
+
+\begin{DoxyPre}{\ttfamily enum AlgorithmType
+\{
+    UPBP,
+    VCM
+\}}\end{DoxyPre}
+
+
+
+\begin{DoxyPre}{\ttfamily Configuration configuration("render.ini", InputFilePolicy::IGNORE\_NONEXISTANT);}\end{DoxyPre}
+
+
+
+\begin{DoxyPre}{\ttfamily Section mainSection = configuration.SpecifySection("Main", Requirement::MANDATORY);
+auto algorithmType = mainSection.SpecifyOption("Algorithm", EnumSpecifier<AlgorithmType>(\{ \{ "VCM", VCM \}, \{ "UPBP", UPBP \} \}), AlgorithmType::VCM);
+switch (algorithmType.Get())
+\{
+    case VCM: renderer = new Vcm(configuration); break;
+    case UPBP: renderer = new Upbp(configuration); break;
+\}
+}\end{DoxyPre}
+ 

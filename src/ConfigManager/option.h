@@ -2,6 +2,7 @@
 #define CONFIGMANAGER_OPTION_H
 
 #include "optionnode.h"
+#include "exceptions.h"
 
 #include <string>
 #include <vector>

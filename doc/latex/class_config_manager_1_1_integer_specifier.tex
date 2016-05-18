@@ -1,0 +1,126 @@
+\hypertarget{class_config_manager_1_1_integer_specifier}{}\section{Config\+Manager\+:\+:Integer\+Specifier Class Reference}
+\label{class_config_manager_1_1_integer_specifier}\index{Config\+Manager\+::\+Integer\+Specifier@{Config\+Manager\+::\+Integer\+Specifier}}
+
+
+{\ttfamily \#include $<$typespecifiers.\+h$>$}
+
+Inheritance diagram for Config\+Manager\+:\+:Integer\+Specifier\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_config_manager_1_1_integer_specifier}
+\end{center}
+\end{figure}
+\subsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef int64\+\_\+t \hyperlink{class_config_manager_1_1_integer_specifier_acebb8d401c86a80ca658d74dd25d8853}{Value\+Type}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_config_manager_1_1_integer_specifier_af2aa1191b70cb1ec8c85571e552c39e9}{Integer\+Specifier} ()
+\item 
+\hyperlink{class_config_manager_1_1_integer_specifier_a9c460b5b768882830ba440d3c8320f9e}{Integer\+Specifier} (int64\+\_\+t range\+\_\+start, int64\+\_\+t range\+\_\+end)
+\item 
+\hyperlink{class_config_manager_1_1_integer_specifier_acebb8d401c86a80ca658d74dd25d8853}{Value\+Type} \hyperlink{class_config_manager_1_1_integer_specifier_ade30bcb4b98b53b259e1a1e94cb5b882}{From\+String} (const std\+::string \&data)
+\item 
+std\+::string \hyperlink{class_config_manager_1_1_integer_specifier_ac61b72758b7221bffb9afd9e770013d3}{To\+String} (\hyperlink{class_config_manager_1_1_integer_specifier_acebb8d401c86a80ca658d74dd25d8853}{Value\+Type} value)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Trida realizujici prevod z textu do typu integer a zpet. 
+
+Definition at line 91 of file typespecifiers.\+h.
+
+
+
+\subsection{Member Typedef Documentation}
+\index{Config\+Manager\+::\+Integer\+Specifier@{Config\+Manager\+::\+Integer\+Specifier}!Value\+Type@{Value\+Type}}
+\index{Value\+Type@{Value\+Type}!Config\+Manager\+::\+Integer\+Specifier@{Config\+Manager\+::\+Integer\+Specifier}}
+\subsubsection[{\texorpdfstring{Value\+Type}{ValueType}}]{\setlength{\rightskip}{0pt plus 5cm}typedef int64\+\_\+t {\bf Config\+Manager\+::\+Integer\+Specifier\+::\+Value\+Type}}\hypertarget{class_config_manager_1_1_integer_specifier_acebb8d401c86a80ca658d74dd25d8853}{}\label{class_config_manager_1_1_integer_specifier_acebb8d401c86a80ca658d74dd25d8853}
+
+
+
+
+Tato definice typu urcuje navratovy typ. 
+
+Definition at line 97 of file typespecifiers.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{Config\+Manager\+::\+Integer\+Specifier@{Config\+Manager\+::\+Integer\+Specifier}!Integer\+Specifier@{Integer\+Specifier}}
+\index{Integer\+Specifier@{Integer\+Specifier}!Config\+Manager\+::\+Integer\+Specifier@{Config\+Manager\+::\+Integer\+Specifier}}
+\subsubsection[{\texorpdfstring{Integer\+Specifier()}{IntegerSpecifier()}}]{\setlength{\rightskip}{0pt plus 5cm}Config\+Manager\+::\+Integer\+Specifier\+::\+Integer\+Specifier (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_manager_1_1_integer_specifier_af2aa1191b70cb1ec8c85571e552c39e9}{}\label{class_config_manager_1_1_integer_specifier_af2aa1191b70cb1ec8c85571e552c39e9}
+Konstruktor ktery neklade omezeni mezeni na rozsah hodnot. Rozsah hodnot je potom dan rozsahem zvoleneho typu. 
+
+Definition at line 90 of file typespecifiers.\+cpp.
+
+\index{Config\+Manager\+::\+Integer\+Specifier@{Config\+Manager\+::\+Integer\+Specifier}!Integer\+Specifier@{Integer\+Specifier}}
+\index{Integer\+Specifier@{Integer\+Specifier}!Config\+Manager\+::\+Integer\+Specifier@{Config\+Manager\+::\+Integer\+Specifier}}
+\subsubsection[{\texorpdfstring{Integer\+Specifier(int64\+\_\+t range\+\_\+start, int64\+\_\+t range\+\_\+end)}{IntegerSpecifier(int64_t range_start, int64_t range_end)}}]{\setlength{\rightskip}{0pt plus 5cm}Config\+Manager\+::\+Integer\+Specifier\+::\+Integer\+Specifier (
+\begin{DoxyParamCaption}
+\item[{int64\+\_\+t}]{range\+\_\+start, }
+\item[{int64\+\_\+t}]{range\+\_\+end}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_manager_1_1_integer_specifier_a9c460b5b768882830ba440d3c8320f9e}{}\label{class_config_manager_1_1_integer_specifier_a9c460b5b768882830ba440d3c8320f9e}
+Konstruktor ktery specifikuje rozsah pro vystupni parametry. ?? nema vyhazovat vyjimku kdyz range\+\_\+start $>$ range\+\_\+end? 
+\begin{DoxyParams}{Parameters}
+{\em range\+\_\+start} & dolni mez rozsahu. \\
+\hline
+{\em range\+\_\+end} & horni mez rozsahu. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 94 of file typespecifiers.\+cpp.
+
+
+
+\subsection{Member Function Documentation}
+\index{Config\+Manager\+::\+Integer\+Specifier@{Config\+Manager\+::\+Integer\+Specifier}!From\+String@{From\+String}}
+\index{From\+String@{From\+String}!Config\+Manager\+::\+Integer\+Specifier@{Config\+Manager\+::\+Integer\+Specifier}}
+\subsubsection[{\texorpdfstring{From\+String(const std\+::string \&data)}{FromString(const std::string &data)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Integer\+Specifier\+::\+Value\+Type} Config\+Manager\+::\+Integer\+Specifier\+::\+From\+String (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{data}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_manager_1_1_integer_specifier_ade30bcb4b98b53b259e1a1e94cb5b882}{}\label{class_config_manager_1_1_integer_specifier_ade30bcb4b98b53b259e1a1e94cb5b882}
+
+
+
+
+Metoda prevadejici text na vyslednou hodnotu. Muze vyhodit \hyperlink{class_config_manager_1_1_wrong_format_exception}{Wrong\+Format\+Exception} vyjimku. 
+\begin{DoxyParams}{Parameters}
+{\em data} & Vstupni data. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 99 of file typespecifiers.\+cpp.
+
+\index{Config\+Manager\+::\+Integer\+Specifier@{Config\+Manager\+::\+Integer\+Specifier}!To\+String@{To\+String}}
+\index{To\+String@{To\+String}!Config\+Manager\+::\+Integer\+Specifier@{Config\+Manager\+::\+Integer\+Specifier}}
+\subsubsection[{\texorpdfstring{To\+String(\+Value\+Type value)}{ToString(ValueType value)}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::string Config\+Manager\+::\+Integer\+Specifier\+::\+To\+String (
+\begin{DoxyParamCaption}
+\item[{{\bf Integer\+Specifier\+::\+Value\+Type}}]{value}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_manager_1_1_integer_specifier_ac61b72758b7221bffb9afd9e770013d3}{}\label{class_config_manager_1_1_integer_specifier_ac61b72758b7221bffb9afd9e770013d3}
+
+
+
+
+
+
+Definition at line 119 of file typespecifiers.\+cpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+E\+:/\+I\+N\+F\+O\+R\+M\+A\+T\+I\+K\+A/doporucene\+Postupy/uloha4/repos/src/\+Config\+Manager/typespecifiers.\+h\item 
+E\+:/\+I\+N\+F\+O\+R\+M\+A\+T\+I\+K\+A/doporucene\+Postupy/uloha4/repos/src/\+Config\+Manager/typespecifiers.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,152 @@
+\hypertarget{class_config_manager_1_1_configuration}{}\section{Config\+Manager\+:\+:Configuration Class Reference}
+\label{class_config_manager_1_1_configuration}\index{Config\+Manager\+::\+Configuration@{Config\+Manager\+::\+Configuration}}
+
+
+{\ttfamily \#include $<$configuration.\+h$>$}
+
+Inheritance diagram for Config\+Manager\+:\+:Configuration\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_config_manager_1_1_configuration}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_config_manager_1_1_configuration_aaaddf3eebe988ca26ecc4b9d85f798ea}{Configuration} ()
+\item 
+void \hyperlink{class_config_manager_1_1_configuration_a65fc8e2bef6af048e48438d7c385e834}{Open} (std\+::istream \&input\+\_\+stream)
+\item 
+void \hyperlink{class_config_manager_1_1_configuration_ac6c9646c929fd59c15d17beedf94ac74}{Check\+Strict} ()
+\item 
+void \hyperlink{class_config_manager_1_1_configuration_aa9922ac136da02f6588d60d731208d19}{Save} (std\+::ostream \&output\+\_\+stream, Output\+Method output\+\_\+method=Output\+Method\+::\+N\+O\+R\+M\+AL)
+\item 
+\hyperlink{class_config_manager_1_1_section}{Section} \hyperlink{class_config_manager_1_1_configuration_ac4d3be4b09060a773cffc45f47ad50a1}{Specify\+Section} (const std\+::string \&section\+\_\+name, Requirement requirement=Requirement\+::\+O\+P\+T\+I\+O\+N\+AL, const std\+::string \&comments=\char`\"{}\char`\"{})
+\item 
+\hyperlink{class_config_manager_1_1_section}{Section} \hyperlink{class_config_manager_1_1_configuration_a6e9bcd6f3a6d371996b86988fc54a730}{operator\mbox{[}$\,$\mbox{]}} (const std\+::string \&section\+\_\+name)
+\item 
+bool \hyperlink{class_config_manager_1_1_configuration_a15b0d2b3943be1672ca025034562b19c}{Is\+Loaded} () const 
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Trida spravujici soubory s nastavenim. Vzhledem k tomu, ze soubory maji format \char`\"{}.\+ini\char`\"{} a jejich format tedy neni uplne specifikovany, uchovava tato trida puvodni retezcove hodnoty. Umoznuje pristupovat k sekcim a hodnotam daneho souboru pomoci metody Specify\+Section. V destruktoru jsou pripadne zmeny zapsany zpet do souboru. 
+
+Definition at line 21 of file configuration.\+h.
+
+
+
+\subsection{Constructor \& Destructor Documentation}
+\index{Config\+Manager\+::\+Configuration@{Config\+Manager\+::\+Configuration}!Configuration@{Configuration}}
+\index{Configuration@{Configuration}!Config\+Manager\+::\+Configuration@{Config\+Manager\+::\+Configuration}}
+\subsubsection[{\texorpdfstring{Configuration()}{Configuration()}}]{\setlength{\rightskip}{0pt plus 5cm}Config\+Manager\+::\+Configuration\+::\+Configuration (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_manager_1_1_configuration_aaaddf3eebe988ca26ecc4b9d85f798ea}{}\label{class_config_manager_1_1_configuration_aaaddf3eebe988ca26ecc4b9d85f798ea}
+Zakladni kontruktor. 
+
+Definition at line 8 of file configuration.\+cpp.
+
+
+
+\subsection{Member Function Documentation}
+\index{Config\+Manager\+::\+Configuration@{Config\+Manager\+::\+Configuration}!Check\+Strict@{Check\+Strict}}
+\index{Check\+Strict@{Check\+Strict}!Config\+Manager\+::\+Configuration@{Config\+Manager\+::\+Configuration}}
+\subsubsection[{\texorpdfstring{Check\+Strict()}{CheckStrict()}}]{\setlength{\rightskip}{0pt plus 5cm}void Config\+Manager\+::\+Configuration\+::\+Check\+Strict (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_manager_1_1_configuration_ac6c9646c929fd59c15d17beedf94ac74}{}\label{class_config_manager_1_1_configuration_ac6c9646c929fd59c15d17beedf94ac74}
+Metoda pro kontrolu, zda vstup odpovida jiz striktne specifikovanemu formatu. Muze vyhodit \hyperlink{class_config_manager_1_1_strict_exception}{Strict\+Exception} vyjimku. 
+
+Definition at line 91 of file configuration.\+cpp.
+
+\index{Config\+Manager\+::\+Configuration@{Config\+Manager\+::\+Configuration}!Is\+Loaded@{Is\+Loaded}}
+\index{Is\+Loaded@{Is\+Loaded}!Config\+Manager\+::\+Configuration@{Config\+Manager\+::\+Configuration}}
+\subsubsection[{\texorpdfstring{Is\+Loaded() const }{IsLoaded() const }}]{\setlength{\rightskip}{0pt plus 5cm}bool Config\+Manager\+::\+Configuration\+::\+Is\+Loaded (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\hypertarget{class_config_manager_1_1_configuration_a15b0d2b3943be1672ca025034562b19c}{}\label{class_config_manager_1_1_configuration_a15b0d2b3943be1672ca025034562b19c}
+Metoda vracejici, zda je v aktualne nactena nejaka konfigurace. 
+
+Definition at line 206 of file configuration.\+cpp.
+
+\index{Config\+Manager\+::\+Configuration@{Config\+Manager\+::\+Configuration}!Open@{Open}}
+\index{Open@{Open}!Config\+Manager\+::\+Configuration@{Config\+Manager\+::\+Configuration}}
+\subsubsection[{\texorpdfstring{Open(std\+::istream \&input\+\_\+stream)}{Open(std::istream &input_stream)}}]{\setlength{\rightskip}{0pt plus 5cm}void Config\+Manager\+::\+Configuration\+::\+Open (
+\begin{DoxyParamCaption}
+\item[{std\+::istream \&}]{input\+\_\+stream}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_manager_1_1_configuration_a65fc8e2bef6af048e48438d7c385e834}{}\label{class_config_manager_1_1_configuration_a65fc8e2bef6af048e48438d7c385e834}
+Metoda pro nastaveni vstupniho streamu. Muze vyhodit \hyperlink{class_config_manager_1_1_malformed_input_exception}{Malformed\+Input\+Exception}, \hyperlink{class_config_manager_1_1_io_exception}{Io\+Exception}, \hyperlink{class_config_manager_1_1_wrong_format_exception}{Wrong\+Format\+Exception}, \hyperlink{class_config_manager_1_1_mandatory_missing_exception}{Mandatory\+Missing\+Exception} vyjimky. 
+\begin{DoxyParams}{Parameters}
+{\em input\+\_\+stream} & Vstupni istream. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 13 of file configuration.\+cpp.
+
+\index{Config\+Manager\+::\+Configuration@{Config\+Manager\+::\+Configuration}!operator\mbox{[}$\,$\mbox{]}@{operator[]}}
+\index{operator\mbox{[}$\,$\mbox{]}@{operator[]}!Config\+Manager\+::\+Configuration@{Config\+Manager\+::\+Configuration}}
+\subsubsection[{\texorpdfstring{operator[](const std\+::string \&section\+\_\+name)}{operator[](const std::string &section_name)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Section} Config\+Manager\+::\+Configuration\+::operator\mbox{[}$\,$\mbox{]} (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{section\+\_\+name}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_manager_1_1_configuration_a6e9bcd6f3a6d371996b86988fc54a730}{}\label{class_config_manager_1_1_configuration_a6e9bcd6f3a6d371996b86988fc54a730}
+Metoda zpristupnujici dalsi sekci. Lze pouzit nezavisle na zavolani Specify\+Section. 
+\begin{DoxyParams}{Parameters}
+{\em section\+\_\+name} & Jmeno sekce. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 194 of file configuration.\+cpp.
+
+\index{Config\+Manager\+::\+Configuration@{Config\+Manager\+::\+Configuration}!Save@{Save}}
+\index{Save@{Save}!Config\+Manager\+::\+Configuration@{Config\+Manager\+::\+Configuration}}
+\subsubsection[{\texorpdfstring{Save(std\+::ostream \&output\+\_\+stream, Output\+Method output\+\_\+method=\+Output\+Method\+::\+N\+O\+R\+M\+A\+L)}{Save(std::ostream &output_stream, OutputMethod output_method=OutputMethod::NORMAL)}}]{\setlength{\rightskip}{0pt plus 5cm}void Config\+Manager\+::\+Configuration\+::\+Save (
+\begin{DoxyParamCaption}
+\item[{std\+::ostream \&}]{output\+\_\+stream, }
+\item[{Output\+Method}]{output\+\_\+method = {\ttfamily OutputMethod\+:\+:NORMAL}}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_manager_1_1_configuration_aa9922ac136da02f6588d60d731208d19}{}\label{class_config_manager_1_1_configuration_aa9922ac136da02f6588d60d731208d19}
+Metoda vynucijici zapis zmenenych voleb na disk. Muze vyhodit \hyperlink{class_config_manager_1_1_io_exception}{Io\+Exception} vyjimku (v pøipadì selhání otevøení souboru pro zápis). 
+\begin{DoxyParams}{Parameters}
+{\em output\+\_\+method} & Volba zapisu prednastavenych hodnot. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 120 of file configuration.\+cpp.
+
+\index{Config\+Manager\+::\+Configuration@{Config\+Manager\+::\+Configuration}!Specify\+Section@{Specify\+Section}}
+\index{Specify\+Section@{Specify\+Section}!Config\+Manager\+::\+Configuration@{Config\+Manager\+::\+Configuration}}
+\subsubsection[{\texorpdfstring{Specify\+Section(const std\+::string \&section\+\_\+name, Requirement requirement=\+Requirement\+::\+O\+P\+T\+I\+O\+N\+A\+L, const std\+::string \&comments="""")}{SpecifySection(const std::string &section_name, Requirement requirement=Requirement::OPTIONAL, const std::string &comments="")}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Section} Config\+Manager\+::\+Configuration\+::\+Specify\+Section (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{section\+\_\+name, }
+\item[{Requirement}]{requirement = {\ttfamily Requirement\+:\+:OPTIONAL}, }
+\item[{const std\+::string \&}]{comments = {\ttfamily \char`\"{}\char`\"{}}}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_manager_1_1_configuration_ac4d3be4b09060a773cffc45f47ad50a1}{}\label{class_config_manager_1_1_configuration_ac4d3be4b09060a773cffc45f47ad50a1}
+Metoda specifikujici dalsi sekci. Muze vyhodit \hyperlink{class_config_manager_1_1_mandatory_missing_exception}{Mandatory\+Missing\+Exception} vyjimku. 
+\begin{DoxyParams}{Parameters}
+{\em section\+\_\+name} & Jmeno sekce. \\
+\hline
+{\em requirement} & Povinnost dane sekce. \\
+\hline
+{\em comments} & Komentare k dane sekci. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 178 of file configuration.\+cpp.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+E\+:/\+I\+N\+F\+O\+R\+M\+A\+T\+I\+K\+A/doporucene\+Postupy/uloha4/repos/src/\+Config\+Manager/configuration.\+h\item 
+E\+:/\+I\+N\+F\+O\+R\+M\+A\+T\+I\+K\+A/doporucene\+Postupy/uloha4/repos/src/\+Config\+Manager/configuration.\+cpp\end{DoxyCompactItemize}
