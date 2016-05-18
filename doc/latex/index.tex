@@ -20,8 +20,8 @@ toto najde blok dat odpovidajici sekci nazvane "optionalSection"}\end{DoxyPre}
 
 
 
-\begin{DoxyPre}{\ttfamily OptionProxy<StringSpecifier> saveFileName =  
-            dummySection.SpecifyOption<StringSpecifier>("Save File", StringSpecifier() );
+\begin{DoxyPre}{\ttfamily OptionProxy<StringSpecifier> optionFileName =  
+            dummySection.SpecifyOption<StringSpecifier>("Save File", StringSpecifier(), "defaultFileName" );
 nyni muze uzivatl prostrednictvim saveFileName cist a menit tuto volbu.}\end{DoxyPre}
 
 
@@ -30,7 +30,7 @@ nyni muze uzivatl prostrednictvim saveFileName cist a menit tuto volbu.}\end{Dox
 
 
 
-\begin{DoxyPre}{\ttfamily saveFileName.Set("newFile.sav");}\end{DoxyPre}
+\begin{DoxyPre}{\ttfamily optionFileName.Set("newFile.sav");}\end{DoxyPre}
 
 
 

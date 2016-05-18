@@ -58,6 +58,7 @@ private:
 	void SavingEnumTest();
 	void SavingListTest();
 	void PreservingFormatTest();
+	void CopyingTest();
 	
 	/*
 	* Adding and removing elements.

@@ -87,9 +87,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
  <pre><code>
 Configuration config; 
 config.open(inpuStream); // nyni se nactou data z daneho srteamu</code></pre><pre><code>Section optionalSec = config.SpecifySection("optionalSection"); 
-toto najde blok dat odpovidajici sekci nazvane "optionalSection"</code></pre><pre><code>OptionProxy&lt;StringSpecifier&gt; saveFileName =  
-            dummySection.SpecifyOption&lt;StringSpecifier&gt;("Save File", StringSpecifier() );
-nyni muze uzivatl prostrednictvim saveFileName cist a menit tuto volbu.</code></pre><pre><code>...</code></pre><pre><code>saveFileName.Set("newFile.sav");</code></pre><pre><code>...</code></pre><pre><code>cofing.save(outputStream); // timto se vsechny volby ulozi
+toto najde blok dat odpovidajici sekci nazvane "optionalSection"</code></pre><pre><code>OptionProxy&lt;StringSpecifier&gt; optionFileName =  
+            dummySection.SpecifyOption&lt;StringSpecifier&gt;("Save File", StringSpecifier(), "defaultFileName" );
+nyni muze uzivatl prostrednictvim saveFileName cist a menit tuto volbu.</code></pre><pre><code>...</code></pre><pre><code>optionFileName.Set("newFile.sav");</code></pre><pre><code>...</code></pre><pre><code>cofing.save(outputStream); // timto se vsechny volby ulozi
 </code></pre> <hr/>
 <h2>Hlavní vlastnoti:</h2>
 <p>Datové typy (podle kterých se mají textová data interpretovat) jsou určeny pomocí specialních tříd tzv."TypeSpecfiers" (v příkladu "StringSpecifier"). Vlastní implementace těchto tříd umožuje uživateli definovát vlastní přechodové funkce mezi textem a požadovanými daty.</p>

@@ -21,13 +21,13 @@ config.open(inpuStream); // nyni se nactou data z daneho srteamu
 Section optionalSec = config.SpecifySection("optionalSection"); 
 // toto najde blok dat odpovidajici sekci nazvane "optionalSection"
 
-OptionProxy<StringSpecifier> saveFileName =  
-			dummySection.SpecifyOption<StringSpecifier>("Save File", StringSpecifier() );
+OptionProxy<StringSpecifier> optionFileName =  
+			dummySection.SpecifyOption<StringSpecifier>("Save File", StringSpecifier(), "defaultFileName" );
 // nyni muze uzivatl prostrednictvim saveFileName cist a menit tuto volbu. 
 
 ...
 
-saveFileName.Set("newFile.sav");
+optionFileName.Set("newFile.sav");
 
 ...
 
