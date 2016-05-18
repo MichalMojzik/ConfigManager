@@ -4,6 +4,7 @@
 #include <string>
 #include <map>
 #include "exceptions.h"
+#include <limits>
 
 namespace ConfigManager
 {

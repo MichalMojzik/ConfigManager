@@ -27,6 +27,12 @@
     <ClCompile Include="ConfigManager\typespecifiers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ConfigManager\sectionnode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ConfigManager\optionnode.cpp">
+	  <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="ConfigManager\utilities.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -53,7 +59,14 @@
     <ClInclude Include="configmanager\typespecifiers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
+    <ClInclude Include="ConfigManager\sectionnode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ConfigManager\optionnode.h">
+=======
     <ClInclude Include="ConfigManager\utilities.h">
+>>>>>>> origin/master
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -4,80 +4,14 @@
 #include <string>
 #include <memory>
 #include <map>
-
 #include "exceptions.h"
 #include "enums.h"
 #include "section.h"
+#include "sectionnode.h"
+#include "optionnode.h"
 
 namespace ConfigManager
-{
-	/* tridy pro interni reprezentaci sekci a voleb, se kterymi komunikuji Section a Option */
-	class OptionNode;
-
-	class SectionNode
-	{
-	public:
-		SectionNode(const SectionNode& other) = delete;
-		SectionNode& operator=(const SectionNode& other) = delete;
-
-		OptionNode& operator[](const std::string& option_name);
-		const OptionNode& operator[](const std::string& option_name) const;
-
-		const std::string& Name() const;
-
-		bool IsLoaded() const;
-	private:
-		SectionNode(Configuration& configuration, const std::string& name);
-		Configuration& configuration_;
-
-		std::string name_;
-		bool loaded_;
-		bool is_specified_;
-		Requirement requirement_;
-		std::string comment_;
-
-		std::map<std::string, std::unique_ptr<OptionNode>> data_;
-
-		friend Configuration;
-	};
-
-	class OptionNode
-	{
-	public:
-		void SetProxy(AbstractOptionProxy* proxy);
-		void SetRequirement(Requirement requirement);
-		void SetComment(const std::string& comment);
-
-		const std::string& Name() const;
-
-		std::string& Value();
-		const std::string& Value() const;
-
-		SectionNode& Section();
-		const SectionNode& Section() const;
-
-		bool IsLoaded() const;
-		bool HasValue() const;
-	private:
-		void Load(const std::string& value);
-		bool LoadDefaultValue();
-		
-		OptionNode(SectionNode& section, const std::string& name);
-		SectionNode& section_;
-
-		std::string name_;
-		bool loaded_;
-		bool changed_;
-		AbstractOptionProxy* proxy_;
-		Requirement requirement_;
-		std::string comment_;
-
-		std::string value_;
-
-		friend SectionNode;
-		friend Configuration;
-	};
-
+{	
 	/**
 	* Trida spravujici soubory s nastavenim.
 	* Vzhledem k tomu, ze soubory maji format ".ini" a jejich format tedy neni uplne specifikovany, uchovava tato trida puvodni retezcove hodnoty.
