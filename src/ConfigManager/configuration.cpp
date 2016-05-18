@@ -5,11 +5,6 @@
 
 namespace ConfigManager
 {
-	const std::string& SectionNode::Name() const
-	{
-		return name_;
-	}
-
 	Configuration::Configuration()
 		: loaded_(false)
   {

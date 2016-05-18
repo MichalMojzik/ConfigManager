@@ -7,6 +7,11 @@ namespace ConfigManager
 		return name_;
 	}
 
+	bool SectionNode::IsLoaded() const
+	{
+		return loaded_;
+	}
+
 	OptionNode& SectionNode::operator[](const std::string& option_name)
 	{
 		auto result = data_.emplace(option_name, std::unique_ptr<OptionNode>(new OptionNode(*this, option_name)));

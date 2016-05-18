@@ -1,5 +1,8 @@
 #include "optionnode.h"
 
+#include "sectionnode.h"
+#include "configuration.h"
+
 namespace ConfigManager
 {
 	const std::string& OptionNode::Name() const
