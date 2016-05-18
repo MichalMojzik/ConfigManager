@@ -732,8 +732,8 @@ void OptionTestSuite::SavingStringTest()
 			stringstream output;
 			config.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
 			string oLine;
-			output >> oLine; // throw away the section line
-			output >> oLine;
+			std::getline(output, oLine); // throw away the section line
+			std::getline(output, oLine);
 			TEST_ASSERT_EQUALS("stringOpt=defaultString;commentsString", oLine)
 		}
 		stringOption.Set("anotherString");
@@ -741,8 +741,8 @@ void OptionTestSuite::SavingStringTest()
 			stringstream output;
 			config.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
 			string oLine;
-			output >> oLine; // section line is not needed
-			output >> oLine;
+			std::getline(output, oLine); // section line is not needed
+			std::getline(output, oLine);
 			TEST_ASSERT_EQUALS("stringOpt=anotherString;commentsString", oLine)
 		}
 		stringOption.Set(" anotherString  "); // white spaces at beginning and end, need escape characted
@@ -750,9 +750,9 @@ void OptionTestSuite::SavingStringTest()
 			stringstream output;
 			config.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
 			string oLine;
-			output >> oLine; // section line is not needed
-			output >> oLine;
-			TEST_ASSERT_EQUALS("stringOpt=\ anotherString\ \ ;commentsString", oLine)
+			std::getline(output, oLine); // section line is not needed
+			std::getline(output, oLine);
+			TEST_ASSERT_EQUALS("stringOpt=\\ anotherString\\ \\ ;commentsString", oLine)
 		}
 	}
 	catch (...)
@@ -778,8 +778,8 @@ void OptionTestSuite::SavingEnumTest()
 			stringstream output;
 			config.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
 			string oLine;
-			output >> oLine; // throw away section line
-			output >> oLine;
+			std::getline(output, oLine); // throw away the section line
+			std::getline(output, oLine);
 			TEST_ASSERT_EQUALS("enumOpt=THIRD_VALUE_STR;commentsEnum", oLine)
 		}
 		enumOption.Set(enumType::FIRST_VAL);
@@ -787,8 +787,8 @@ void OptionTestSuite::SavingEnumTest()
 			stringstream output;
 			config.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
 			string oLine;
-			output >> oLine; // section line is not needed
-			output >> oLine;
+			std::getline(output, oLine); // section line is not needed
+			std::getline(output, oLine);
 			TEST_ASSERT_EQUALS("enumOpt=FIRST_VALUE_STR;commentsEnum", oLine)
 		}
 	}
@@ -814,8 +814,8 @@ void OptionTestSuite::SavingListTest()
 			stringstream output;
 			homeConfig.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
 			string oLine;
-			output >> oLine; // section line is not target of test
-			output >> oLine;
+			std::getline(output, oLine); // section line is not target of test
+			std::getline(output, oLine);
 			TEST_ASSERT_EQUALS("optionList=defaultValue,valueDefault;commentsOption", oLine)
 		}
 		// change one option:
