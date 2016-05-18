@@ -1,24 +1,18 @@
 #include "configuration.h"
 
+#include "utilities.h"
 #include <fstream>
 
 namespace ConfigManager
 {
-	std::string ini_trim(std::string value)
-	{
-		auto last_char = value.find_last_not_of(' ');
-		if(last_char != std::string::npos)
-			value.erase(last_char + 1 + (value[last_char] == '\\' ? 1 : 0));
-		auto first_char = value.find_first_not_of(' ');
-		if(first_char != std::string::npos && first_char > 0)
-			value.erase(0, first_char);
-		return value;
-	}
-
-
 	const std::string& SectionNode::Name() const
 	{
 		return name_;
+	}
+
+	bool SectionNode::IsLoaded() const
+	{
+		return loaded_;
 	}
 
 	OptionNode& SectionNode::operator[](const std::string& option_name)
@@ -53,6 +47,11 @@ namespace ConfigManager
 
 	void OptionNode::SetRequirement(Requirement requirement)
 	{
+		if(requirement == Requirement::MANDATORY && Section().IsLoaded() && !loaded_)
+		{
+			throw MandatoryMissingException();
+		}
+
 		requirement_ = requirement;
 	}
 
@@ -126,12 +125,14 @@ namespace ConfigManager
 	}
 
 
-  Configuration::Configuration()
+	Configuration::Configuration()
+		: loaded_(false)
   {
   }
   
   void Configuration::Open(std::istream& input_stream)
   {
+		loaded_ = true;
 		original_lines_.clear();
 
 		SectionNode* section_ptr = nullptr;
@@ -141,10 +142,10 @@ namespace ConfigManager
 		{
 			original_lines_.push_back(line);
 
-			auto semilocon_position = line.find_first_of(';');
+			auto semilocon_position = find_first_nonespaced(line, ';');
 			if(semilocon_position != std::string::npos)
 				line = line.substr(0, semilocon_position); // strip comments away
-			line = ini_trim(line); // strip whitespaces away
+			line = escape_trim(line); // strip whitespaces away
 
 			if(line.length() == 0)
 			{
@@ -169,13 +170,13 @@ namespace ConfigManager
 			else
 			{
 				auto& section = *section_ptr;
-				auto assignment_position = line.find_first_of('=');
+				auto assignment_position = find_first_nonespaced(line, '=');
 				if(assignment_position == std::string::npos)
 				{
 					throw MalformedInputException();
 				}
-				std::string option_name = ini_trim(line.substr(0, assignment_position));
-				std::string option_value = ini_trim(line.substr(assignment_position + 1));
+				std::string option_name = escape_trim(line.substr(0, assignment_position));
+				std::string option_value = escape_trim(line.substr(assignment_position + 1));
 				auto& option = section[option_name];
 				option.Load(option_value);
 			}
@@ -248,7 +249,13 @@ namespace ConfigManager
   {
 		auto& section_node = RetrieveSection(section_name);
 		if(section_node.is_specified_)
+		{
 			throw InvalidOperationException();
+		}
+		if(requirement == Requirement::MANDATORY && IsLoaded() && !section_node.loaded_)
+		{
+			throw MandatoryMissingException();
+		}
 		section_node.requirement_ = requirement;
 		section_node.comment_ = comments;
     return Section(section_node);
@@ -265,6 +272,12 @@ namespace ConfigManager
 		auto result = data_.emplace(section_name, std::unique_ptr<SectionNode>(new SectionNode(*this, section_name)));
 		return *result.first->second;
 	}
+
+	bool SectionNode::IsLoaded() const
+	{
+		return loaded_;
+	}
+
 
 
 	ConfigurationFile::ConfigurationFile(std::string filename, InputFilePolicy policy)

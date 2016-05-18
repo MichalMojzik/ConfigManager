@@ -24,6 +24,8 @@ namespace ConfigManager
 		const OptionNode& operator[](const std::string& option_name) const;
 
 		const std::string& Name() const;
+
+		bool IsLoaded() const;
 	private:
 		SectionNode(Configuration& configuration, const std::string& name);
 		Configuration& configuration_;
@@ -121,9 +123,15 @@ namespace ConfigManager
 
 		Section operator[](const std::string& section_name);
 
+		/**
+		* Metoda vracejici, zda je v aktualne nactena nejaka konfigurace.
+		*/
+		bool IsLoaded() const;
+
 	private:
 		SectionNode& RetrieveSection(const std::string& section_name);
 
+		bool loaded_;
 		std::vector<std::string> original_lines_;
 		std::map<std::string, std::unique_ptr<SectionNode>> data_;
 	};
