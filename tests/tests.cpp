@@ -19,27 +19,22 @@ using namespace ConfigManager;
 
 
 
-// Main test program
-//
+// Vstupni bod testu:
 int main(int argc, char* argv[])
 {
 	string welcomeStr = "Starting test of ConfigManager library.\n";
 	std::cout << welcomeStr;
 	try
 	{
-		
+		Test::Suite allTests;
+		allTests.add(auto_ptr<Test::Suite>(new ConfigurationTestSuite()));
+		allTests.add(auto_ptr<Test::Suite>(new SectionTestSuite()));
+		allTests.add(auto_ptr<Test::Suite>(new OptionTestSuite()));
+		allTests.add(auto_ptr<Test::Suite>(new TypeSpecifiersTestSuite()));
+
 		Test::TextOutput simpleOutput(Test::TextOutput::Mode::Verbose);
-		ConfigurationTestSuite configSuite;
-		configSuite.run(simpleOutput);
 
-		SectionTestSuite sectionSuite;
-		sectionSuite.run(simpleOutput);
-
-		OptionTestSuite optionSuite;
-		optionSuite.run(simpleOutput);
-
-		TypeSpecifiersTestSuite tsSuite;
-		tsSuite.run(simpleOutput);
+		allTests.run(simpleOutput);
 	}
 	catch (...)
 	{
@@ -47,38 +42,20 @@ int main(int argc, char* argv[])
 		return EXIT_FAILURE;
 	}
 	cin.get();
-	/*
-	std::cout << "Hi by tests..\n";
-	try
-	{
-		// Demonstrates the ability to use multiple test suites
-		//
-		Test::Suite ts;
-		ts.add(auto_ptr<Test::Suite>(new FailTestSuite));
-		ts.add(auto_ptr<Test::Suite>(new CompareTestSuite));
-		ts.add(auto_ptr<Test::Suite>(new ThrowTestSuite));
-
-		// Run the tests
-		//
-		auto_ptr<Test::Output> output(cmdline(argc, argv));
-		ts.run(*output, true);
-
-		Test::HtmlOutput* const html = dynamic_cast<Test::HtmlOutput*>(output.get());
-		if (html)
-			html->generate(cout, true, "MyTest");
-	}
-	catch (...)
-	{
-		cout << "unexpected exception encountered\n";
-		return EXIT_FAILURE;
-	}
-	return EXIT_SUCCESS;*/
 	return 0;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*
+* Poznamenejme, ze vime metode Test::TestSuite::setup() podporovane v cppTest.
+* Ale vzhledem k povaze testu jsme se rozhodli ji nepouzit.
+* Vznika tu sice jista duplicita kodu, ale kod se porad lisi v vstupnich paramtrech.
+* Mit vstupni stringy na jinem miste nez samotny test, potom znacne komplikuje
+* odhaleni pripadnych chyb. 
+*/
+
 
 ConfigurationTestSuite::ConfigurationTestSuite()
 {
@@ -477,6 +454,7 @@ SectionTestSuite::SectionTestSuite()
 {
 	TEST_ADD(SectionTestSuite::BasicTests)
 	TEST_ADD(SectionTestSuite::SavingTests)
+	TEST_ADD(SectionTestSuite::FirstSpecifyTest)
 }
 
 void SectionTestSuite::SavingTests()
@@ -569,6 +547,36 @@ void SectionTestSuite::BasicTests()
 	}
 }
 
+void SectionTestSuite::FirstSpecifyTest()
+{
+	try 
+	{
+		{// test if loading file will connect with section name if it is already specified
+			Configuration config;
+			Section section1 = config.SpecifySection("section1", OPTIONAL, "comment1");
+			stringstream input;
+			input << "[section1];comments2\n";
+			config.Open(input);
+			TEST_ASSERT_EQUALS("section1", section1.GetName())
+			stringstream output;
+			config.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
+			string line;
+			std::getline(output, line);
+			TEST_ASSERT_EQUALS("[section];comments2\n", line)
+		}
+		{
+			Configuration config;
+			Section section1 = config.SpecifySection("section1", MANDATORY, "comment1");
+			stringstream input;
+			TEST_THROWS(config.Open(input), MandatoryMissingException)
+		}
+	}
+	catch(...)
+	{
+		TEST_FAIL("Unexpected exception.");
+	}
+}
+
 OptionTestSuite::OptionTestSuite()
 {
 	TEST_ADD(OptionTestSuite::InputNameOptionTest)
@@ -586,6 +594,7 @@ OptionTestSuite::OptionTestSuite()
 	TEST_ADD(OptionTestSuite::ListLinkTest )
 	TEST_ADD(OptionTestSuite::LinksTest)
 	TEST_ADD(OptionTestSuite::CopyingTest)
+	TEST_ADD(OptionTestSuite::SavingNewTest)
 
 }
 
@@ -917,6 +926,38 @@ void OptionTestSuite::CopyingTest()
 
 }
 
+void OptionTestSuite::SavingNewTest()
+{
+	try 
+	{
+		{// test if new option is saved in correct section:
+			Configuration config;
+			stringstream input;
+			input << "[section1]\n";
+			input << "[section2]\n";
+			config.Open(input);
+			// now specify section 1
+			Section section1 = config.SpecifySection("section1");
+			// and specify new option in section1
+			section1.SpecifyOption("newOption", StringSpecifier(), "defaultValue", OPTIONAL, "comments");
+			stringstream output;
+			// save it to output string
+			config.Save(output, EMIT_DEFAULT_VALUES);
+			string line;
+			std::getline(output, line);
+			TEST_ASSERT_EQUALS("[section1]", line)
+			std::getline(output, line);
+			TEST_ASSERT_EQUALS("newOption=defaultValue;comments", line)
+			std::getline(output, line);
+			TEST_ASSERT_EQUALS("[section2]", line)
+		}
+	}
+	catch(...)
+	{
+
+	}
+}
+
 void OptionTestSuite::InputNameOptionTest()
 {
 	try
@@ -1078,162 +1119,3 @@ void OptionTestSuite::InputNameListOptionTest()
 	}
 }
 
-///////////////////////////////////////DEMOSTRATION OF CPPTEST CODE: not used ////////////////////////////////////////////////
-/*
-// Tests unconditional fail asserts
-//
-class FailTestSuite : public Test::Suite
-{
-public:
-FailTestSuite()
-{
-TEST_ADD(FailTestSuite::success)
-TEST_ADD(FailTestSuite::always_fail)
-
-}
-
-private:
-void success() {}
-
-void always_fail()
-{
-// This will always fail
-//
-TEST_FAIL("unconditional fail");
-}
-};
-
-// Tests compare asserts
-//
-class CompareTestSuite : public Test::Suite
-{
-public:
-CompareTestSuite()
-{
-TEST_ADD(CompareTestSuite::success)
-TEST_ADD(CompareTestSuite::compare)
-TEST_ADD(CompareTestSuite::delta_compare)
-}
-
-private:
-void success() {}
-
-void compare()
-{
-// Will succeed since the expression evaluates to true
-//
-TEST_ASSERT(1 + 1 == 2)
-
-// Will fail since the expression evaluates to false
-//
-TEST_ASSERT(0 == 1);
-}
-
-void delta_compare()
-{
-// Will succeed since the expression evaluates to true
-//
-TEST_ASSERT_DELTA(0.5, 0.7, 0.3);
-
-// Will fail since the expression evaluates to false
-//
-TEST_ASSERT_DELTA(0.5, 0.7, 0.1);
-}
-};
-
-// Tests throw asserts
-//
-class ThrowTestSuite : public Test::Suite
-{
-public:
-ThrowTestSuite()
-{
-TEST_ADD(ThrowTestSuite::success)
-TEST_ADD(ThrowTestSuite::test_throw)
-}
-
-private:
-void success() {}
-
-void test_throw()
-{
-// Will fail since the none of the functions throws anything
-//
-TEST_THROWS_MSG(func(), int, "func() does not throw, expected int exception")
-TEST_THROWS_MSG(func_no_throw(), int, "func_no_throw() does not throw, expected int exception")
-TEST_THROWS_ANYTHING_MSG(func(), "func() does not throw, expected any exception")
-TEST_THROWS_ANYTHING_MSG(func_no_throw(), "func_no_throw() does not throw, expected any exception")
-
-// Will succeed since none of the functions throws anything
-//
-TEST_THROWS_NOTHING(func())
-TEST_THROWS_NOTHING(func_no_throw())
-
-// Will succeed since func_throw_int() throws an int
-//
-TEST_THROWS(func_throw_int(), int)
-TEST_THROWS_ANYTHING(func_throw_int())
-
-// Will fail since func_throw_int() throws an int (not a float)
-//
-TEST_THROWS_MSG(func_throw_int(), float, "func_throw_int() throws an int, expected a float exception")
-TEST_THROWS_NOTHING_MSG(func_throw_int(), "func_throw_int() throws an int, expected no exception at all")
-}
-
-void func() {}
-void func_no_throw() throw() {}
-void func_throw_int() throw(int) { throw 13; }
-};
-
-enum OutputType
-{
-Compiler,
-Html,
-TextTerse,
-TextVerbose
-};
-
-static void
-usage()
-{
-cout << "usage: mytest [MODE]\n"
-<< "where MODE may be one of:\n"
-<< "  --compiler\n"
-<< "  --html\n"
-<< "  --text-terse (default)\n"
-<< "  --text-verbose\n";
-exit(0);
-}
-
-static auto_ptr<Test::Output>
-cmdline(int argc, char* argv[])
-{
-if (argc > 2)
-usage(); // will not return
-
-
-
-Test::Output* output = 0;
-
-if (argc == 1)
-output = new Test::TextOutput(Test::TextOutput::Verbose);
-else
-{
-const char* arg = argv[1];
-if (strcmp(arg, "--compiler") == 0)
-output = new Test::CompilerOutput;
-else if (strcmp(arg, "--html") == 0)
-output = new Test::HtmlOutput;
-else if (strcmp(arg, "--text-terse") == 0)
-output = new Test::TextOutput(Test::TextOutput::Terse);
-else if (strcmp(arg, "--text-verbose") == 0)
-output = new Test::TextOutput(Test::TextOutput::Verbose);
-else
-{
-cout << "invalid commandline argument: " << arg << endl;
-usage(); // will not return
-}
-}
-
-return auto_ptr<Test::Output>(output);
-} */

@@ -34,6 +34,11 @@ private:
 	* Test metody getName.
 	*/
 	void BasicTests();
+	/*
+	* Test pridani nove sekce a ulozeni.
+	*/
+	void FirstSpecifyTest();
+
 };
 
 class OptionTestSuite : public Test::Suite
@@ -59,6 +64,7 @@ private:
 	void SavingListTest();
 	void PreservingFormatTest();
 	void CopyingTest();
+	void SavingNewTest();
 	
 	/*
 	* Adding and removing elements.
