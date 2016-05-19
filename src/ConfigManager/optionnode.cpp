@@ -17,6 +17,10 @@ namespace ConfigManager
 
 	void OptionNode::SetRequirement(Requirement requirement)
 	{
+		if(requirement == Requirement::MANDATORY && !IsLoaded() && Section().IsLoaded())
+		{
+			throw MandatoryMissingException();
+		}
 		requirement_ = requirement;
 	}
 

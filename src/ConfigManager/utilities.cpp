@@ -30,6 +30,9 @@ namespace ConfigManager
 			case ':':
 			case ',':
 			case ' ':
+			case '}':
+			case '{':
+			case '#':
 			case ';':
 				result += '\\';
 				break;

@@ -81,13 +81,16 @@ namespace ConfigManager
 		void ProcessSection(SectionRange range, LinkValues& link_values, PostponedSections& postponed_sections, PostponedOptions& postponed_options);
 		void ProcessOption(OptionIndex index, LinkValues& link_values, PostponedSections& postponed_sections, PostponedOptions& postponed_options);
 
+		void OutputRestOfSections(std::ostream& output_stream, bool emit_default);
+		void OutputRestOfOptions(std::ostream& output_stream, SectionNode& section, bool emit_default);
+
 		struct OriginalData
 		{
 			std::string line_;
 			SectionNode* section_;
 			OptionNode* option_;
-			std::string::iterator value_start_;
-			std::string::iterator value_end_;
+			std::size_t value_start_;
+			std::size_t value_end_;
 
 			OriginalData(const std::string& line);
 		};

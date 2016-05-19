@@ -979,7 +979,7 @@ void OptionTestSuite::ListModificationTest()
 		TEST_ASSERT_EQUALS(2, boolList.Count())
 			// adding to list
 			boolList.Add(false);
-		TEST_ASSERT_EQUALS(false, boolList[boolList.Count()].Get());
+		TEST_ASSERT_EQUALS(false, boolList[boolList.Count() - 1].Get());
 		// removing element
 		boolList.Remove(0);
 		// checking that list contain (true, false)
@@ -1028,7 +1028,7 @@ void OptionTestSuite::ListLinkTest()
 		inputText << "option=linkedValue\n";
 		inputText << "[section2]\n";
 		inputText << "option=inPlaceValue,${section1#option}\n";
-		inputText << "secondOption = ${secion2#option}\n";
+		inputText << "secondOption = ${section2#option}\n";
 		Configuration config;
 		config.Open(inputText);
 		Section section2 = config.SpecifySection("section2", ConfigManager::MANDATORY);
@@ -1038,6 +1038,10 @@ void OptionTestSuite::ListLinkTest()
 			("option", StringSpecifier(), defValues, OPTIONAL);
 		TEST_ASSERT_EQUALS("inPlaceValue", listOption[0].Get());
 		TEST_ASSERT_EQUALS("linkedValue", listOption[1].Get());
+		ListOptionProxy<StringSpecifier> secondListOption = section2.SpecifyListOption
+			("secondOption", StringSpecifier(), defValues, OPTIONAL);
+		TEST_ASSERT_EQUALS("inPlaceValue", secondListOption[0].Get());
+		TEST_ASSERT_EQUALS("linkedValue", secondListOption[1].Get());
 	}
 	catch (...)
 	{

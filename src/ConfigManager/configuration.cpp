@@ -45,7 +45,7 @@ namespace ConfigManager
 				throw MalformedInputException();
 			}
 
-			auto colon_position = find_first_nonespaced_unscoped(value, ':', link_position + 2, '{', '}');
+			auto colon_position = find_first_nonespaced_unscoped(value, '#', link_position + 2, '{', '}');
 			if(colon_position == std::string::npos)
 			{
 				throw MalformedInputException();
@@ -115,7 +115,7 @@ namespace ConfigManager
 		bool is_section = false;
 		SectionRange section_range;
 
-		for(std::size_t line_index = 0; line_index <= original_lines_.size(); ++line_index)
+		for(std::size_t line_index = 0; line_index < original_lines_.size(); ++line_index)
 		{
 			bool is_last = line_index == original_lines_.size();
 			std::string line = StripComment(original_lines_[line_index].line_);
@@ -224,7 +224,7 @@ namespace ConfigManager
 
 		std::string option_value;
 		std::string raw_value = trim_nonescaped(line.substr(assignment_position + 1));
-		original_line_data.value_start_ = line.begin() + line.find_first_not_of(' ', assignment_position);
+		original_line_data.value_start_ = line.find_first_not_of(' ', assignment_position + 1);
 		original_line_data.value_end_ = original_line_data.value_start_ + raw_value.length();
 		if(!ResolveLink(raw_value, link_values, &option_value, &dependancies, &unresolved_link))
 		{
@@ -234,7 +234,7 @@ namespace ConfigManager
 
 		option->Load(option_value);
 
-		Link link = { option->Name(), option->Section().Name() };
+		Link link = { option->Section().Name(), option->Name() };
 		link_values.emplace(link, option);
 		for(auto it_range = postponed_sections.equal_range(link); it_range.first != it_range.second; ++it_range.first)
 		{
@@ -258,49 +258,9 @@ namespace ConfigManager
 		while(std::getline(input_stream, line))
 		{
 			original_lines_.emplace_back(line);
-			auto& original_line = original_lines_.back();
-
-			auto semilocon_position = find_first_nonespaced(line, ';');
-			if(semilocon_position != std::string::npos)
-			{
-				line = line.substr(0, semilocon_position); // strip comment away
-			}
-			line = trim_nonescaped(line); // strip whitespaces away
-
-			if(line.length() == 0)
-			{
-				continue;
-			}
-
-			if(line.front() == '[' && line.back() == ']')
-			{
-				std::string section_name = unescape(line.substr(1, line.length() - 2));
-				auto& section = RetrieveSection(section_name);
-				if(section.loaded_)
-				{
-					throw MalformedInputException();
-				}
-				section.loaded_ = true;
-				section_ptr = &section;
-			}
-			else if(section_ptr == nullptr)
-			{
-				throw MalformedInputException();
-			}
-			else
-			{
-				auto& section = *section_ptr;
-				auto assignment_position = find_first_nonespaced(line, '=');
-				if(assignment_position == std::string::npos)
-				{
-					throw MalformedInputException();
-				}
-				std::string option_name = unescape(trim_nonescaped(line.substr(0, assignment_position)));
-				std::string option_value = trim_nonescaped(line.substr(assignment_position + 1));
-				auto& option = section[option_name];
-				option.Load(option_value);
-			}
 		}
+
+		ProcessLines();
 
 		// as everything is loaded, we check whether all mandatory sections and options are present
 		for(auto section_it = data_.begin(), section_end = data_.end(); section_it != section_end; ++section_it)
@@ -355,10 +315,90 @@ namespace ConfigManager
 		}
 	}
   
+
+	void Configuration::OutputRestOfSections(std::ostream& output_stream, bool emit_default)
+	{
+		for(auto section_it = data_.begin(), section_end = data_.end(); section_it != section_end; ++section_it)
+		{
+			auto& section = *section_it->second;
+			if(section.IsLoaded())
+			{
+				continue;
+			}
+
+			output_stream << "[" << unescape(section.Name()) << "]";
+			if(!section.comment_.empty())
+			{
+				output_stream << ";" << section.comment_;
+			}
+			output_stream << std::endl;
+
+			OutputRestOfOptions(output_stream, section, emit_default);
+		}
+	}
+	void Configuration::OutputRestOfOptions(std::ostream& output_stream, SectionNode& section, bool emit_default)
+	{
+		for(auto option_it = section.data_.begin(), option_end = section.data_.end(); option_it != option_end; ++option_it)
+		{
+			auto& option = *option_it->second;
+			if(option.IsLoaded())
+			{
+				continue;
+			}
+
+			if(!option.HasValue())
+			{
+				if(emit_default)
+				{
+					if(!option.LoadDefaultValue())
+					{
+						continue;
+					}
+				}
+				else
+				{
+					continue;
+				}
+			}
+
+			output_stream << unescape(option.Name()) << "=" << option.Value();
+			if(!option.comment_.empty())
+			{
+				output_stream << ";" << option.comment_;
+			}
+			output_stream << std::endl;
+		}
+	}
   void Configuration::Save(std::ostream& output_stream, OutputMethod output_method)
   {
 		bool emit_default = output_method == OutputMethod::EMIT_DEFAULT_VALUES;
 
+		SectionNode* section = nullptr;
+		for(auto original_it = original_lines_.begin(), original_end = original_lines_.end(); original_it != original_end; ++original_it)
+		{
+			auto& original_line_data = *original_it;
+			if(section != original_line_data.section_ && section != nullptr)
+			{
+				OutputRestOfOptions(output_stream, *section, emit_default);
+			}
+
+			section = original_line_data.section_;
+			if(original_line_data.option_ != nullptr && original_line_data.option_->HasValue())
+			{
+				output_stream << original_line_data.line_.substr(0, original_line_data.value_start_);
+				output_stream << original_line_data.option_->Value();
+				output_stream << original_line_data.line_.substr(original_line_data.value_end_);
+			}
+			else
+			{
+				output_stream << original_line_data.line_;
+			}
+			output_stream << std::endl;
+			//original_line_data.value_end_
+		}
+
+		OutputRestOfSections(output_stream, emit_default);
+		/*
 		for(auto section_it = data_.begin(), section_end = data_.end(); section_it != section_end; ++section_it)
 		{
 			bool section_header_emitted = false;
@@ -411,6 +451,7 @@ namespace ConfigManager
 				output_stream << std::endl;
 			}
 		}
+		*/
   }
   
   Section Configuration::SpecifySection(const std::string& section_name, Requirement requirement, const std::string& comments)
