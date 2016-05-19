@@ -93,6 +93,29 @@ namespace ConfigManager
 		}
 	}
 
+	bool OptionNode::IsOriginalNameValid()
+	{
+		for(auto depend_it = name_dependant_on_.begin(), depent_end = name_dependant_on_.end(); depend_it != depent_end; ++depend_it)
+		{
+			if((*depend_it)->HasChanged())
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+	bool OptionNode::IsOriginalValueValid()
+	{
+		for(auto depend_it = value_dependant_on_.begin(), depent_end = value_dependant_on_.end(); depend_it != depent_end; ++depend_it)
+		{
+			if((*depend_it)->HasChanged())
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
 	bool OptionNode::IsLoaded() const
 	{
 		return loaded_;
@@ -109,7 +132,7 @@ namespace ConfigManager
 	OptionNode::OptionNode(SectionNode& section, const std::string& name)
 		: section_(section), name_(name), loaded_(false), changed_(false),
 		proxy_(nullptr), requirement_(Requirement::OPTIONAL), comment_(),
-		value_(), is_specified_(false)
+		value_(), is_specified_(false), name_dependant_on_(), value_dependant_on_()
 	{
 	}
 }

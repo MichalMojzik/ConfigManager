@@ -5,6 +5,7 @@
 #include "optionnode.h"
 
 #include <string>
+#include <vector>
 #include <map>
 #include <memory>
 
@@ -69,6 +70,7 @@ namespace ConfigManager
 		bool HasChanged() const;
 	private:
 		void Load();
+		bool IsOriginalNameValid();
 		
 		SectionNode(Configuration& configuration, const std::string& name);
 		Configuration& configuration_;
@@ -78,6 +80,8 @@ namespace ConfigManager
 		bool is_specified_;
 		Requirement requirement_;
 		std::string comment_;
+
+		std::vector<OptionNode*> name_dependant_on_;
 
 		std::map<std::string, std::unique_ptr<OptionNode> > data_;
 

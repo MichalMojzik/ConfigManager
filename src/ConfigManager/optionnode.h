@@ -4,6 +4,7 @@
 #include "enums.h"
 
 #include <string>
+#include <vector>
 
 namespace ConfigManager
 {
@@ -90,6 +91,8 @@ namespace ConfigManager
 	private:
 		void Load(const std::string& value);
 		void Disconnect();
+		bool IsOriginalNameValid();
+		bool IsOriginalValueValid();
 
 		OptionNode(SectionNode& section, const std::string& name);
 		SectionNode& section_;
@@ -101,6 +104,9 @@ namespace ConfigManager
 		AbstractOptionProxy* proxy_;
 		Requirement requirement_;
 		std::string comment_;
+
+		std::vector<OptionNode*> name_dependant_on_;
+		std::vector<OptionNode*> value_dependant_on_;
 
 		std::string value_;
 

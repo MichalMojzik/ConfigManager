@@ -212,6 +212,8 @@ namespace ConfigManager
 
 		// vytvorime novou sekci, ci ziskame tu, ktera jiz byla vytvorena driv (v ramci nacitani nebo v ramci pristupu k sekci uzivatelem)
 		auto& section = RetrieveSection(section_name);
+		// ulozime si linky, na kterych je jmeno zavisle, abychom mohli pote pri ukladani provest kontrolu, zda muzeme zachovat puvodni radek
+		section.name_dependant_on_ = std::move(dependancies);
 		// oznacime sekci za nactenou (muze vyhodit vyjimku, pokud byla sekce jiz jednou nactena)
 		section.Load();
 		
@@ -248,13 +250,13 @@ namespace ConfigManager
 		}
 
 		Link unresolved_link;
-		std::vector<OptionNode*> dependancies;
 		// pokusime se ziskat jiz drive prirazenou volbu k tomuto radku
 		OptionNode* option = original_line_data.option_;
 		// pokud zatim zacna volba prirazena neni, musime zpracovat nazev volby a vytvorit ji
 		if(option == nullptr)
 		{
 			// nazev volby muze obsahovat linky, pokusime se je vyhodnotit
+			std::vector<OptionNode*> dependancies;
 			std::string option_name;
 			if(!ResolveLink(trim_nonescaped(line.substr(0, assignment_position)), link_values, &option_name, &dependancies, &unresolved_link))
 			{
@@ -266,6 +268,8 @@ namespace ConfigManager
 
 			// vytvorime novou volbu, ci ziskame tu, ktera jiz byla vytvorena driv (v ramci nacitani nebo v ramci pristupu k sekci uzivatelem)
 			option = &(*original_line_data.section_)[option_name];
+			// ulozime si linky, na kterych je jmeno zavisle, abychom mohli pote pri ukladani provest kontrolu, zda muzeme zachovat puvodni radek
+			option->name_dependant_on_ = std::move(dependancies);
 			// poznacime oznacime radek tak, ze odpovida vytvorene volbe (pro ucely rekonstrukce pri ukladani nebo opetovneho zpracovani pri chybe linku)
 			original_line_data.option_ = option;
 		}
@@ -274,10 +278,12 @@ namespace ConfigManager
 		std::string raw_value = trim_nonescaped(line.substr(assignment_position + 1));
 		// hodnota volby muze obsahovat linky, pokusime se je vyhodnotit
 		std::string option_value;
-		if(!ResolveLink(raw_value, link_values, &option_value, &dependancies, &unresolved_link))
+		if(!ResolveLink(raw_value, link_values, &option_value, &option->value_dependant_on_, &unresolved_link))
 		{
 			// nektere linky nebylo mozne vyhodnotit, ulozime si tuto volby pro zpracovani na dobu, kdy problematicky link jiz vyhodnotit pujde
 			postponed_options.emplace(unresolved_link, index);
+			// vycistime vsechny vyhodnocene linky, ktere se mohly ulozit
+			option->value_dependant_on_.clear();
 			return;
 		}
 		// oznacime rozsah radku, ve kterem je zapsana hodnota (pro ucely rekonstrukce pri ukladani)
@@ -440,24 +446,57 @@ namespace ConfigManager
 		for(auto original_it = original_lines_.begin(), original_end = original_lines_.end(); original_it != original_end; ++original_it)
 		{
 			auto& original_line_data = *original_it;
-			// pokud dochazi k prechodu mezi sekcemi (nebo ze sekce na nic), vypiseme nove volby, ktere nebyly soucasti puvodniho vstupu
-			if(section != original_line_data.section_ && section != nullptr)
+			// zacatek nove volby
+			if(section != original_line_data.section_)
 			{
-				OutputRestOfOptions(output_stream, *section, emit_default);
-			}
+				//pokud dochazi k prechodu mezi sekcemi (nebo ze sekce na nic), vypiseme nove volby, ktere nebyly soucasti puvodniho vstupu
+				if(section != nullptr)
+				{
+					OutputRestOfOptions(output_stream, *section, emit_default);
+				}
 
-			section = original_line_data.section_;
-			// pokud je zpracovavany radek spojen s nejakou sekci, u ktere doslo v prubehu fungovani tridy ke zmene hodnoty, zapiseme novou hodnotu
-			if(original_line_data.option_ != nullptr && original_line_data.option_->HasChanged())
-			{
-				output_stream << original_line_data.line_.substr(0, original_line_data.value_start_); // cast puvodniho radku pred hodnotou
-				output_stream << original_line_data.option_->Value(); // samotna hodnota
-				output_stream << original_line_data.line_.substr(original_line_data.value_end_); // cast puvodniho radku za hodnotou
+				section = original_line_data.section_;
+				if(section->IsOriginalNameValid())
+				{
+					output_stream << original_line_data.line_;
+				}
+				else
+				{
+					output_stream << "[" << unescape(section->Name()) << "]";
+				}
 			}
 			else
 			{
-				// jinak vypiseme puvodni retezec beze zmeny (puvodni volba, prazdny retezec nebo komentar)
-				output_stream << original_line_data.line_;
+				OptionNode* option = original_line_data.option_;
+				// pokud je zpracovavany radek spojen s nejakou sekci...
+				if(option != nullptr)
+				{
+					// ...u ktere doslo ke zmene hodnoty volby, na ktere zavisi jmeno volby...
+					if(!option->IsOriginalNameValid())
+					{
+						output_stream << unescape(option->Name()) << "=" << option->Value(); // volba jiz obsahuje escape sekvence
+					}
+					else
+					{
+						// ...nebo u ktere doslo v prubehu fungovani tridy ke zmene hodnoty, zapiseme novou hodnotu
+						if(option->HasChanged() || !option->IsOriginalValueValid())
+						{
+							output_stream << original_line_data.line_.substr(0, original_line_data.value_start_); // cast puvodniho radku pred hodnotou
+							output_stream << original_line_data.option_->Value(); // samotna hodnota, jiz obsahuje escape sekvence
+							output_stream << original_line_data.line_.substr(original_line_data.value_end_); // cast puvodniho radku za hodnotou
+						}
+						else
+						{
+							// jinak vypiseme puvodni retezec beze zmeny (puvodni volba)
+							output_stream << original_line_data.line_;
+						}
+					}
+				}
+				else
+				{
+					// jinak vypiseme puvodni retezec beze zmeny (prazdny retezec nebo komentar)
+					output_stream << original_line_data.line_;
+				}
 			}
 			output_stream << std::endl;
 		}

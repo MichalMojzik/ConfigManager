@@ -73,9 +73,21 @@ namespace ConfigManager
 		loaded_ = true;
 	}
 
+	bool SectionNode::IsOriginalNameValid()
+	{
+		for(auto depend_it = name_dependant_on_.begin(), depent_end = name_dependant_on_.end(); depend_it != depent_end; ++depend_it)
+		{
+			if((*depend_it)->HasChanged())
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
 	SectionNode::SectionNode(Configuration& configuration, const std::string& name)
 		: configuration_(configuration), name_(name), loaded_(false), is_specified_(false),
-		requirement_(Requirement::OPTIONAL), comment_(""), data_()
+		requirement_(Requirement::OPTIONAL), comment_(""), data_(), name_dependant_on_()
 	{
 
 	}
