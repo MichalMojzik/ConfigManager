@@ -897,7 +897,7 @@ void OptionTestSuite::CopyingTest()
 		OptionProxy<StringSpecifier> optionOrig = section.SpecifyOption("optionOrig", StringSpecifier(), 
 			"defaultValue", OPTIONAL, "comments");
 		auto optionMoved = std::move(optionOrig);
-		TEST_THROWS(optionOrig.GetName(), exception)
+		TEST_ASSERT_EQUALS("n/a", optionOrig.GetName())
 		TEST_ASSERT_EQUALS("optionOrig", optionMoved.GetName())
 		TEST_ASSERT_EQUALS("section", optionMoved.GetSectionName())
 		TEST_ASSERT_EQUALS("defaultValue", optionMoved.Get())
