@@ -926,7 +926,7 @@ void OptionTestSuite::SavingNewTest()
 			// now specify section 1
 			Section section1 = config.SpecifySection("section1");
 			// and specify new option in section1
-			section1.SpecifyOption("newOption", StringSpecifier(), "defaultValue", OPTIONAL, "comments");
+			auto option = section1.SpecifyOption("newOption", StringSpecifier(), "defaultValue", OPTIONAL, "comments");
 			stringstream output;
 			// save it to output string
 			config.Save(output, EMIT_DEFAULT_VALUES);

@@ -20,7 +20,7 @@ namespace ConfigManager
 		const char* message_;
 	};
 	/**
-	* Tato vyjimka je vyhoze v pripade, ze je specifikovana jiz pouzita sekce, ci pokud se uzivatel snazi vytvorit typ s minimalni hodnotou vetsi nez max, atd..
+	* Vyjimka vyhazovana v pripade, ze doslo k operaci, ktera neni z nejakych duvodu platna a jedna se o chybu programatora, ktery takovou operaci vyvolal.
 	*/
 	class InvalidOperationException : public ConfigurationException
 	{
@@ -76,7 +76,8 @@ namespace ConfigManager
 	};
 
 	/**
-	* Vstupni data neodpovidaji specifikovanemu formatu presne (chybi, nebo prebyvaji sekce, volby).
+	* Vstupni data neodpovidaji specifikovanemu formatu presne, tedy prebyvaji nejake sekce nebo volby.
+	* V pripade, ze nektere chybi a chybet nemaji, se vyhazuje MandatoryMissingException.
 	*/
 	class StrictException : public ConfigurationException
 	{
@@ -85,7 +86,7 @@ namespace ConfigManager
 	};
 
 	/**
-	* Vyhazovan tridou ListOptionProxy.
+	* Vyhazovan tridou ListOptionProxy v pripade, ze dochazi k pristupu k prvku, ktery je mimo rozsah seznamu.
 	*/
 	class OutOfBoundsException : public ConfigurationException
 	{

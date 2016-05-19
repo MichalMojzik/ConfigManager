@@ -149,6 +149,7 @@ namespace ConfigManager
 			ProcessSection(section_range, link_values, postponed_sections, postponed_options);
 		}
 
+		//
 		if(!postponed_sections.empty() || !postponed_options.empty())
 		{
 			throw MalformedInputException();
@@ -262,11 +263,11 @@ namespace ConfigManager
 
 		ProcessLines();
 
-		// as everything is loaded, we check whether all mandatory sections and options are present
+		// pote, co je vse nacteno, muzeme zkontrolovat, zda jsou vsechny doposavad specifikovane sekce a volby pritomny
 		for(auto section_it = data_.begin(), section_end = data_.end(); section_it != section_end; ++section_it)
 		{
 			auto& section = *section_it->second;
-			// only check for requirements if the section was actually present in the stream
+			// pouze zkontrolujeme volby v sekci, pokud byla samotna sekce specifikovana
 			if(section.IsLoaded())
 			{
 				for(auto option_it = section.data_.begin(), option_end = section.data_.end(); option_it != option_end; ++option_it)
@@ -278,7 +279,7 @@ namespace ConfigManager
 					}
 				}
 			}
-			// section has to have been loaded if it was specified as mandatory
+			// pokud je sekce povinna, tak musela byt nactena
 			else if(section.requirement_ == Requirement::MANDATORY)
 			{
 				throw MandatoryMissingException();
@@ -288,22 +289,22 @@ namespace ConfigManager
 
   void Configuration::CheckStrict()
   {
-		// enumerate through all of the known section
+		// projdeme vsechny zname sekce
 		for(auto section_it = data_.begin(), section_end = data_.end(); section_it != section_end; ++section_it)
 		{
-			// extract the SectionNode from the iterator
+			// vyextrahujeme SectionNode z iteratoru v podobe reference
 			auto& section = *section_it->second;
 
-			// if the section wasn't specified, then that is in violation of strict mode
+			// pokud sekce nebyla specifikovana, ale byla nactena, tak doslo k poruseni podminky strict modu
 			if(section.IsLoaded() && !section.is_specified_)
 			{
 				throw StrictException();
 			}
 
-			// enumerate through all of the known options of the section
+			// projdeme vsechny zname volby probirane sekce
 			for(auto option_it = section.data_.begin(), option_end = section.data_.end(); option_it != option_end; ++option_it)
 			{
-				// extract the OptionNode from the iterator
+				// vyextrahujeme OptionNode z iteratoru v podobe reference
 				auto& option = *option_it->second;
 
 				// if the option wasn't specified, then that is in vioaltion of strict mode
@@ -394,64 +395,14 @@ namespace ConfigManager
 				output_stream << original_line_data.line_;
 			}
 			output_stream << std::endl;
-			//original_line_data.value_end_
+		}
+
+		if(section != nullptr)
+		{
+			OutputRestOfOptions(output_stream, *section, emit_default);
 		}
 
 		OutputRestOfSections(output_stream, emit_default);
-		/* UNUSED CODE
-		for(auto section_it = data_.begin(), section_end = data_.end(); section_it != section_end; ++section_it)
-		{
-			bool section_header_emitted = false;
-			auto& section = *section_it->second;
-			if(emit_default || section.loaded_)
-			{
-				output_stream << "[" << section.Name() << "]";
-				if(emit_default)
-				{
-					output_stream << ";" << section.comment_;
-				}
-				output_stream << std::endl;
-				section_header_emitted = true;
-			}
-			for(auto option_it = section.data_.begin(), option_end = section.data_.end(); option_it != option_end; ++option_it)
-			{
-				auto& option = *option_it->second;
-				if(!option.HasValue())
-				{
-					if(emit_default)
-					{
-						if(!option.LoadDefaultValue())
-						{
-							continue;
-						}
-					}
-					else
-					{
-						continue;
-					}
-				}
-
-				if(!section_header_emitted)
-				{
-					output_stream << "[" << section.Name() << "]";
-					if(emit_default)
-					{
-						output_stream << ";" << section.comment_;
-					}
-					output_stream << std::endl;
-
-					section_header_emitted = true;
-				}
-
-				output_stream << option.Name() << "=" << option.Value();
-				if(emit_default)
-				{
-					output_stream << ";" << option.comment_;
-				}
-				output_stream << std::endl;
-			}
-		}
-		*/
   }
   
   Section Configuration::SpecifySection(const std::string& section_name, Requirement requirement, const std::string& comments)
