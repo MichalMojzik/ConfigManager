@@ -1,62 +1,170 @@
-﻿Zdůvodnění návrhu: ConfigManager
-================================
-
-Martin Franců, Michal Mojzík
-
-Předpokládáme, že knihovna ConfigManager bude použita ve větším projektu k pohodlnému skladování nastavení programu na disku v době, kdy program neběží. Cílem byl zejména co nejpřirozenější přechod od stavu, kdy je konfigurace určena proměnnými rozhozenými po celém programu, do stavu kdy jsou všechny aktuální volby uloženy v jednom soubory. Od toho se odvozuje návrh, který předpokládá, že v programu je pro každou konfigurační hodnotu (nebo nejspíš i celou sekci) jedno místo, které ji má na starost a jako jediné ji spravuje (ostatní ji samozřejmě mohou číst nebo měnit, ale pouze pomocí ukazatelů nebo referencí). Pomyslný „původní stav“ má zejména tu výhodu, že jednotlivé položky (proměnné) mají již při kompilaci známou typovou hodnotu. To bychom chtěli zachovat.
-  
-Třída „Configuration“ hraje centrální roli: má za úkol načítat a ukládat textová data v ".ini" formátu z/do souborů nebo jiných zdrojů (obecně streamy). Třída sama o sobě však dále neinterpretuje typy hodnot nebo nekontroluje přítomnost platných či neplatných parametrů -- pouze umožňuje přistupovat k hodnotám (jakožto řetězcům). Očekáváme, že objem dat voleb programu bude mít rozumnou velikost a proto jsou prostředky na uchovávání i textové verze zanedbatelné. To zjednudušuje implementaci třídy „Configuration“ zachovávající původní formát a hodnoty souboru, pokud nejsou explicitně změněny. „Configuration“ také sama o sobě řeší reference -- všechny ostatní části programu, které s hodnotami v konfiguraci pracují, je již nevidí. Provedené změny lze zapsat pomocí „Save“ (případně lze pomocí této metody i vynutit vypsání defaultních hodnot).
-
-K interpretaci a zpřístupování textových hodnot uživateli slouží potomci trídy "AbstractOptionProxy". Existují dvě konkrétní implementace (potomci): „OptionProxy“, pro jednoduchou volbu, a „ListOptionProxy“, pro seznam voleb. Obě jsou šablonované a přijímají jako parametr typ, tzv. TypeSpecifier (více později). Vzhledem k předpokladu jedinečnosti voleb je „OptionProxy“ pouze „movable“. „OptionProxy“(resp. "ListOptionProxy") se dá nejlépe chápat jako to místo, kde odpovídající konfigurační hodnota opravdu žije. To znamená, že úpravou (typových) hodnot v „OptionProxy“ se upravují (textové) hodnoty v „Configuration“. Předek, „AbstractOptionProxy“,  zajišťuje komunikaci s „Configuration“. (Dědičnost zamezuje duplicitě sdílené funkcionality.) Třída „Configuration“ sama potřebuje komunikovat jak s „OptionProxy“, tak s „ListOptionProxy“ bez rozdílu (zvlášť, když jsou šablonované). 
-
-Třída „Section“ tedy slouží jako organizační jednotka pro předávání informací ven z „Configuration“ (Skupiny instancí "OptionProxy", či "ListOptionProxy"). Třída „Section“ dále vytváří „Option“ (jakožto jediný způsob, jak může vziknout jejich nová platná instance) pomocí „SpecifyOption“ a „SpecifyListOption“.
-
-Konkrétní typy hodnot jsou implementované jakožto typy „TypeSpecifier“ (ale žádný takový rodič neexistuje, neboť nesdílí konkrétní signatůry metod), které mají metody FromString a ToString pro převod mezi typy. Navíc v sobě definují typ „ValueType“. Ten identifikuje pro „Option“ a „ListOption“ typ hodnoty. TypeSpecifiery navíc mohou realizovat omezení rozsahu a zajišťují v „SpecifyOption“ pro popis převodu textového řetězce na hodnotu. 
-
-Formát je možné specifikovat i když už jsou data načtena, v kterémžto případě se data okamžitě interpretují. Nebo naopak nejprve specifikovat formát a poté přečíst soubor. V tom případě se všechny hodnoty interpretují zároveň (v rámci jednoho příkazu).
-  
-Nástin použítí: Uživatel vytvoří „Configuration“ a předá ji jméno souboru. Uživatel vytvoří „Section“ se specifikovanými volbami (instance „OptionProxy“, či „ListOptionProxy“), které si uloží do vlastních proměnných/atributů. Třída „Configuration“ a „OptionProxy“(resp. ListOptionProxy") poté po dobu své životnosti spolu komunikují. 
+﻿Zdůvodnění návrhu: ConfigManager 
+================================ 
+Martin Franců, Michal Mojzík 
 
 
-Konkrétní detaily
------------------
+Předpokládáme, že knihovna ConfigManager bude použita ve větším 
+projektu k pohodlnému skladování nastavení programu na disku v 
+době, kdy program neběží. Cílem byl zejména co nejpřirozenější 
+přechod od stavu, kdy je konfigurace určena proměnnými rozhozenými 
+po celém programu, do stavu kdy jsou všechny aktuální volby uloženy 
+v jednom soubory. Od toho se odvozuje návrh, který předpokládá, že 
+v programu je pro každou konfigurační hodnotu (nebo nejspíš i celou 
+sekci) jedno místo, které ji má na starost a jako jediné ji spravuje 
+(ostatní ji samozřejmě mohou číst nebo měnit, ale pouze pomocí 
+ukazatelů nebo referencí). Pomyslný „původní stav“ má zejména 
+tu výhodu, že jednotlivé položky (proměnné) mají již při 
+kompilaci známou typovou hodnotu. To bychom chtěli zachovat. Třída 
+„Configuration“ hraje centrální roli: má za úkol načítat a 
+ukládat textová data v ".ini" formátu z/do souborů nebo jiných 
+zdrojů (obecně streamy). Třída sama o sobě však dále 
+neinterpretuje typy hodnot nebo nekontroluje přítomnost platných či 
+neplatných parametrů -- pouze umožňuje přistupovat k hodnotám 
+(jakožto řetězcům). Očekáváme, že objem dat voleb programu bude 
+mít rozumnou velikost a proto jsou prostředky na uchovávání i 
+textové verze zanedbatelné. To zjednudušuje implementaci třídy 
+„Configuration“ zachovávající původní formát a hodnoty 
+souboru, pokud nejsou explicitně změněny. „Configuration“ také 
+sama o sobě řeší reference -- všechny ostatní části programu, 
+které s hodnotami v konfiguraci pracují, je již nevidí. Provedené 
+změny lze zapsat pomocí „Save“ (případně lze pomocí této 
+metody i vynutit vypsání defaultních hodnot). 
 
-Chování našeho programu přirozeně odpovídá režimu “relaxed” při ověřování zadaného formátu. Proto jsme jej zvolili jako základní režim. Režim “strict” je možné realizovat zavoláním zavírající metody po vyspecifikovaných všech požadovaných sekcí.
+K interpretaci a zpřístupování textových hodnot uživateli slouží 
+potomci trídy "AbstractOptionProxy". Existují dvě konkrétní 
+implementace (potomci): „OptionProxy“, pro jednoduchou volbu, a 
+„ListOptionProxy“, pro seznam voleb. Obě jsou šablonované a 
+přijímají jako parametr typ, tzv. TypeSpecifier (více později). 
+Vzhledem k předpokladu jedinečnosti voleb je „OptionProxy“ pouze 
+„movable“. „OptionProxy“(resp. "ListOptionProxy") se dá 
+nejlépe chápat jako to místo, kde odpovídající konfigurační 
+hodnota opravdu žije. To znamená, že úpravou (typových) hodnot v 
+„OptionProxy“ se upravují (textové) hodnoty v „Configuration“. 
+Předek, „AbstractOptionProxy“, zajišťuje komunikaci s 
+„Configuration“. (Dědičnost zamezuje duplicitě sdílené 
+funkcionality.) Třída „Configuration“ sama potřebuje komunikovat 
+jak s „OptionProxy“, tak s „ListOptionProxy“ bez rozdílu 
+(zvlášť, když jsou šablonované). 
 
-Chování volby s jednou hodnotou a volby s více hodnotami je natolik rozdílné, že jsme se rozhodli je rozdělit do různých tříd, zmiňované „OptionProxy“ a „ListOptionProxy“. Obě třídy jsou šablony závislé na typu příslušných hodnot, což u třídy „ListOptionProxy“ přirozeně zaručuje, že všechny elementy budou stejného typu. K datům třídy „OptionProxy“ se přistupuje přes metody „Get“ a „Set“. Přístup k datům ve třídě „ListOptionProxy“ je řešen pomocí operátoru “[]” s návratovou třídou “Item” která umožní pouze přístup přes správné metody “Get” a “Set” zajišťující zachování předpokládaných invariantů.
+Třída „Section“ tedy slouží jako organizační jednotka pro 
+předávání informací ven z „Configuration“ (Skupiny instancí 
+"OptionProxy", či "ListOptionProxy"). Třída „Section“ dále 
+vytváří „Option“ (jakožto jediný způsob, jak může vziknout 
+jejich nová platná instance) pomocí „SpecifyOption“ a 
+„SpecifyListOption“. 
 
-Rozhodli jsme se od uživatele vyžadovat specifikaci přednastavené (“default”) hodnoty v každém případě. K tomu nás přiměla možnost nepovinných sekcí s povinnými volbami. Pokud sekce není povinná, nemusí být uživatelem specifikována a očekává se tedy nějaké přednastavené doplnění voleb v ní obsažených. Problém by vznikl, pokud by nepovinná sekce obsahovala povinný údaj (bez přednastavené hodnoty). Přičemž bude vynuceno vyplnění povinné volby v případě libovolné specifikace v dané nepovinné sekci. 
+Konkrétní typy hodnot jsou implementované jakožto typy 
+„TypeSpecifier“ (ale žádný takový rodič neexistuje, neboť 
+nesdílí konkrétní signatůry metod), které mají metody FromString 
+a ToString pro převod mezi typy. Navíc v sobě definují typ 
+„ValueType“. Ten identifikuje pro „Option“ a „ListOption“ 
+typ hodnoty. TypeSpecifiery navíc mohou realizovat omezení rozsahu a 
+zajišťují v „SpecifyOption“ pro popis převodu textového 
+řetězce na hodnotu. 
 
-Funkce linků přináší podle nás víc komplikací, než užitku a proto ji podporujeme pouze při načítání textových dat.  
-
-  
-Ošetřování chyb
----------------
-K ošetření chyb jsme se rozhodli použít vyjímky, protože explicitně nenavazujeme na projekt nepoužívající vyjímky a přitom předpokládáme použítí standardních nástrojů které vyjímky používají. Také to zpřehledňuje řadu funkcí, u kterých bychom v opačném případě (použití chybových kódů/struktur) museli zkomplikovat způsob vracení dat.
-
-Rozšiřitelnost
---------------
-
-TypeSpecifier je jakožto typ využívaný v šablonách, od které se požadují pouze metody pro převod mezi řetězcem a nějakým typem, je skvělé místo pro rozšiřování. Například lze snadno implementovat ColorSpecifier, který interpretuje řetezec jako barvu.
-  
-Třída typu „Configuration“ by nemusela pracovat pouze s .ini formátem -- tak, jak je navržena, by mohly existovat různé její varianty (nejspíše potomky) pro různé konfigurační formáty, ve kterých existuje podobný koncept sekcí a dvojic název=hodnota, které jsou uvedeny textově. Již definované „Option“ třídy by pak mohly pracovat s libovolnou takovou „Configuration“.
+Formát je možné specifikovat i když už jsou data načtena, v 
+kterémžto případě se data okamžitě interpretují. Nebo naopak 
+nejprve specifikovat formát a poté přečíst soubor. V tom případě 
+se všechny hodnoty interpretují zároveň (v rámci jednoho 
+příkazu). Nástin použítí: Uživatel vytvoří „Configuration“ 
+a předá ji jméno souboru. Uživatel vytvoří „Section“ se 
+specifikovanými volbami (instance „OptionProxy“, či 
+„ListOptionProxy“), které si uloží do vlastních 
+proměnných/atributů. Třída „Configuration“ a 
+„OptionProxy“(resp. ListOptionProxy") poté po dobu své životnosti 
+spolu komunikují. 
 
 
+Konkrétní detaily 
+----------------- 
+
+Chování našeho programu přirozeně odpovídá režimu “relaxed” 
+při ověřování zadaného formátu. Proto jsme jej zvolili jako 
+základní režim. Režim “strict” je možné realizovat zavoláním 
+zavírající metody po vyspecifikovaných všech požadovaných sekcí. 
+
+Chování volby s jednou hodnotou a volby s více hodnotami je natolik 
+rozdílné, že jsme se rozhodli je rozdělit do různých tříd, 
+zmiňované „OptionProxy“ a „ListOptionProxy“. Obě třídy jsou 
+šablony závislé na typu příslušných hodnot, což u třídy 
+„ListOptionProxy“ přirozeně zaručuje, že všechny elementy budou 
+stejného typu. K datům třídy „OptionProxy“ se přistupuje přes 
+metody „Get“ a „Set“. Přístup k datům ve třídě 
+„ListOptionProxy“ je řešen pomocí operátoru “[]” s 
+návratovou třídou “Item” která umožní pouze přístup přes 
+správné metody “Get” a “Set” zajišťující zachování 
+předpokládaných invariantů. 
+
+Rozhodli jsme se od uživatele vyžadovat specifikaci přednastavené 
+(“default”) hodnoty v každém případě. K tomu nás přiměla 
+možnost nepovinných sekcí s povinnými volbami. Pokud sekce není 
+povinná, nemusí být uživatelem specifikována a očekává se tedy 
+nějaké přednastavené doplnění voleb v ní obsažených. Problém 
+by vznikl, pokud by nepovinná sekce obsahovala povinný údaj (bez 
+přednastavené hodnoty). Přičemž bude vynuceno vyplnění povinné 
+volby v případě libovolné specifikace v dané nepovinné sekci. 
+
+Funkce linků přináší podle nás víc komplikací, než užitku a 
+proto ji podporujeme pouze při načítání textových dat. 
 
 
+Ošetřování chyb 
+--------------- 
 
-Posudku oponentů
-=====================
+K ošetření chyb jsme se rozhodli použít vyjímky, protože 
+explicitně nenavazujeme na projekt nepoužívající vyjímky a přitom 
+předpokládáme použítí standardních nástrojů které vyjímky 
+používají. Také to zpřehledňuje řadu funkcí, u kterých bychom v 
+opačném případě (použití chybových kódů/struktur) museli 
+zkomplikovat způsob vracení dat. 
 
-- výtku oponentů návrhu aby se nové volby automaticky ukládaly v destruktoru jsme přijali jako opodstatněnou. Tuto vlastnost jsme z proto z návrhu vypustili, ačkoliv dobře seděla k hlavní myšlence návrhu (= provázanost voleb se souborem). 
 
-- na základě posudků usuzujeme, že velkou slabinou našeho návrhu je těžká srozumitelnost. Na základě tohoto podnětu jsme původní jména "Option" a "ListOption" změnili na "OptionProxy" a "ListOptionProxy". Tím jsme chtěli zdůraznit provázanost mezi "OptionProxy" a "Configuration". 
+Rozšiřitelnost 
+-------------- 
 
-- podle doporučení z posudků jsme také přidali dostupnost jména "OptionProxy" a také jména sekce jej obsahující. To také lépe odpovídá myšlence, že samotná hodnota volby nedává mnoho smyslu bez kontextu konfigurace.
+TypeSpecifier je jakožto typ využívaný v šablonách, od které se 
+požadují pouze metody pro převod mezi řetězcem a nějakým typem, 
+je skvělé místo pro rozšiřování. Například lze snadno 
+implementovat ColorSpecifier, který interpretuje řetezec jako barvu. 
+Třída typu „Configuration“ by nemusela pracovat pouze s .ini 
+formátem -- tak, jak je navržena, by mohly existovat různé její 
+varianty (nejspíše potomky) pro různé konfigurační formáty, ve 
+kterých existuje podobný koncept sekcí a dvojic název=hodnota, 
+které jsou uvedeny textově. Již definované „Option“ třídy by 
+pak mohly pracovat s libovolnou takovou „Configuration“. 
 
-- poslechli jsme také radu oponentů a linky jsme omezili pouze do textového prostředí. 
 
-- přidali jsme možnost přitupovat k "stringové" hodnotě "OptionProxy". 
+Změny inspirované posudky oponentů 
+---------------------------------- 
 
- 
+Výtku oponentů návrhu aby se nové volby automaticky ukládaly v 
+destruktoru jsme přijali jako opodstatněnou. Tuto vlastnost jsme proto 
+z návrhu vypustili, ačkoliv dobře seděla k hlavní myšlence návrhu 
+(= provázanost voleb se souborem). 
+
+Na základě posudků jsme usoudili, že velkou slabinou našeho návrhu 
+je těžká srozumitelnost. Na základě tohoto podnětu jsme původní 
+jména "Option" a "ListOption" změnili na "OptionProxy" a 
+"ListOptionProxy". Tím jsme chtěli zdůraznit provázanost mezi 
+"OptionProxy" a "Configuration". 
+
+Podle doporučení z posudků jsme také přidali dostupnost jména 
+"OptionProxy" a také jména sekce jej obsahující. To také lépe 
+odpovídá myšlence, že samotná hodnota volby nedává mnoho smyslu 
+bez kontextu konfigurace. Tyto jména však nejsou uloženy v rámci 
+jednotlivých voleb nebo sekcí, ale v asociovaných třídách 
+Configuration (konkrétně SectionNode a OptionNode). 
+
+Některé z protected metod, u kterých nebylo oponentům zřejmé, k 
+čemu slouží, jsme odstranili. V původní dokumentaci nebyly moc 
+dobře vysvětelné a ve výsledku jsme se rozhodli, že funkcionalita, 
+kterou zprostředkovávali, nebyla tak užitečná. 
+
+Přidali jsme možnost přitupovat k řetězcového hodnotě volby 
+přímo pomocí operator[] na Section, přičemž lze i Section získat 
+pomocí opertator[] z Configuration. Stále však neumožňujeme 
+jakkoliv procházet jednotlivé sekce Configuration, jelikož nám to 
+nepřipadá v souladu se zamýšleným způsobem použití -- uživatel 
+by neměl mít nikdy potřebu iterovat skrz sekce a volby, jejichž 
+jména nezná, jelikož se jedná o konfiguraci jeho programu. 
 

@@ -102,28 +102,6 @@ namespace ConfigManager
 		std::vector<OriginalData> original_lines_;
 		std::map<std::string, std::unique_ptr<SectionNode>> data_;
 	};
-
-
-	class ConfigurationFile : public Configuration
-	{
-	public:
-		/**
-		* Konstruktor nacitajici nastaveni ze zvoleneho souboru.
-		* Muze vyhodit MalformedInputException, IoException vyjimky.
-		* \param filename Jmeno souboru. (Ocekavany format ".ini")
-		* \param policy Spefikuje pristup k vstupnimu souboru (relaxed/strict).
-		*/
-		ConfigurationFile(std::string filename, InputFilePolicy policy = InputFilePolicy::NONE);
-
-		/**
-		* Zakladni dektruktor. Vsechny zmenene volby se program pokusi ulozit na urcene misto (soubor/istream).
-		* Muze selhat obdobne jako Save(), ale nevyhazuje vyjimky (jelikoz vyjimka z destruktoru by zpusobila pad programu, pokud jiz doslo k jine vyjimce).
-		*/
-		~ConfigurationFile();
-
-	private:
-		std::string filename_;
-	};
 };
 
 #endif

@@ -13,7 +13,11 @@ namespace ConfigManager
 	AbstractOptionProxy::AbstractOptionProxy(OptionNode& option_node)
 		: option_node_(&option_node)
 	{
+		// provazani proxy s uzlem
 		option_node.SetProxy(this);
+
+		// pokud je v uzlu uz nactena hodnota ze vstupu, oznacime si ho
+		// --> ve chvili, kdy dedicove teto tridy poprve nastavi hodnotu, budeme ji povazovat za default
 		if(option_node.IsLoaded())
 		{
 			option_node.SetSpecified();
@@ -23,22 +27,23 @@ namespace ConfigManager
 	AbstractOptionProxy::AbstractOptionProxy(AbstractOptionProxy && other)
 		: option_node_(other.option_node_)
 	{
-		if (option_node_ != nullptr)
-		{
-			option_node_->SetProxy(nullptr);
-		}
+		// ukradnuti uzlu
 		other.option_node_ = nullptr;
+		// informovani uzlu o ukradnuti
 		option_node_->SetProxy(this);
 	}
 
 	AbstractOptionProxy& AbstractOptionProxy::operator=(AbstractOptionProxy && other)
 	{
+		// pokud jiz jsme svazany s nejakym uzlem, tak ho informujeme ho odvazani
 		if (option_node_ != nullptr)
 		{
 			option_node_->SetProxy(nullptr);
 		}
+		// ukradnuti uzlu
 		option_node_ = other.option_node_;
 		other.option_node_ = nullptr;
+		// informovani uzlu o ukradnuti
 		option_node_->SetProxy(this);
 		return *this;
 	}
@@ -55,16 +60,21 @@ namespace ConfigManager
 	{
 		if (option_node_ != nullptr)
 		{
+			// je uzel jiz oznacen
 			if(option_node_->IsSpecified())
 			{
+				// nastavime hodnotu a oznacime uzel, ze obsahuje zmenenou hodnotu
 				option_node_->Assign(data);
 			}
 			else
 			{
+				// uzel oznacime
 				option_node_->SetSpecified();
+				// a nastavime jeho defaultni hodnotu
 				option_node_->Value() = data;
 			}
 		}
+		// pokud uzel neni nastaven, nedelame nic -- proxy by stale melo byt pouzitelne jako promenna
 	}
 
 	const std::string& AbstractOptionProxy::GetName()

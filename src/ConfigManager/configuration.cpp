@@ -474,6 +474,7 @@ namespace ConfigManager
 
 	SectionNode& Configuration::RetrieveSection(const std::string& section_name)
 	{
+		// ziskani, ci pripadne vytvoreni, OptionNode pro dany nazev
 		auto result = data_.emplace(section_name, std::unique_ptr<SectionNode>(new SectionNode(*this, section_name)));
 		return *result.first->second;
 	}
@@ -481,20 +482,5 @@ namespace ConfigManager
 	bool Configuration::IsLoaded() const
 	{
 		return loaded_;
-	}
-
-
-
-	ConfigurationFile::ConfigurationFile(std::string filename, InputFilePolicy policy)
-		: filename_(filename), Configuration()
-	{
-		std::ifstream file_stream(filename_);
-		Open(file_stream);
-	}
-	
-	ConfigurationFile::~ConfigurationFile()
-	{
-		std::ofstream file_stream(filename_);
-		Save(file_stream);
 	}
 };

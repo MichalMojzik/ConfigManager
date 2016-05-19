@@ -75,12 +75,7 @@ namespace ConfigManager
 		* \param Textova data ktera maji prepsat retezcove hodnoty v Configuration.
 		*/
 		void AssignValueData(const std::string& data);
-
-		OptionNode* const& Node()
-		{
-			return option_node_;
-		}
-
+		
 	private:
 		OptionNode* option_node_;
 
@@ -89,7 +84,7 @@ namespace ConfigManager
 	};
 
 	/**
-	*Tato trida je realizuje volbu majici jednu hodnotu.
+	*Tato trida realizuje volbu majici jednu hodnotu.
 	*/
 	template<typename TypeSpecifier>
 	class OptionProxy : public AbstractOptionProxy
@@ -387,6 +382,7 @@ namespace ConfigManager
 	ListOptionProxy<TypeSpecifier>& ListOptionProxy<TypeSpecifier>::operator=(ListOptionProxy&& other)
 	{
 		AbstractOptionProxy::operator=(std::move(other));
+		// rucni ukradeni parametru
 		list_ = std::move(other.list_);
 		chosen_delimiter_ = other.chosen_delimiter_;
 		type_specifier_ = std::move(other.type_specifier_);
@@ -454,7 +450,7 @@ namespace ConfigManager
 	auto ListOptionProxy<TypeSpecifier>::Add(const ValueType& value) -> Item
 	{
 		list_.push_back(value);
-		RegenerateValueData();
+		RegenerateValueData(); // hodnota byla zmenena, zapiseme novy string do Configuration
 
 		return Item(*this, list_.size() - 1);
 	}
@@ -464,7 +460,7 @@ namespace ConfigManager
 		if(index < 0 || index >= list_.size())
 			throw OutOfBoundsException();
 		list_.insert(list_.begin() + index, value);
-		RegenerateValueData();
+		RegenerateValueData(); // hodnota byla zmenena, zapiseme novy string do Configuration
 
 		return Item(*this, index);
 	}
@@ -475,12 +471,13 @@ namespace ConfigManager
 			throw OutOfBoundsException();
 
 		list_.erase(list_.begin() + index);
-		RegenerateValueData();
+		RegenerateValueData(); // hodnota byla zmenena, zapiseme novy string do Configuration
 	}
 
 	template<typename TypeSpecifier>
 	void ListOptionProxy<TypeSpecifier>::RegenerateValueData()
 	{
+		// pokud zatim nevime, jaky pouzit oddelovac, zvolime si dvojtecku
 		if(chosen_delimiter_ == '\0')
 			chosen_delimiter_ = ':';
 
@@ -500,6 +497,7 @@ namespace ConfigManager
 	template<typename TypeSpecifier>
 	void ListOptionProxy<TypeSpecifier>::ProcessValueData(const std::string& data)
 	{
+		// rozhodnuti, jaky budeme pouzivat oddelovac
 		auto first_comma_position = find_first_nonespaced(data, ',');
 		auto first_colon_position = find_first_nonespaced(data, ':');
 		if(first_comma_position == std::string::npos)
@@ -519,19 +517,26 @@ namespace ConfigManager
 			chosen_delimiter_ = ':';
 		}
 
+		// vycisteni jakychkoliv hodnot, ktere jsme zatim meli
 		list_.clear();
 
 		std::size_t offset = 0;
 		while(offset < data.length())
 		{
+			// nalezeni dalsiho oddelovace
 			std::size_t next = find_first_nonespaced(data, chosen_delimiter_, offset);
 			if(next == std::string::npos)
 			{
+				// pokud zadny oddelovac neni, konec hodnoty pak konci se samotnym vstupnim retezcem
 				next = data.length();
 			}
+			// extrakce retezcove hodnoty
 			std::string item_data = trim_nonescaped(data.substr(offset, next - offset));
+
 			ValueType item_value = type_specifier_.FromString(unescape(item_data));
 			list_.push_back(item_value);
+
+			// preskoceni za nalezeny oddelovac
 			offset = next + 1;
 		}
 	}

@@ -52,12 +52,14 @@ namespace ConfigManager
 
 	OptionNode& SectionNode::operator[](const std::string& option_name)
 	{
+		// ziskani, ci pripadne vytvoreni, SectionNode pro dany nazev
 		auto result = data_.emplace(option_name, std::unique_ptr<OptionNode>(new OptionNode(*this, option_name)));
 		return *result.first->second;
 	}
 
 	const OptionNode& SectionNode::operator[](const std::string& option_name) const
 	{
+		// vyuziti neconst metody pro const pristup
 		return const_cast<SectionNode&>(*this)[option_name];
 	}
 
