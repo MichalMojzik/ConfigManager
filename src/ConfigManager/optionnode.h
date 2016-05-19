@@ -83,9 +83,13 @@ namespace ConfigManager
 		* Dotaz, zda byla volba deklarovana uzivatelem.
 		*/
 		bool IsSpecified() const;
+		/**
+		* Dotaz, zda byla volba zmenena od sve puvodni (nactene, nebo vychozi) hodnoty.
+		*/
 		bool HasChanged() const;
 	private:
 		void Load(const std::string& value);
+		void Disconnect();
 
 		OptionNode(SectionNode& section, const std::string& name);
 		SectionNode& section_;

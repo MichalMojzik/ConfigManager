@@ -21,9 +21,14 @@ namespace ConfigManager
 	{
 	public:
 		/**
-		* Zakladni kontruktor. 
+		* Zakladni kontruktor.
 		*/
 		Configuration();
+
+		/**
+		* Destruktor odvazujici vsechna privazene OptionProxy.
+		*/
+		~Configuration();
 
 		/**
 		* Metoda pro nastaveni vstupniho streamu. 
@@ -79,19 +84,31 @@ namespace ConfigManager
 		typedef std::multimap<Link, SectionRange> PostponedSections;
 		typedef std::multimap<Link, OptionIndex> PostponedOptions;
 
+		// Pomocna rekurzivni metoda pro vyhodnoceni vsech linku v ramci retezce s vyuzitim lookup-table pro linky. Vraci true, kdyz se zdarilo, false naopak.
+		// Navic muze vracet i retezec s vyhodnocenymi linky (result, appenduje se), seznam linku, ktere se uspesne vyhodnotily (resolved_links, appenduje se)
+		//   nebo link, ktery se nevyhodnotil (unresolved_link)
 		bool ResolveLink(const std::string& value, LinkValues& link_values, std::string* result, std::vector<OptionNode*>* resolved_links, Link* unresolved_link);
+		// Pomocna metoda zpracovavajici radky nactene v original_lines_.
 		void ProcessLines();
+		// Pomocna metoda zpracovavajici sekci v urcitem rozsahu radku nactene v original_lines_ s vyuzitim danych kontextu.
 		void ProcessSection(SectionRange range, LinkValues& link_values, PostponedSections& postponed_sections, PostponedOptions& postponed_options);
+		// Pomocna metoda zpracovavajici volbu na urcitem radku nactenem v original_lines_ s vyuzitim danych kontextu.
+		// Muze rekurzivne volat ProcessSection a ProcessOption pro vyhodnoceni odlozenych sekci a voleb.
 		void ProcessOption(OptionIndex index, LinkValues& link_values, PostponedSections& postponed_sections, PostponedOptions& postponed_options);
 
+		// Pomocna metoda pro vypis sekci, ktere nebyly soucasti puvodniho vstupu.
 		void OutputRestOfSections(std::ostream& output_stream, bool emit_default);
+		// Pomocna metoda pro vypis voleb dane sekce, ktere nebyly soucasti puvodniho vstupu.
 		void OutputRestOfOptions(std::ostream& output_stream, SectionNode& section, bool emit_default);
 
+		// Privatni pomocna datova struktura pro udrzeni informaci o puvodnim vstupu pro ucely zachovani formatovani.
 		struct OriginalData
 		{
-			std::string line_;
-			SectionNode* section_;
-			OptionNode* option_;
+			std::string line_; // cely radek nacteny ze vstupu
+			SectionNode* section_; // sekce, ktera je na danem radku definovana (nebo jsou jeji volby nedefinovany); null pokud zadna takova sekce neni
+			OptionNode* option_; // volba, ktera je na danem radku definovana; null pokud zadna takova volba neni
+
+			// pokud je na radku volba, offsety do radku na mista, kde zacina a konci hodnota teto volby
 			std::size_t value_start_;
 			std::size_t value_end_;
 

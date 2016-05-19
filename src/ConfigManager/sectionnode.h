@@ -63,6 +63,9 @@ namespace ConfigManager
 		* Je tato sekce deklarovana uzivatelem?
 		*/
 		bool IsSpecified() const;
+		/**
+		* Byla nektera volba teto sekce zmenena od sve puvodni (nactene, nebo vychozi) hodnoty.
+		*/
 		bool HasChanged() const;
 	private:
 		void Load();

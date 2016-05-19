@@ -85,6 +85,14 @@ namespace ConfigManager
 		}
 	}
 
+	void OptionNode::Disconnect()
+	{
+		if(proxy_ != nullptr)
+		{
+			proxy_->option_node_ = nullptr;
+		}
+	}
+
 	bool OptionNode::IsLoaded() const
 	{
 		return loaded_;

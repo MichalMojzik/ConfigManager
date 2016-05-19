@@ -18,7 +18,20 @@ namespace ConfigManager
 		: loaded_(false)
   {
   }
-  
+
+	Configuration::~Configuration()
+	{
+		// odpojime vsechny OptionProxy od OptionNodu, ktere se budou destruovat
+		for(auto section_it = data_.begin(), section_end = data_.end(); section_it != section_end; ++section_it)
+		{
+			auto& section = *section_it->second;
+			for(auto option_it = section.data_.begin(), option_end = section.data_.end(); option_it != option_end; ++option_it)
+			{
+				auto& option = *option_it->second;
+				option.Disconnect();
+			}
+		}
+	}
 
 	bool Configuration::ResolveLink(const std::string& value, LinkValues& link_values, std::string* result, std::vector<OptionNode*>* resolved_links, Link* unresolved_link)
 	{
