@@ -300,6 +300,7 @@ namespace ConfigManager
 	template<typename TResult>
 	auto EnumSpecifier<TResult>::FromString(const std::string& data) -> const ValueType&
 	{
+		// pokusime se najit hodnotu, na kterou je namapovany zadany retezec
 		auto valueIt = mapping_.find(data);
 		if (valueIt == mapping_.end())
 		{

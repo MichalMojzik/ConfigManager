@@ -29,6 +29,17 @@ namespace ConfigManager
 		SectionNode& operator=(const SectionNode& other) = delete;
 
 		/**
+		* Nastavi zda je dana volba v konfiguraci povinna.
+		* \param Volab OPTIONAL or MANDATORY.
+		*/
+		void SetRequirement(Requirement requirement);
+		/**
+		* Nastavi kommentar.
+		* \param Komentar.
+		*/
+		void SetComment(const std::string& comment);
+
+		/**
 		* Operator pro pohodlny pristup k reprezentacim option v datech.
 		* \param Jmeno pozadovaneho optionu.
 		*/
@@ -48,7 +59,14 @@ namespace ConfigManager
 		* Je tato sekce nactena ze vstupnich dat?
 		*/
 		bool IsLoaded() const;
+		/**
+		* Je tato sekce deklarovana uzivatelem?
+		*/
+		bool IsSpecified() const;
+		bool HasChanged() const;
 	private:
+		void Load();
+		
 		SectionNode(Configuration& configuration, const std::string& name);
 		Configuration& configuration_;
 

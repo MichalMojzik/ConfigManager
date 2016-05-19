@@ -256,8 +256,7 @@ namespace ConfigManager
 		*/
 		virtual void RegenerateValueData() override;
 		/**
-		* \copydoc AbstractOptionProxy::RegenerateValueData()
-		*
+		* \copydoc AbstractOptionProxy::ProcessValueData(const std::string& data)
 		*/
 		virtual void ProcessValueData(const std::string& data) override;
 
@@ -302,6 +301,10 @@ namespace ConfigManager
 		if(option_node.IsLoaded())
 		{
 			ProcessValueData(option_node.Value());
+		}
+		else
+		{
+			RegenerateValueData();
 		}
 	}
 
@@ -367,6 +370,10 @@ namespace ConfigManager
 		if(option_node.IsLoaded())
 		{
 			ProcessValueData(option_node.Value());
+		}
+		else
+		{
+			RegenerateValueData();
 		}
 	}
 

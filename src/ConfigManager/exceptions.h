@@ -77,7 +77,7 @@ namespace ConfigManager
 
 	/**
 	* Vstupni data neodpovidaji specifikovanemu formatu presne, tedy prebyvaji nejake sekce nebo volby.
-	* V pripade, ze nektere chybi a chybet nemaji, se vyhazuje MandatoryMissingException.
+	* V opacnem pridae, kdy nektere sekce nebo volby chybi a chybet nemaji, se vyhazuje MandatoryMissingException.
 	*/
 	class StrictException : public ConfigurationException
 	{

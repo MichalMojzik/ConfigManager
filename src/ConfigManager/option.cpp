@@ -14,6 +14,10 @@ namespace ConfigManager
 		: option_node_(&option_node)
 	{
 		option_node.SetProxy(this);
+		if(option_node.IsLoaded())
+		{
+			option_node.SetSpecified();
+		}
 	}
 
 	AbstractOptionProxy::AbstractOptionProxy(AbstractOptionProxy && other)
@@ -51,7 +55,15 @@ namespace ConfigManager
 	{
 		if (option_node_ != nullptr)
 		{
-			option_node_->Value() = data;
+			if(option_node_->IsSpecified())
+			{
+				option_node_->Assign(data);
+			}
+			else
+			{
+				option_node_->SetSpecified();
+				option_node_->Value() = data;
+			}
 		}
 	}
 

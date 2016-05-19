@@ -10,6 +10,11 @@ namespace ConfigManager
 		return name_;
 	}
 
+	void OptionNode::SetSpecified()
+	{
+		is_specified_ = true;
+	}
+
 	void OptionNode::SetProxy(AbstractOptionProxy* proxy)
 	{
 		proxy_ = proxy;
@@ -17,6 +22,13 @@ namespace ConfigManager
 
 	void OptionNode::SetRequirement(Requirement requirement)
 	{
+		// pokud uz byly parametry volby jednou urceny, nemohou byt urceny znovu
+		// take nelze vytvorit dve proxy ukazujici na stejnou volbu
+		if(is_specified_)
+		{
+			throw InvalidOperationException();
+		}
+
 		if(requirement == Requirement::MANDATORY && !IsLoaded() && Section().IsLoaded())
 		{
 			throw MandatoryMissingException();
@@ -39,6 +51,12 @@ namespace ConfigManager
 		return value_;
 	}
 
+	void OptionNode::Assign(const std::string& value)
+	{
+		Value() = value;
+		changed_ = true;
+	}
+
 	SectionNode& OptionNode::Section()
 	{
 		return section_;
@@ -51,6 +69,7 @@ namespace ConfigManager
 
 	void OptionNode::Load(const std::string& value)
 	{
+		// pokud byla volba jiz drive nactena, pak ji nyni nacitame podruhe a nejedna se o platny .ini format
 		if (loaded_)
 		{
 			throw MalformedInputException();
@@ -59,6 +78,7 @@ namespace ConfigManager
 		loaded_ = true;
 		value_ = value;
 
+		// pokud byla jiz vytvorena proxy, naloadujeme ji daty
 		if (proxy_ != nullptr)
 		{
 			proxy_->AssignValueData(value_);
@@ -69,29 +89,19 @@ namespace ConfigManager
 	{
 		return loaded_;
 	}
-
-	bool OptionNode::HasValue() const
+	bool OptionNode::IsSpecified() const
 	{
-		return loaded_ || changed_;
+		return is_specified_;
 	}
-
-	bool OptionNode::LoadDefaultValue()
+	bool OptionNode::HasChanged() const
 	{
-		if (proxy_ != nullptr)
-		{
-			proxy_->RegenerateValueData();
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		return changed_;
 	}
 
 	OptionNode::OptionNode(SectionNode& section, const std::string& name)
 		: section_(section), name_(name), loaded_(false), changed_(false),
-		proxy_(nullptr), requirement_(Requirement::OPTIONAL), comment_(""),
-		value_("")
+		proxy_(nullptr), requirement_(Requirement::OPTIONAL), comment_(),
+		value_(), is_specified_(false)
 	{
 	}
 }
