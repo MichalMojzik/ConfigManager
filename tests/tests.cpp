@@ -546,10 +546,10 @@ void SectionTestSuite::FirstSpecifyTest()
 			config.Open(input);
 			TEST_ASSERT_EQUALS("section1", section1.GetName())
 			stringstream output;
-			config.Save(output, ConfigManager::EMIT_DEFAULT_VALUES);
+			config.Save(output);
 			string line;
 			std::getline(output, line);
-			TEST_ASSERT_EQUALS("[section];comments2\n", line)
+			TEST_ASSERT_EQUALS("[section1];comments2", line)
 		}
 		{
 			Configuration config;

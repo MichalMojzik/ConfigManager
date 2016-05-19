@@ -170,7 +170,7 @@ namespace ConfigManager
 			/**
 			* Metoda pro pristup k hodnote.
 			*/
-			const ValueType& Get() const;
+			typename std::vector<ValueType>::const_reference Get() const;
 		protected:
 			const ListOptionProxy<TypeSpecifier>& parent_;
 			std::size_t index_;
@@ -191,7 +191,7 @@ namespace ConfigManager
 			/**
 			* Metoda pro pristup k hodnote.
 			*/
-			const ValueType& Get() const;
+			typename std::vector<ValueType>::const_reference Get() const;
 			/**
 			* Metoda pro nastavovani nove hodnoty.
 			* \param value Nova hodnota.
@@ -402,13 +402,13 @@ namespace ConfigManager
 	}
 
 	template<typename TypeSpecifier>
-	auto ListOptionProxy<TypeSpecifier>::ConstItem::Get() const -> const ValueType&
+	auto ListOptionProxy<TypeSpecifier>::ConstItem::Get() const -> typename std::vector<ValueType>::const_reference
 	{
 		return parent_.list_[index_];
 	}
 
 	template<typename TypeSpecifier>
-	auto ListOptionProxy<TypeSpecifier>::Item::Get() const -> const ValueType&
+	auto ListOptionProxy<TypeSpecifier>::Item::Get() const -> typename std::vector<ValueType>::const_reference
 	{
 		return parent_.list_[index_];
 	}
