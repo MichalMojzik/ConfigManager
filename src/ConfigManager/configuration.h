@@ -15,8 +15,7 @@ namespace ConfigManager
 	/**
 	* Trida spravujici soubory s nastavenim.
 	* Vzhledem k tomu, ze soubory maji format ".ini" a jejich format tedy neni uplne specifikovany, uchovava tato trida puvodni retezcove hodnoty.
-	* Umoznuje pristupovat k sekcim a hodnotam daneho souboru pomoci metody SpecifySection. 
-	* V destruktoru jsou pripadne zmeny zapsany zpet do souboru. 
+	* Umoznuje pristupovat k sekcim a hodnotam daneho souboru pomoci metody SpecifySection.  
 	*/
 	class Configuration
 	{
@@ -28,14 +27,18 @@ namespace ConfigManager
 
 		/**
 		* Metoda pro nastaveni vstupniho streamu. 
-		* Muze vyhodit MalformedInputException, IoException, WrongFormatException, MandatoryMissingException vyjimky. 	
+		* Muze vyhodit:
+		* MalformedInputException (spatny format vstupnich dat - section, ci option), 
+		* IoException (problem pri ziskavani vstupu),
+		* WrongFormatException (pokud hodnota nejakeho option nesedi do specifikovaneho typu), 
+		* MandatoryMissingException  (pokud chybi jiz specifikovana povinna sekce nebo hodnota).
 		* \param input_stream Vstupni istream.
 		*/
 		void Open(std::istream& input_stream);
 
 		/**
 		* Metoda pro kontrolu, zda vstup odpovida jiz striktne specifikovanemu formatu. 
-		* Muze vyhodit StrictException vyjimku.
+		* Muze vyhodit StrictException vyjimku, pokud format nesedi.
 		*/
 		void CheckStrict();
 
@@ -48,7 +51,7 @@ namespace ConfigManager
 
 		/**
 		* Metoda specifikujici dalsi sekci. 
-		* Muze vyhodit MandatoryMissingException vyjimku.
+		* Muze vyhodit MandatoryMissingException vyjimku (v pripade ze nenase MANDATORY sekci).
 		* \param section_name Jmeno sekce. 
 		* \param requirement Povinnost dane sekce.
 		* \param comments Komentare k dane sekci. 

@@ -4,8 +4,8 @@
 namespace ConfigManager
 {
 	/**
-	* Specifikuje zda je sekce/volba povinne.
-	*  Tento vyctovy typ specifikuje zda je volba, ci sekce povinna, povinne volby nesmeji byt doplneni prednastavenou hodnotou. 
+	* Specifikuje zda je sekce/volba povinna.
+	*  Povinne volby nesmeji byt doplneny prednastavenou hodnotou, pokud se nejedna o celou nepovinnou sekci. 
 	*/
 	enum Requirement
 	{
@@ -16,7 +16,7 @@ namespace ConfigManager
 
 	/**
 	* Spefikuje pristup k vstupnimu souboru (relaxed/strict).
-	*   Volba IGNORE_NONEXISTANT (relaxed) umozni zpracovat vstup obsahujici i sekce mimo zadany format. Volba NONE (strict) zpusobi selhani v pripade neshody se specifikovanym formatem..
+	* Volba IGNORE_NONEXISTANT (relaxed) umozni zpracovat vstup obsahujici i sekce mimo zadany format. Volba NONE (strict) zpusobi selhani v pripade neshody se specifikovanym formatem..
 	*/
 	enum InputFilePolicy
 	{

@@ -580,7 +580,7 @@ OptionTestSuite::OptionTestSuite()
 	TEST_ADD(OptionTestSuite::SavingFloatTest)
 	TEST_ADD(OptionTestSuite::SavingStringTest)
 	TEST_ADD(OptionTestSuite::SavingEnumTest)
-	//TEST_ADD(OptionTestSuit::SavingListTest) not implemented
+	TEST_ADD(OptionTestSuite::SavingListTest)
 	TEST_ADD(OptionTestSuite::PreservingFormatTest)
     TEST_ADD(OptionTestSuite::ListModificationTest)
 	TEST_ADD(OptionTestSuite::ListLinkTest )
@@ -814,7 +814,7 @@ void OptionTestSuite::SavingListTest()
 			string oLine;
 			std::getline(output, oLine); // section line is not target of test
 			std::getline(output, oLine);
-			TEST_ASSERT_EQUALS("optionList=defaultValue,valueDefault;commentsOption", oLine)
+			TEST_ASSERT_EQUALS("optionList=defaultValue:valueDefault;commentsOption", oLine)
 		}
 		// change one option:
 		listOption[1].Set("changedValue");
@@ -824,7 +824,7 @@ void OptionTestSuite::SavingListTest()
 			string oLine;
 			std::getline(output, oLine); // section line is not target of test
 			std::getline(output, oLine);
-			TEST_ASSERT_EQUALS("optionList=defaultValue,changedValue;commentsOption", oLine)
+			TEST_ASSERT_EQUALS("optionList=defaultValue:changedValue;commentsOption", oLine)
 		}
 	}
 	catch (...)
@@ -999,18 +999,16 @@ void OptionTestSuite::LinksTest()
 {
 	try 
 	{
-		{
-			stringstream inputText;
-			inputText << "[section1]\n";
-			inputText << "option=value\n";
-			inputText << "[section2]\n";
-			inputText << "option=${section1#option}\n";
-			Configuration config;
-			config.Open(inputText);
-			Section section2 = config.SpecifySection("section2", ConfigManager::MANDATORY);
-			OptionProxy<StringSpecifier> opt2 = section2.SpecifyOption("option", StringSpecifier(), "defaultVal", OPTIONAL);
-			TEST_ASSERT_EQUALS("value", opt2.Get());
-		}
+		stringstream inputText;
+		inputText << "[section1]\n";
+		inputText << "option=value\n";
+		inputText << "[section2]\n";
+		inputText << "option=${section1#option}\n";
+		Configuration config;
+		config.Open(inputText);
+		Section section2 = config.SpecifySection("section2", ConfigManager::MANDATORY);
+		OptionProxy<StringSpecifier> opt2 = section2.SpecifyOption("option", StringSpecifier(), "defaultVal", OPTIONAL);
+		TEST_ASSERT_EQUALS("value", opt2.Get());
 	}
 	catch (...)
 	{
