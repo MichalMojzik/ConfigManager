@@ -50,7 +50,7 @@ cppTest: cppTestConfigure
 	cd ${CPPTESTDIR}; make ; make install
 	
 cppTestConfigure:
-	cd ${CPPTESTDIR}; ./configure --prefix $(CURDIR)
+	cd ${CPPTESTDIR}; sh configure --prefix $(CURDIR)
 	
 Testing: ConfigManager cppTest 
 	${CC} ${TESTDIR}tests.cpp -L ./lib -lconfigmanager -lcpptest -o configmanagerTest.exe ${OPTIONS} -Wl,-R./lib
