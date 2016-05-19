@@ -70,11 +70,15 @@ namespace ConfigManager
 	std::string trim_nonescaped(std::string value)
 	{
 		auto last_char = value.find_last_not_of(' ');
-		if(last_char != std::string::npos)
+		if (last_char != std::string::npos)
+		{
 			value.erase(last_char + 1 + (value[last_char] == '\\' ? 1 : 0));
+		}
 		auto first_char = value.find_first_not_of(' ');
-		if(first_char != std::string::npos && first_char > 0)
+		if (first_char != std::string::npos && first_char > 0)
+		{
 			value.erase(0, first_char);
+		}
 		return value;
 	}
 
@@ -123,29 +127,41 @@ namespace ConfigManager
 		while(offset < s.length())
 		{
 			std::size_t position = s.find_first_of(character, offset);
-			if(position == std::string::npos)
+			if (position == std::string::npos)
+			{
 				break;
+			}
 
-			if(!is_escaped(s, position))
+			if (!is_escaped(s, position))
+			{
 				return position;
+			}
 			else
+			{
 				offset = position + 1;
+			}
 		}
 
 		return std::string::npos;
 	}
 	std::size_t find_last_nonespaced(const std::string& s, char character, std::size_t offset)
 	{
-		while(offset >= 0)
+		while (offset >= 0)
 		{
 			std::size_t position = s.find_last_of(character, offset);
-			if(position == std::string::npos)
+			if (position == std::string::npos)
+			{
 				break;
+			}
 
-			if(!is_escaped(s, position))
+			if (!is_escaped(s, position))
+			{
 				return position;
+			}
 			else
+			{
 				offset = position - 1;
+			}
 		}
 
 		return std::string::npos;

@@ -398,7 +398,7 @@ namespace ConfigManager
 		}
 
 		OutputRestOfSections(output_stream, emit_default);
-		/*
+		/* UNUSED CODE
 		for(auto section_it = data_.begin(), section_end = data_.end(); section_it != section_end; ++section_it)
 		{
 			bool section_header_emitted = false;

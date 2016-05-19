@@ -111,8 +111,10 @@ namespace ConfigManager
 		{
 			throw WrongFormatException();
 		}
-		if(processed_count != data.length() - skip)
+		if (processed_count != data.length() - skip)
+		{
 			throw WrongFormatException();
+		}
 		return CheckConstraint(result);
 	}
 
@@ -147,8 +149,10 @@ namespace ConfigManager
 		{
 			throw WrongFormatException();
 		}
-		if(processed_count != data.length() - skip)
+		if (processed_count != data.length() - skip)
+		{
 			throw WrongFormatException();
+		}
 		return CheckConstraint(result);
 	}
 

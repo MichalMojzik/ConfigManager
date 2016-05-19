@@ -264,15 +264,19 @@ namespace ConfigManager
 	RangeConstraint<TResult>::RangeConstraint(const TResult& range_start, const TResult& range_end)
 		: range_start_(range_start), range_end_(range_end)
 	{
-		if(range_end < range_start)
+		if (range_end < range_start)
+		{
 			throw InvalidOperationException("Specified values do not form a valid range.");
+		}
 	}
 
 	template<typename TResult>
 	const TResult& RangeConstraint<TResult>::CheckConstraint(const TResult& value)
 	{
-		if(value < range_start_ || value > range_end_)
+		if (value < range_start_ || value > range_end_)
+		{
 			throw WrongRangeException();
+		}
 		return value;
 	}
 }
@@ -297,8 +301,10 @@ namespace ConfigManager
 	auto EnumSpecifier<TResult>::FromString(const std::string& data) -> const ValueType&
 	{
 		auto valueIt = mapping_.find(data);
-		if(valueIt == mapping_.end())
+		if (valueIt == mapping_.end())
+		{
 			throw WrongFormatException();
+		}
 		return valueIt->second;
 	}
 

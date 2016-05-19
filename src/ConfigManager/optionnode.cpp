@@ -52,7 +52,9 @@ namespace ConfigManager
 	void OptionNode::Load(const std::string& value)
 	{
 		if (loaded_)
+		{
 			throw MalformedInputException();
+		}
 
 		loaded_ = true;
 		value_ = value;

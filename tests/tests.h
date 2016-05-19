@@ -18,7 +18,7 @@ private:
 	*/
 	void CommentsSyntaxTest();
 	void SectionSyntaxTest();
-	void OptionSyntaxTest();
+	void WhiteSpaceTest();
 };
 
 class SectionTestSuite : public Test::Suite

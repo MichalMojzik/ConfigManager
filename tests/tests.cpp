@@ -25,7 +25,7 @@ int main(int argc, char* argv[])
 	string welcomeStr = "Starting test of ConfigManager library.\n";
 	std::cout << welcomeStr;
 	try
-	{
+	{// vytvorime TestSuite se vsemy testy.
 		Test::Suite allTests;
 		allTests.add(auto_ptr<Test::Suite>(new ConfigurationTestSuite()));
 		allTests.add(auto_ptr<Test::Suite>(new SectionTestSuite()));
@@ -38,7 +38,7 @@ int main(int argc, char* argv[])
 	}
 	catch (...)
 	{
-		cout << "unexpected exception encountered\n";
+		cout << "Unexpected exception encountered\n";
 		return EXIT_FAILURE;
 	}
 	cin.get();
@@ -54,6 +54,7 @@ int main(int argc, char* argv[])
 * Vznika tu sice jista duplicita kodu, ale kod se porad lisi v vstupnich paramtrech.
 * Mit vstupni stringy na jinem miste nez samotny test, potom znacne komplikuje
 * odhaleni pripadnych chyb. 
+* Na misto toho oddelujeme testy pomoci {}, cimz snad zajistime dostatecnou izolaci.
 */
 
 
@@ -61,7 +62,7 @@ ConfigurationTestSuite::ConfigurationTestSuite()
 {
 	TEST_ADD(ConfigurationTestSuite::CommentsSyntaxTest)
 	TEST_ADD(ConfigurationTestSuite::SectionSyntaxTest)
-	TEST_ADD(ConfigurationTestSuite::OptionSyntaxTest)
+	TEST_ADD(ConfigurationTestSuite::WhiteSpaceTest)
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -69,7 +70,7 @@ ConfigurationTestSuite::ConfigurationTestSuite()
 void ConfigurationTestSuite::CommentsSyntaxTest()
 {
 	// 
-	{// funguji komentare ? (= jsou ignorovany ?  ) 
+	{// are comments working?
 		ConfigManager::Configuration config;
 		stringstream commentFileText;
 		commentFileText << "; this is comment.. the following should be ignored: ~@#$%^&*()_+{}:\"|<>?\n";
@@ -77,57 +78,33 @@ void ConfigurationTestSuite::CommentsSyntaxTest()
 		commentFileText << "[section] ;comment..\n";
 		commentFileText << "option=value;comment\n";
 		commentFileText << ";commentedOption=what\n";
-		// takovy vstup by mel byt korektni. 
+		// this is correct input. 
 		config.Open(commentFileText);
 		
-		Section dummySection = config.SpecifySection("section", Requirement::MANDATORY, "this section should be there");
-			// pokud tam tato sekce neni, nepujde ji specifikovat jako MANDATORY..
+		Section dummySection = config.SpecifySection
+			("section", Requirement::MANDATORY, "this section should be there");
 		OptionProxy<StringSpecifier> dummyOpt =  dummySection.SpecifyOption<StringSpecifier>
 			("option", StringSpecifier() , "default", OPTIONAL,"this option should be there");
-		// pokud nebude mit hodnotu "value, tak je to spatne..
 		string dummyValue = dummyOpt.Get();
-		TEST_ASSERT_EQUALS("value", dummyValue);
+		TEST_ASSERT_EQUALS("value", dummyValue); 
 		
-		TEST_THROWS(Section commentedSectionOut = config.SpecifySection("commentedSection", ConfigManager::MANDATORY, 
+		// try if there is commented section
+		TEST_THROWS(Section commentedSectionOut = config.SpecifySection
+			("commentedSection", ConfigManager::MANDATORY, 
 			"this should throw, as it was commented out"), MandatoryMissingException)
+			// is there commented option?
 		TEST_THROWS(OptionProxy<StringSpecifier> commentedOption = dummySection.SpecifyOption
 			(";commentedOption", StringSpecifier(), "default", ConfigManager::MANDATORY, 
 				"this option should not be in configuration"), MandatoryMissingException )
 	}
-	// co se stane s nekorektnim vstupem
-	{// nesmysl
+	// what happen with incorrect input:
+	{// utter nonsence
 		ConfigManager::Configuration config;
 		stringstream testText;
 		testText << "asdf";
 		TEST_THROWS(config.Open(testText), MalformedInputException);
 	}
-
-	{// spatna sekce 
-		ConfigManager::Configuration config;
-		stringstream testText;
-		testText << "asdf[sectionName]";
-		TEST_THROWS(config.Open(testText), MalformedInputException);
-	}
-	{// spatna sekce 
-		ConfigManager::Configuration config;
-		stringstream testText;
-		testText << "[sectionName";
-		TEST_THROWS(config.Open(testText), MalformedInputException);
-	}
-	{// spatna sekce 
-		ConfigManager::Configuration config;
-		stringstream testText;
-		testText << "sectionName]";
-		TEST_THROWS(config.Open(testText), MalformedInputException);
-	}
-	{
-		ConfigManager::Configuration config;
-		stringstream testText;
-		testText << "[section]\n";
-		testText << "asdf";
-		TEST_THROWS(config.Open(testText), MalformedInputException);
-	}
-	{// spatny option
+	{// nonsence on option place
 		ConfigManager::Configuration config;
 		stringstream testText;
 		testText << "[section]\n";
@@ -140,16 +117,28 @@ void ConfigurationTestSuite::SectionSyntaxTest()
 {
 	try
 	{// spatne zadane sekce
-		{
-			ConfigManager::Configuration config;
-			stringstream testText;
-			testText << "[sectionName]asdf";
-			TEST_THROWS(config.Open(testText), MalformedInputException);
-		}
-		{
+		{// wrong section1
 			ConfigManager::Configuration config;
 			stringstream testText;
 			testText << "asdf[sectionName]";
+			TEST_THROWS(config.Open(testText), MalformedInputException);
+		}
+		{// 2 
+			ConfigManager::Configuration config;
+			stringstream testText;
+			testText << "[sectionName";
+			TEST_THROWS(config.Open(testText), MalformedInputException);
+		}
+		{// 3 
+			ConfigManager::Configuration config;
+			stringstream testText;
+			testText << "sectionName]";
+			TEST_THROWS(config.Open(testText), MalformedInputException);
+		}
+		{// 4
+			ConfigManager::Configuration config;
+			stringstream testText;
+			testText << "[section]sdf\n";
 			TEST_THROWS(config.Open(testText), MalformedInputException);
 		}
 	}
@@ -159,7 +148,7 @@ void ConfigurationTestSuite::SectionSyntaxTest()
 	}
 }
 
-void ConfigurationTestSuite::OptionSyntaxTest()
+void ConfigurationTestSuite::WhiteSpaceTest()
 {
 	try 
 	{
@@ -179,8 +168,6 @@ void ConfigurationTestSuite::OptionSyntaxTest()
 		TEST_THROWS_NOTHING(OptionProxy<StringSpecifier> option3 = section.SpecifyOption(" option3 ", StringSpecifier(), "default3", MANDATORY))
 		OptionProxy<StringSpecifier> option4 = section.SpecifyOption("option4", StringSpecifier(), "default", MANDATORY);
 		TEST_ASSERT_EQUALS(" valid spaces in value ", option4.Get())
-		// now test the saving:
-		
 	}
 	catch (...)
 	{
