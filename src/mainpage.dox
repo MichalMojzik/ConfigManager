@@ -39,9 +39,10 @@ cofing.save(outputStream); // timto se vsechny volby ulozi
 ##Hlavní vlastnoti:
 
 Datové typy (podle kterých se mají textová data interpretovat) jsou určeny 
-pomocí specialních tříd tzv."TypeSpecfiers" (v příkladu "StringSpecifier").
+pomocí specialních tříd tzv."TypeSpecifiers" (v příkladu "StringSpecifier").
 Vlastní implementace těchto tříd umožuje uživateli definovát vlastní 
-přechodové funkce mezi textem a požadovanými daty.  
+přechodové funkce mezi textem a požadovanými daty. Signatura konkrétního typu
+určeného takovou třídou je dostupná v "TypeSpeciers::ValueType".  
 
 Třída „Configuration“ a „OptionProxy“ spolu komunikují po celou dobu. 
 Po ukončení práce lze všechny aktuální hodnoty v specifikovaných 
@@ -92,5 +93,146 @@ switch (algorithmType.Get())
 	case UPBP: renderer = new Upbp(configuration); break;
 }
 </code></pre>
+=========================================================================
+
+##Příklad jednoduché hry:
+
+<pre><code>
+// Hra hadani nahodneho cisla v urcitem rozsahu. 
+class Game
+{
+	const int MAX_GUESSING_NUMBER = 10000;
+	const int STANDARD_RANGE_START = 0;
+	const int STANDARD_RANGE_END = 100;
+public:
+	Game(Configuration& configuration)
+	{
+		Section gameSection = configuration.SpecifySection("Game", Requirement::OPTIONAL);
+		// Nacteni rozsahu.
+		rangeStart_ = gameSection.SpecifyOption(
+			"RangeStart",
+			IntegerSpecifier(1, MAX_GUESSING_NUMBER),
+			STANDARD_RANGE_START,
+			Requirement::MANDATORY);
+		rangeEnd_ = gameSection.SpecifyOption(
+			"RangeEnd",
+			IntegerSpecifier(1, MAX_GUESSING_NUMBER), // zde neni pouzit rangeStart_.Get() jako dolni mez, protoze 1) v zavislosti na volajicim v nem jeste nemusi byt spravna hodnota, 2) pri jeji zmene (v programu) by spodni rozsah neaktualizoval
+			STANDARD_RANGE_END,
+			Requirement::MANDATORY);
+		// Nacteni zprav vypisovanych uzivateli (v podstate lokalizace).
+		higher_ = gameSection.SpecifyOption(
+			"Higher",
+			StringSpecifier(),
+			"Guess too low.");
+		lower_ = gameSection.SpecifyOption(
+			"Lower",
+			StringSpecifier(),
+			"Guess too high.");
+		outOfBounds_ = gameSection.SpecifyOption(
+			"OutOfBounds",
+			StringSpecifier(),
+			"Guess is not within the allowed bounds.");
+		victoryMessage_ = gameSection.SpecifyOption(
+			"VictoryMessage",
+			StringSpecifier(),
+			"Victory!");
+		defeatMessage_ = gameSection.SpecifyOption(
+			"DefeatMessage",
+			StringSpecifier(),
+			"Defeat...");
+	}
+
+	bool Guess(int value)
+	{
+		// Kontrola rozsahu
+		if (value < rangeStart_.Get() || value > rangeEnd_.Get())
+		{
+			std::cout << outOfBounds_.Get() << std::endl;
+			return false;
+		}
+
+		 ... 
+	}
+
+	void SetRange(int start, int end)
+	{
+		// Nastaveni rozsahu v konfiguraci.
+		rangeStart_.Set(start);
+		rangeEnd_.Set(end);
+	}
+
+	void ReportResult(bool win)
+	{
+		// Vyhral nebo prohral.
+		std::cout << (win ? victoryMessage_.Get() : defeatMessage_.Get()) << std::endl;
+	}
+
+private:
+	Option<IntegerSpecifier> rangeStart_;
+	Option<IntegerSpecifier> rangeEnd_;
+	Option<StringSpecifier> higher_;
+	Option<StringSpecifier> lower_;
+	Option<StringSpecifier> outOfBounds_;
+	Option<StringSpecifier> victoryMessage_;
+	Option<StringSpecifier> defeatMessage_;
+};
+
+class Sound
+{
+public:
+	Sound(Configuration& configuration)
+	{
+		Section soundSection = configuration.SpecifySection("Sound"); // implicitne optional 
+		IntegerSpecifier volumeSpecifier = IntegerSpecifier(0, 100);
+		// Nabindovani hlasitosti.
+		musicVolume_ = soundSection.SpecifyOption("Music", volumeSpecifier, 100);
+		voiceVolume_ = soundSection.SpecifyOption("Voice", volumeSpecifier, 100);
+		effectVolume_ = soundSection.SpecifyOption("Effects", volumeSpecifier, 100);
+	}
+
+	// Primy pristup k nastavovani hlasitostem volajicim.
+	Option<IntegerSpecifier>& MusicVolume()
+	{
+		return musicVolume_;
+	}
+	Option<IntegerSpecifier>& VoiceVolume()
+	{
+		return voiceVolume_;
+	}
+	Option<IntegerSpecifier>& EffectVolume()
+	{
+		return effectVolume_;
+	}
+
+	// Nastaveni jednotne hlasitosti pomoci linku.
+	void SetMasterVolume(int volume)
+	{
+		musicVolume_.Set(volume);
+		voiceVolume_.Link(musicVolume_);
+		effectVolume_.Link(musicVolume_);
+	}
+
+private:
+	Option<IntegerSpecifier> musicVolume_;
+	Option<IntegerSpecifier> voiceVolume_;
+	Option<IntegerSpecifier> effectVolume_;
+};
+
+// Metoda pro hrani zvuku
+void PlayMusic(int volume) {}
+
+int main()
+{
+	Configuration configuration("game.ini", InputFilePolicy::IGNORE_NONEXISTANT);
+
+	Game game(configuration);
+	 ... prace s vnejsim interfacem Game ... 
+
+	Sound sound(configuration);
+	PlayMusic(sound.MusicVolume().Get());
+	sound.SetMasterVolume(75);
+}
+</code></pre>
+
  
  */
