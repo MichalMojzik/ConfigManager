@@ -369,7 +369,7 @@ namespace ConfigManager
 			}
 
 			// pokud se sekce nijak nezmenila a nevypisujeme i vychozi hodnoty, tak take ignorujeme
-			if(!emit_default && section.HasChanged())
+			if(!emit_default && !section.HasChanged())
 			{
 				continue;
 			}

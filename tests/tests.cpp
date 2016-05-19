@@ -855,6 +855,8 @@ void OptionTestSuite::PreservingFormatTest()
 		inputText << listLine2;
 		config.Open(inputText);
 		Section section = config.SpecifySection("section", ConfigManager::MANDATORY, "comments");
+		auto floatOpt = section.SpecifyOption("floatOpt", FloatSpecifier(), 0);
+		floatOpt.Set(3.42);
 		stringstream output;
 		config.Save(output);
 		string oLine;
@@ -868,7 +870,7 @@ void OptionTestSuite::PreservingFormatTest()
 		std::getline(output, oLine);
 		TEST_ASSERT_EQUALS(uintLine, oLine + "\n");
 		std::getline(output, oLine);
-		TEST_ASSERT_EQUALS(floatLine, oLine + "\n");
+		TEST_ASSERT_EQUALS("floatOpt = 3.42;comments Float\n", oLine + "\n");
 		std::getline(output, oLine);
 		TEST_ASSERT_EQUALS(stringLine, oLine + "\n");
 		std::getline(output, oLine);
@@ -1016,6 +1018,14 @@ void OptionTestSuite::ListModificationTest()
 			TEST_ASSERT_EQUALS(false, boolList[1].Get())
 			boolList[0].Set(false);
 		TEST_ASSERT_EQUALS(false, boolList[0].Get())
+
+		stringstream output;
+		configuration.Save(output);
+		string oLine;
+		std::getline(output, oLine);
+		TEST_ASSERT_EQUALS("[section];sectionComments", oLine)
+		std::getline(output, oLine);
+		TEST_ASSERT_EQUALS("boolListOption=off:off;optionComments", oLine)
 	}
 	catch(...)
 	{
