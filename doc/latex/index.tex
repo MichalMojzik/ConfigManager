@@ -46,7 +46,7 @@ nyni muze uzivatl prostrednictvim saveFileName cist a menit tuto volbu.}\end{Dox
 
 \subsection*{Hlavní vlastnoti\+:}
 
-Datové typy (podle kterých se mají textová data interpretovat) jsou určeny pomocí specialních tříd tzv.\char`\"{}\+Type\+Specfiers\char`\"{} (v příkladu \char`\"{}\+String\+Specifier\char`\"{}). Vlastní implementace těchto tříd umožuje uživateli definovát vlastní přechodové funkce mezi textem a požadovanými daty.
+Datové typy (podle kterých se mají textová data interpretovat) jsou určeny pomocí specialních tříd tzv.\char`\"{}\+Type\+Specifiers\char`\"{} (v příkladu \char`\"{}\+String\+Specifier\char`\"{}). Vlastní implementace těchto tříd umožuje uživateli definovát vlastní přechodové funkce mezi textem a požadovanými daty. Signatura konkrétního typu určeného takovou třídou je dostupná v \char`\"{}\+Type\+Speciers\+::\+Value\+Type\char`\"{}.
 
 Třída „\+Configuration“ a „\+Option\+Proxy“ spolu komunikují po celou dobu. Po ukončení práce lze všechny aktuální hodnoty v specifikovaných \char`\"{}\+Option\+Proxy“ uložit pomocí \char`\"{}Configuration.\+save\char`\"{}. Konfliktům je zamezeno
 tím, že od každé volby je vydána maximálně jedna instance \char`\"{}Option\+Proxy".
@@ -100,6 +100,175 @@ switch (algorithmType.Get())
 \{
     case VCM: renderer = new Vcm(configuration); break;
     case UPBP: renderer = new Upbp(configuration); break;
+\}
+}\end{DoxyPre}
+
+
+
+
+\subsection*{Příklad jednoduché hry\+:}
+
+
+\begin{DoxyPre}{\ttfamily 
+Hra hadani nahodneho cisla v urcitem rozsahu. 
+class Game
+\{
+    const int MAX\_GUESSING\_NUMBER = 10000;
+    const int STANDARD\_RANGE\_START = 0;
+    const int STANDARD\_RANGE\_END = 100;
+public:
+    Game(Configuration& configuration)
+    \{
+        Section gameSection = configuration.SpecifySection("Game", Requirement::OPTIONAL);
+Nacteni rozsahu.
+        rangeStart\_ = gameSection.SpecifyOption(
+            "RangeStart",
+            IntegerSpecifier(1, MAX\_GUESSING\_NUMBER),
+            STANDARD\_RANGE\_START,
+            Requirement::MANDATORY);
+        rangeEnd\_ = gameSection.SpecifyOption(
+            "RangeEnd",
+            IntegerSpecifier(1, MAX\_GUESSING\_NUMBER), // zde neni pouzit rangeStart\_.Get() jako dolni mez, protoze 1) v zavislosti na volajicim v nem jeste nemusi byt spravna hodnota, 2) pri jeji zmene (v programu) by spodni rozsah neaktualizoval
+            STANDARD\_RANGE\_END,
+            Requirement::MANDATORY);
+Nacteni zprav vypisovanych uzivateli (v podstate lokalizace).
+        higher\_ = gameSection.SpecifyOption(
+            "Higher",
+            StringSpecifier(),
+            "Guess too low.");
+        lower\_ = gameSection.SpecifyOption(
+            "Lower",
+            StringSpecifier(),
+            "Guess too high.");
+        outOfBounds\_ = gameSection.SpecifyOption(
+            "OutOfBounds",
+            StringSpecifier(),
+            "Guess is not within the allowed bounds.");
+        victoryMessage\_ = gameSection.SpecifyOption(
+            "VictoryMessage",
+            StringSpecifier(),
+            "Victory!");
+        defeatMessage\_ = gameSection.SpecifyOption(
+            "DefeatMessage",
+            StringSpecifier(),
+            "Defeat...");
+    \}}\end{DoxyPre}
+
+
+
+\begin{DoxyPre}{\ttfamily     bool Guess(int value)
+    \{
+Kontrola rozsahu
+        if (value < rangeStart\_.Get() || value > rangeEnd\_.Get())
+        \{
+            std::cout << outOfBounds\_.Get() << std::endl;
+            return false;
+        \}}\end{DoxyPre}
+
+
+
+\begin{DoxyPre}{\ttfamily          ... 
+    \}}\end{DoxyPre}
+
+
+
+\begin{DoxyPre}{\ttfamily     void SetRange(int start, int end)
+    \{
+Nastaveni rozsahu v konfiguraci.
+        rangeStart\_.Set(start);
+        rangeEnd\_.Set(end);
+    \}}\end{DoxyPre}
+
+
+
+\begin{DoxyPre}{\ttfamily     void ReportResult(bool win)
+    \{
+Vyhral nebo prohral.
+        std::cout << (win ? victoryMessage\_.Get() : defeatMessage\_.Get()) << std::endl;
+    \}}\end{DoxyPre}
+
+
+
+\begin{DoxyPre}{\ttfamily private:
+    Option<IntegerSpecifier> rangeStart\_;
+    Option<IntegerSpecifier> rangeEnd\_;
+    Option<StringSpecifier> higher\_;
+    Option<StringSpecifier> lower\_;
+    Option<StringSpecifier> outOfBounds\_;
+    Option<StringSpecifier> victoryMessage\_;
+    Option<StringSpecifier> defeatMessage\_;
+\};}\end{DoxyPre}
+
+
+
+\begin{DoxyPre}{\ttfamily class Sound
+\{
+public:
+    Sound(Configuration& configuration)
+    \{
+        Section soundSection = configuration.SpecifySection("Sound"); // implicitne optional 
+        IntegerSpecifier volumeSpecifier = IntegerSpecifier(0, 100);
+Nabindovani hlasitosti.
+        musicVolume\_ = soundSection.SpecifyOption("Music", volumeSpecifier, 100);
+        voiceVolume\_ = soundSection.SpecifyOption("Voice", volumeSpecifier, 100);
+        effectVolume\_ = soundSection.SpecifyOption("Effects", volumeSpecifier, 100);
+    \}}\end{DoxyPre}
+
+
+
+\begin{DoxyPre}{\ttfamily Primy pristup k nastavovani hlasitostem volajicim.
+    Option<IntegerSpecifier>\& MusicVolume()
+    \{
+        return musicVolume\_;
+    \}
+    Option<IntegerSpecifier>\& VoiceVolume()
+    \{
+        return voiceVolume\_;
+    \}
+    Option<IntegerSpecifier>\& EffectVolume()
+    \{
+        return effectVolume\_;
+    \}}\end{DoxyPre}
+
+
+
+\begin{DoxyPre}{\ttfamily Nastaveni jednotne hlasitosti pomoci linku.
+    void SetMasterVolume(int volume)
+    \{
+        musicVolume\_.Set(volume);
+        voiceVolume\_.Link(musicVolume\_);
+        effectVolume\_.Link(musicVolume\_);
+    \}}\end{DoxyPre}
+
+
+
+\begin{DoxyPre}{\ttfamily private:
+    Option<IntegerSpecifier> musicVolume\_;
+    Option<IntegerSpecifier> voiceVolume\_;
+    Option<IntegerSpecifier> effectVolume\_;
+\};}\end{DoxyPre}
+
+
+
+\begin{DoxyPre}{\ttfamily Metoda pro hrani zvuku
+void PlayMusic(int volume) \{\}}\end{DoxyPre}
+
+
+
+\begin{DoxyPre}{\ttfamily int main()
+\{
+    Configuration configuration("game.ini", InputFilePolicy::IGNORE\_NONEXISTANT);}\end{DoxyPre}
+
+
+
+\begin{DoxyPre}{\ttfamily     Game game(configuration);
+     ... prace s vnejsim interfacem Game ...}\end{DoxyPre}
+
+
+
+\begin{DoxyPre}{\ttfamily     Sound sound(configuration);
+    PlayMusic(sound.MusicVolume().Get());
+    sound.SetMasterVolume(75);
 \}
 }\end{DoxyPre}
  
