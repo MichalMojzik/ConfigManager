@@ -11,6 +11,10 @@
 \item 
 \hyperlink{class_config_manager_1_1_section_node}{Section\+Node} \& \hyperlink{class_config_manager_1_1_section_node_ab4b00644db1b2b7fda5f7c3a331280be}{operator=} (const \hyperlink{class_config_manager_1_1_section_node}{Section\+Node} \&other)=delete
 \item 
+void \hyperlink{class_config_manager_1_1_section_node_a74583919e2221acd6f72bf7deac8f49b}{Set\+Requirement} (Requirement requirement)
+\item 
+void \hyperlink{class_config_manager_1_1_section_node_ad71ca3c764c64f37522c47a464a3454f}{Set\+Comment} (const std\+::string \&comment)
+\item 
 \hyperlink{class_config_manager_1_1_option_node}{Option\+Node} \& \hyperlink{class_config_manager_1_1_section_node_a8516cbcb01048e0509f4cee76555aa43}{operator\mbox{[}$\,$\mbox{]}} (const std\+::string \&option\+\_\+name)
 \item 
 const \hyperlink{class_config_manager_1_1_option_node}{Option\+Node} \& \hyperlink{class_config_manager_1_1_section_node_a4ccb40813d717b21708254ace493cc26}{operator\mbox{[}$\,$\mbox{]}} (const std\+::string \&option\+\_\+name) const 
@@ -18,13 +22,17 @@ const \hyperlink{class_config_manager_1_1_option_node}{Option\+Node} \& \hyperli
 const std\+::string \& \hyperlink{class_config_manager_1_1_section_node_ad8bec497af34b75f26128136a0342699}{Name} () const 
 \item 
 bool \hyperlink{class_config_manager_1_1_section_node_ac557fc56f6d2cca4919949795c34abde}{Is\+Loaded} () const 
+\item 
+bool \hyperlink{class_config_manager_1_1_section_node_a8194b3e59b3ffe96e2db880f18d078f5}{Is\+Specified} () const 
+\item 
+bool \hyperlink{class_config_manager_1_1_section_node_a0229147e9270e787320ef40e5eace7bd}{Has\+Changed} () const 
 \end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
 Trida pro interni reprezentaci sekce, se kterymi komunikuji \hyperlink{class_config_manager_1_1_section}{Section} a Option. Neni urceno pro pouziti uzivatelem. 
 
-Definition at line 19 of file sectionnode.\+h.
+Definition at line 20 of file sectionnode.\+h.
 
 
 
@@ -39,6 +47,17 @@ Definition at line 19 of file sectionnode.\+h.
 Zakazany copy-\/constructor. 
 
 \subsection{Member Function Documentation}
+\index{Config\+Manager\+::\+Section\+Node@{Config\+Manager\+::\+Section\+Node}!Has\+Changed@{Has\+Changed}}
+\index{Has\+Changed@{Has\+Changed}!Config\+Manager\+::\+Section\+Node@{Config\+Manager\+::\+Section\+Node}}
+\subsubsection[{\texorpdfstring{Has\+Changed() const }{HasChanged() const }}]{\setlength{\rightskip}{0pt plus 5cm}bool Config\+Manager\+::\+Section\+Node\+::\+Has\+Changed (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\hypertarget{class_config_manager_1_1_section_node_a0229147e9270e787320ef40e5eace7bd}{}\label{class_config_manager_1_1_section_node_a0229147e9270e787320ef40e5eace7bd}
+Byla nektera volba teto sekce zmenena od sve puvodni (nactene, nebo vychozi) hodnoty. 
+
+Definition at line 20 of file sectionnode.\+cpp.
+
 \index{Config\+Manager\+::\+Section\+Node@{Config\+Manager\+::\+Section\+Node}!Is\+Loaded@{Is\+Loaded}}
 \index{Is\+Loaded@{Is\+Loaded}!Config\+Manager\+::\+Section\+Node@{Config\+Manager\+::\+Section\+Node}}
 \subsubsection[{\texorpdfstring{Is\+Loaded() const }{IsLoaded() const }}]{\setlength{\rightskip}{0pt plus 5cm}bool Config\+Manager\+::\+Section\+Node\+::\+Is\+Loaded (
@@ -48,7 +67,18 @@ Zakazany copy-\/constructor.
 ) const}\hypertarget{class_config_manager_1_1_section_node_ac557fc56f6d2cca4919949795c34abde}{}\label{class_config_manager_1_1_section_node_ac557fc56f6d2cca4919949795c34abde}
 Je tato sekce nactena ze vstupnich dat? 
 
-Definition at line 10 of file sectionnode.\+cpp.
+Definition at line 12 of file sectionnode.\+cpp.
+
+\index{Config\+Manager\+::\+Section\+Node@{Config\+Manager\+::\+Section\+Node}!Is\+Specified@{Is\+Specified}}
+\index{Is\+Specified@{Is\+Specified}!Config\+Manager\+::\+Section\+Node@{Config\+Manager\+::\+Section\+Node}}
+\subsubsection[{\texorpdfstring{Is\+Specified() const }{IsSpecified() const }}]{\setlength{\rightskip}{0pt plus 5cm}bool Config\+Manager\+::\+Section\+Node\+::\+Is\+Specified (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\hypertarget{class_config_manager_1_1_section_node_a8194b3e59b3ffe96e2db880f18d078f5}{}\label{class_config_manager_1_1_section_node_a8194b3e59b3ffe96e2db880f18d078f5}
+Je tato sekce deklarovana uzivatelem? 
+
+Definition at line 16 of file sectionnode.\+cpp.
 
 \index{Config\+Manager\+::\+Section\+Node@{Config\+Manager\+::\+Section\+Node}!Name@{Name}}
 \index{Name@{Name}!Config\+Manager\+::\+Section\+Node@{Config\+Manager\+::\+Section\+Node}}
@@ -59,7 +89,7 @@ Definition at line 10 of file sectionnode.\+cpp.
 ) const}\hypertarget{class_config_manager_1_1_section_node_ad8bec497af34b75f26128136a0342699}{}\label{class_config_manager_1_1_section_node_ad8bec497af34b75f26128136a0342699}
 Zpristupnuje jmeno sekce ke cteni. 
 
-Definition at line 5 of file sectionnode.\+cpp.
+Definition at line 7 of file sectionnode.\+cpp.
 
 \index{Config\+Manager\+::\+Section\+Node@{Config\+Manager\+::\+Section\+Node}!operator=@{operator=}}
 \index{operator=@{operator=}!Config\+Manager\+::\+Section\+Node@{Config\+Manager\+::\+Section\+Node}}
@@ -82,7 +112,7 @@ Operator pro pohodlny pristup k reprezentacim option v datech.
 \end{DoxyParams}
 
 
-Definition at line 15 of file sectionnode.\+cpp.
+Definition at line 53 of file sectionnode.\+cpp.
 
 \index{Config\+Manager\+::\+Section\+Node@{Config\+Manager\+::\+Section\+Node}!operator\mbox{[}$\,$\mbox{]}@{operator[]}}
 \index{operator\mbox{[}$\,$\mbox{]}@{operator[]}!Config\+Manager\+::\+Section\+Node@{Config\+Manager\+::\+Section\+Node}}
@@ -98,7 +128,39 @@ Operator pro konstantni pristup k reprezentacim option v datech.
 \end{DoxyParams}
 
 
-Definition at line 21 of file sectionnode.\+cpp.
+Definition at line 60 of file sectionnode.\+cpp.
+
+\index{Config\+Manager\+::\+Section\+Node@{Config\+Manager\+::\+Section\+Node}!Set\+Comment@{Set\+Comment}}
+\index{Set\+Comment@{Set\+Comment}!Config\+Manager\+::\+Section\+Node@{Config\+Manager\+::\+Section\+Node}}
+\subsubsection[{\texorpdfstring{Set\+Comment(const std\+::string \&comment)}{SetComment(const std::string &comment)}}]{\setlength{\rightskip}{0pt plus 5cm}void Config\+Manager\+::\+Section\+Node\+::\+Set\+Comment (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{comment}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_manager_1_1_section_node_ad71ca3c764c64f37522c47a464a3454f}{}\label{class_config_manager_1_1_section_node_ad71ca3c764c64f37522c47a464a3454f}
+Nastavi kommentar. 
+\begin{DoxyParams}{Parameters}
+{\em Komentar.} & \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 48 of file sectionnode.\+cpp.
+
+\index{Config\+Manager\+::\+Section\+Node@{Config\+Manager\+::\+Section\+Node}!Set\+Requirement@{Set\+Requirement}}
+\index{Set\+Requirement@{Set\+Requirement}!Config\+Manager\+::\+Section\+Node@{Config\+Manager\+::\+Section\+Node}}
+\subsubsection[{\texorpdfstring{Set\+Requirement(\+Requirement requirement)}{SetRequirement(Requirement requirement)}}]{\setlength{\rightskip}{0pt plus 5cm}void Config\+Manager\+::\+Section\+Node\+::\+Set\+Requirement (
+\begin{DoxyParamCaption}
+\item[{Requirement}]{requirement}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_manager_1_1_section_node_a74583919e2221acd6f72bf7deac8f49b}{}\label{class_config_manager_1_1_section_node_a74583919e2221acd6f72bf7deac8f49b}
+Nastavi zda je dana volba v konfiguraci povinna. 
+\begin{DoxyParams}{Parameters}
+{\em Volab} & O\+P\+T\+I\+O\+N\+AL or M\+A\+N\+D\+A\+T\+O\+RY. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 32 of file sectionnode.\+cpp.
 
 
 

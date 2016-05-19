@@ -97,20 +97,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="contents">
 
 <p><code>#include &lt;<a class="el" href="configuration_8h_source.html">configuration.h</a>&gt;</code></p>
-<div class="dynheader">
-Inheritance diagram for ConfigManager::Configuration:</div>
-<div class="dyncontent">
- <div class="center">
-  <img src="class_config_manager_1_1_configuration.png" usemap="#ConfigManager::Configuration_map" alt=""/>
-  <map id="ConfigManager::Configuration_map" name="ConfigManager::Configuration_map">
-<area href="class_config_manager_1_1_configuration_file.html" alt="ConfigManager::ConfigurationFile" shape="rect" coords="0,56,203,80"/>
-</map>
- </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aaaddf3eebe988ca26ecc4b9d85f798ea"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_config_manager_1_1_configuration.html#aaaddf3eebe988ca26ecc4b9d85f798ea">Configuration</a> ()</td></tr>
 <tr class="separator:aaaddf3eebe988ca26ecc4b9d85f798ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d333a5169b49c24e799f20610feeee0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_config_manager_1_1_configuration.html#a4d333a5169b49c24e799f20610feeee0">~Configuration</a> ()</td></tr>
+<tr class="separator:a4d333a5169b49c24e799f20610feeee0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65fc8e2bef6af048e48438d7c385e834"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_config_manager_1_1_configuration.html#a65fc8e2bef6af048e48438d7c385e834">Open</a> (std::istream &amp;input_stream)</td></tr>
 <tr class="separator:a65fc8e2bef6af048e48438d7c385e834"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac6c9646c929fd59c15d17beedf94ac74"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_config_manager_1_1_configuration.html#ac6c9646c929fd59c15d17beedf94ac74">CheckStrict</a> ()</td></tr>
@@ -147,6 +140,24 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a4d333a5169b49c24e799f20610feeee0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">ConfigManager::Configuration::~Configuration </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Destruktor odvazujici vsechna privazene <a class="el" href="class_config_manager_1_1_option_proxy.html">OptionProxy</a>. </p>
+
+<p>Definition at line <a class="el" href="configuration_8cpp_source.html#l00022">22</a> of file <a class="el" href="configuration_8cpp_source.html">configuration.cpp</a>.</p>
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a class="anchor" id="ac6c9646c929fd59c15d17beedf94ac74"></a>
 <div class="memitem">
@@ -162,7 +173,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Metoda pro kontrolu, zda vstup odpovida jiz striktne specifikovanemu formatu. Muze vyhodit <a class="el" href="class_config_manager_1_1_strict_exception.html">StrictException</a> vyjimku, pokud format nesedi. </p>
 
-<p>Definition at line <a class="el" href="configuration_8cpp_source.html#l00289">289</a> of file <a class="el" href="configuration_8cpp_source.html">configuration.cpp</a>.</p>
+<p>Definition at line <a class="el" href="configuration_8cpp_source.html#l00350">350</a> of file <a class="el" href="configuration_8cpp_source.html">configuration.cpp</a>.</p>
 
 </div>
 </div>
@@ -180,7 +191,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Metoda vracejici, zda je v aktualne nactena nejaka konfigurace. </p>
 
-<p>Definition at line <a class="el" href="configuration_8cpp_source.html#l00485">485</a> of file <a class="el" href="configuration_8cpp_source.html">configuration.cpp</a>.</p>
+<p>Definition at line <a class="el" href="configuration_8cpp_source.html#l00534">534</a> of file <a class="el" href="configuration_8cpp_source.html">configuration.cpp</a>.</p>
 
 </div>
 </div>
@@ -204,7 +215,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="configuration_8cpp_source.html#l00250">250</a> of file <a class="el" href="configuration_8cpp_source.html">configuration.cpp</a>.</p>
+<p>Definition at line <a class="el" href="configuration_8cpp_source.html#l00310">310</a> of file <a class="el" href="configuration_8cpp_source.html">configuration.cpp</a>.</p>
 
 </div>
 </div>
@@ -228,7 +239,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="configuration_8cpp_source.html#l00473">473</a> of file <a class="el" href="configuration_8cpp_source.html">configuration.cpp</a>.</p>
+<p>Definition at line <a class="el" href="configuration_8cpp_source.html#l00521">521</a> of file <a class="el" href="configuration_8cpp_source.html">configuration.cpp</a>.</p>
 
 </div>
 </div>
@@ -262,7 +273,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="configuration_8cpp_source.html#l00372">372</a> of file <a class="el" href="configuration_8cpp_source.html">configuration.cpp</a>.</p>
+<p>Definition at line <a class="el" href="configuration_8cpp_source.html#l00438">438</a> of file <a class="el" href="configuration_8cpp_source.html">configuration.cpp</a>.</p>
 
 </div>
 </div>
@@ -304,7 +315,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="configuration_8cpp_source.html#l00457">457</a> of file <a class="el" href="configuration_8cpp_source.html">configuration.cpp</a>.</p>
+<p>Definition at line <a class="el" href="configuration_8cpp_source.html#l00513">513</a> of file <a class="el" href="configuration_8cpp_source.html">configuration.cpp</a>.</p>
 
 </div>
 </div>

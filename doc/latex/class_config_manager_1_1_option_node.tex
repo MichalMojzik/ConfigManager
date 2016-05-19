@@ -7,6 +7,12 @@
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
+\hyperlink{class_config_manager_1_1_option_node_a645c010a3f2e7e8f46cb5aab37d64e05}{Option\+Node} (const \hyperlink{class_config_manager_1_1_option_node}{Option\+Node} \&other)=delete
+\item 
+\hyperlink{class_config_manager_1_1_option_node}{Option\+Node} \& \hyperlink{class_config_manager_1_1_option_node_a8b5464fb5566388ebbb8ea614972d3ea}{operator=} (const \hyperlink{class_config_manager_1_1_option_node}{Option\+Node} \&other)=delete
+\item 
+void \hyperlink{class_config_manager_1_1_option_node_a552addaf613da2184eebee5580cdb72c}{Set\+Specified} ()
+\item 
 void \hyperlink{class_config_manager_1_1_option_node_a6b11e372911679bd045e3ee1f43cf4ba}{Set\+Proxy} (\hyperlink{class_config_manager_1_1_abstract_option_proxy}{Abstract\+Option\+Proxy} $\ast$proxy)
 \item 
 void \hyperlink{class_config_manager_1_1_option_node_adfb4172e5929b7927243b60ba8d28485}{Set\+Requirement} (Requirement requirement)
@@ -19,25 +25,60 @@ std\+::string \& \hyperlink{class_config_manager_1_1_option_node_aa33beb6d850388
 \item 
 const std\+::string \& \hyperlink{class_config_manager_1_1_option_node_a3cbcb849cc14c06121f658b4aab2f8de}{Value} () const 
 \item 
+void \hyperlink{class_config_manager_1_1_option_node_a930987e088219ac5030621f2665493df}{Assign} (const std\+::string \&value)
+\item 
 \hyperlink{class_config_manager_1_1_section_node}{Section\+Node} \& \hyperlink{class_config_manager_1_1_option_node_a56ec62f82a04eeb275f711a38766a4b2}{Section} ()
 \item 
 const \hyperlink{class_config_manager_1_1_section_node}{Section\+Node} \& \hyperlink{class_config_manager_1_1_option_node_a5f04016950d1b512d1b3efad7558da13}{Section} () const 
 \item 
 bool \hyperlink{class_config_manager_1_1_option_node_a5c0a779da4931dab931cef2d9f9b1d70}{Is\+Loaded} () const 
 \item 
-bool {\bfseries Has\+Value} () const \hypertarget{class_config_manager_1_1_option_node_acc9389da929330b79e78a8dcb6c66f11}{}\label{class_config_manager_1_1_option_node_acc9389da929330b79e78a8dcb6c66f11}
-
+bool \hyperlink{class_config_manager_1_1_option_node_aca68735af61349fb19341c3e06d02159}{Is\+Specified} () const 
+\item 
+bool \hyperlink{class_config_manager_1_1_option_node_a7a8275f01e9227e6192d485de7a28bdb}{Has\+Changed} () const 
 \end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
 Trida reprezentujici data volby v configuration. Muze a nemusi byt spojen s urcitou \hyperlink{class_config_manager_1_1_option_proxy}{Option\+Proxy} (\hyperlink{class_config_manager_1_1_list_option_proxy}{List\+Option\+Proxy}). Tato trida je urcena pouze pro vnitrni reprezentaci dat v knihovne. 
 
-Definition at line 18 of file optionnode.\+h.
+Definition at line 19 of file optionnode.\+h.
 
 
+
+\subsection{Constructor \& Destructor Documentation}
+\index{Config\+Manager\+::\+Option\+Node@{Config\+Manager\+::\+Option\+Node}!Option\+Node@{Option\+Node}}
+\index{Option\+Node@{Option\+Node}!Config\+Manager\+::\+Option\+Node@{Config\+Manager\+::\+Option\+Node}}
+\subsubsection[{\texorpdfstring{Option\+Node(const Option\+Node \&other)=delete}{OptionNode(const OptionNode &other)=delete}}]{\setlength{\rightskip}{0pt plus 5cm}Config\+Manager\+::\+Option\+Node\+::\+Option\+Node (
+\begin{DoxyParamCaption}
+\item[{const {\bf Option\+Node} \&}]{other}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [delete]}}\hypertarget{class_config_manager_1_1_option_node_a645c010a3f2e7e8f46cb5aab37d64e05}{}\label{class_config_manager_1_1_option_node_a645c010a3f2e7e8f46cb5aab37d64e05}
+Zakazany copy-\/constructor. 
 
 \subsection{Member Function Documentation}
+\index{Config\+Manager\+::\+Option\+Node@{Config\+Manager\+::\+Option\+Node}!Assign@{Assign}}
+\index{Assign@{Assign}!Config\+Manager\+::\+Option\+Node@{Config\+Manager\+::\+Option\+Node}}
+\subsubsection[{\texorpdfstring{Assign(const std\+::string \&value)}{Assign(const std::string &value)}}]{\setlength{\rightskip}{0pt plus 5cm}void Config\+Manager\+::\+Option\+Node\+::\+Assign (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{value}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_manager_1_1_option_node_a930987e088219ac5030621f2665493df}{}\label{class_config_manager_1_1_option_node_a930987e088219ac5030621f2665493df}
+Prirazeni hodnoty volby, oznacuje volbu jakozto zmenenou. 
+
+Definition at line 54 of file optionnode.\+cpp.
+
+\index{Config\+Manager\+::\+Option\+Node@{Config\+Manager\+::\+Option\+Node}!Has\+Changed@{Has\+Changed}}
+\index{Has\+Changed@{Has\+Changed}!Config\+Manager\+::\+Option\+Node@{Config\+Manager\+::\+Option\+Node}}
+\subsubsection[{\texorpdfstring{Has\+Changed() const }{HasChanged() const }}]{\setlength{\rightskip}{0pt plus 5cm}bool Config\+Manager\+::\+Option\+Node\+::\+Has\+Changed (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\hypertarget{class_config_manager_1_1_option_node_a7a8275f01e9227e6192d485de7a28bdb}{}\label{class_config_manager_1_1_option_node_a7a8275f01e9227e6192d485de7a28bdb}
+Dotaz, zda byla volba zmenena od sve puvodni (nactene, nebo vychozi) hodnoty. 
+
+Definition at line 127 of file optionnode.\+cpp.
+
 \index{Config\+Manager\+::\+Option\+Node@{Config\+Manager\+::\+Option\+Node}!Is\+Loaded@{Is\+Loaded}}
 \index{Is\+Loaded@{Is\+Loaded}!Config\+Manager\+::\+Option\+Node@{Config\+Manager\+::\+Option\+Node}}
 \subsubsection[{\texorpdfstring{Is\+Loaded() const }{IsLoaded() const }}]{\setlength{\rightskip}{0pt plus 5cm}bool Config\+Manager\+::\+Option\+Node\+::\+Is\+Loaded (
@@ -47,7 +88,18 @@ Definition at line 18 of file optionnode.\+h.
 ) const}\hypertarget{class_config_manager_1_1_option_node_a5c0a779da4931dab931cef2d9f9b1d70}{}\label{class_config_manager_1_1_option_node_a5c0a779da4931dab931cef2d9f9b1d70}
 Dotaz, zda byl nacten z vstupnich dat (nebo je zatim jenom specifikovan). 
 
-Definition at line 66 of file optionnode.\+cpp.
+Definition at line 119 of file optionnode.\+cpp.
+
+\index{Config\+Manager\+::\+Option\+Node@{Config\+Manager\+::\+Option\+Node}!Is\+Specified@{Is\+Specified}}
+\index{Is\+Specified@{Is\+Specified}!Config\+Manager\+::\+Option\+Node@{Config\+Manager\+::\+Option\+Node}}
+\subsubsection[{\texorpdfstring{Is\+Specified() const }{IsSpecified() const }}]{\setlength{\rightskip}{0pt plus 5cm}bool Config\+Manager\+::\+Option\+Node\+::\+Is\+Specified (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\hypertarget{class_config_manager_1_1_option_node_aca68735af61349fb19341c3e06d02159}{}\label{class_config_manager_1_1_option_node_aca68735af61349fb19341c3e06d02159}
+Dotaz, zda byla volba deklarovana uzivatelem. 
+
+Definition at line 123 of file optionnode.\+cpp.
 
 \index{Config\+Manager\+::\+Option\+Node@{Config\+Manager\+::\+Option\+Node}!Name@{Name}}
 \index{Name@{Name}!Config\+Manager\+::\+Option\+Node@{Config\+Manager\+::\+Option\+Node}}
@@ -60,7 +112,14 @@ Jmeno volby.
 
 Definition at line 8 of file optionnode.\+cpp.
 
-\index{Config\+Manager\+::\+Option\+Node@{Config\+Manager\+::\+Option\+Node}!Section@{Section}}
+\index{Config\+Manager\+::\+Option\+Node@{Config\+Manager\+::\+Option\+Node}!operator=@{operator=}}
+\index{operator=@{operator=}!Config\+Manager\+::\+Option\+Node@{Config\+Manager\+::\+Option\+Node}}
+\subsubsection[{\texorpdfstring{operator=(const Option\+Node \&other)=delete}{operator=(const OptionNode &other)=delete}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Option\+Node}\& Config\+Manager\+::\+Option\+Node\+::operator= (
+\begin{DoxyParamCaption}
+\item[{const {\bf Option\+Node} \&}]{other}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [delete]}}\hypertarget{class_config_manager_1_1_option_node_a8b5464fb5566388ebbb8ea614972d3ea}{}\label{class_config_manager_1_1_option_node_a8b5464fb5566388ebbb8ea614972d3ea}
+Zakazany assign-\/constructor. \index{Config\+Manager\+::\+Option\+Node@{Config\+Manager\+::\+Option\+Node}!Section@{Section}}
 \index{Section@{Section}!Config\+Manager\+::\+Option\+Node@{Config\+Manager\+::\+Option\+Node}}
 \subsubsection[{\texorpdfstring{Section()}{Section()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Section\+Node} \& Config\+Manager\+::\+Option\+Node\+::\+Section (
 \begin{DoxyParamCaption}
@@ -69,7 +128,7 @@ Definition at line 8 of file optionnode.\+cpp.
 )}\hypertarget{class_config_manager_1_1_option_node_a56ec62f82a04eeb275f711a38766a4b2}{}\label{class_config_manager_1_1_option_node_a56ec62f82a04eeb275f711a38766a4b2}
 Odkaz na sekci do ktere patri. 
 
-Definition at line 42 of file optionnode.\+cpp.
+Definition at line 60 of file optionnode.\+cpp.
 
 \index{Config\+Manager\+::\+Option\+Node@{Config\+Manager\+::\+Option\+Node}!Section@{Section}}
 \index{Section@{Section}!Config\+Manager\+::\+Option\+Node@{Config\+Manager\+::\+Option\+Node}}
@@ -80,7 +139,7 @@ Definition at line 42 of file optionnode.\+cpp.
 ) const}\hypertarget{class_config_manager_1_1_option_node_a5f04016950d1b512d1b3efad7558da13}{}\label{class_config_manager_1_1_option_node_a5f04016950d1b512d1b3efad7558da13}
 Konstantni odkaz na sekci do ktere patri. 
 
-Definition at line 47 of file optionnode.\+cpp.
+Definition at line 65 of file optionnode.\+cpp.
 
 \index{Config\+Manager\+::\+Option\+Node@{Config\+Manager\+::\+Option\+Node}!Set\+Comment@{Set\+Comment}}
 \index{Set\+Comment@{Set\+Comment}!Config\+Manager\+::\+Option\+Node@{Config\+Manager\+::\+Option\+Node}}
@@ -96,7 +155,7 @@ Nastavi kommentar.
 \end{DoxyParams}
 
 
-Definition at line 27 of file optionnode.\+cpp.
+Definition at line 39 of file optionnode.\+cpp.
 
 \index{Config\+Manager\+::\+Option\+Node@{Config\+Manager\+::\+Option\+Node}!Set\+Proxy@{Set\+Proxy}}
 \index{Set\+Proxy@{Set\+Proxy}!Config\+Manager\+::\+Option\+Node@{Config\+Manager\+::\+Option\+Node}}
@@ -112,7 +171,7 @@ Nastavi spojeni s danou \hyperlink{class_config_manager_1_1_option_proxy}{Option
 \end{DoxyParams}
 
 
-Definition at line 13 of file optionnode.\+cpp.
+Definition at line 18 of file optionnode.\+cpp.
 
 \index{Config\+Manager\+::\+Option\+Node@{Config\+Manager\+::\+Option\+Node}!Set\+Requirement@{Set\+Requirement}}
 \index{Set\+Requirement@{Set\+Requirement}!Config\+Manager\+::\+Option\+Node@{Config\+Manager\+::\+Option\+Node}}
@@ -128,7 +187,18 @@ Nastavi zda je dana volba v konfiguraci povinna.
 \end{DoxyParams}
 
 
-Definition at line 18 of file optionnode.\+cpp.
+Definition at line 23 of file optionnode.\+cpp.
+
+\index{Config\+Manager\+::\+Option\+Node@{Config\+Manager\+::\+Option\+Node}!Set\+Specified@{Set\+Specified}}
+\index{Set\+Specified@{Set\+Specified}!Config\+Manager\+::\+Option\+Node@{Config\+Manager\+::\+Option\+Node}}
+\subsubsection[{\texorpdfstring{Set\+Specified()}{SetSpecified()}}]{\setlength{\rightskip}{0pt plus 5cm}void Config\+Manager\+::\+Option\+Node\+::\+Set\+Specified (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_manager_1_1_option_node_a552addaf613da2184eebee5580cdb72c}{}\label{class_config_manager_1_1_option_node_a552addaf613da2184eebee5580cdb72c}
+Nastavi, ze existuje spojeni s \hyperlink{class_config_manager_1_1_option_proxy}{Option\+Proxy}. 
+
+Definition at line 13 of file optionnode.\+cpp.
 
 \index{Config\+Manager\+::\+Option\+Node@{Config\+Manager\+::\+Option\+Node}!Value@{Value}}
 \index{Value@{Value}!Config\+Manager\+::\+Option\+Node@{Config\+Manager\+::\+Option\+Node}}
@@ -137,9 +207,9 @@ Definition at line 18 of file optionnode.\+cpp.
 {}
 \end{DoxyParamCaption}
 )}\hypertarget{class_config_manager_1_1_option_node_aa33beb6d850388f3f6a41386d32164f1}{}\label{class_config_manager_1_1_option_node_aa33beb6d850388f3f6a41386d32164f1}
-Stringova hodnota volby. 
+Stringova hodnota volby, primy pristup. 
 
-Definition at line 32 of file optionnode.\+cpp.
+Definition at line 44 of file optionnode.\+cpp.
 
 \index{Config\+Manager\+::\+Option\+Node@{Config\+Manager\+::\+Option\+Node}!Value@{Value}}
 \index{Value@{Value}!Config\+Manager\+::\+Option\+Node@{Config\+Manager\+::\+Option\+Node}}
@@ -148,9 +218,9 @@ Definition at line 32 of file optionnode.\+cpp.
 {}
 \end{DoxyParamCaption}
 ) const}\hypertarget{class_config_manager_1_1_option_node_a3cbcb849cc14c06121f658b4aab2f8de}{}\label{class_config_manager_1_1_option_node_a3cbcb849cc14c06121f658b4aab2f8de}
-Stringova hodnota volby (konstantni pristup). 
+Stringova hodnota volby, primiy (a konstantni) pristup. 
 
-Definition at line 37 of file optionnode.\+cpp.
+Definition at line 49 of file optionnode.\+cpp.
 
 
 
