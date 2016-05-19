@@ -18,7 +18,7 @@ MAXERROR=-fmax-errors=1
 LSTD=-lstdc++
 OPTIONS=${STD} -I ${INCDIR} ${MAXERROR} ${LSTD}
 
-all: ConfigManager Testing
+all: ConfigManager test
 
 typespecifiers.obj:
 	${CC} ${SOURCEDIR}typespecifiers.cpp -o typespecifiers.obj ${OPTIONS} -c
@@ -55,3 +55,5 @@ cppTestConfigure:
 Testing: ConfigManager cppTest 
 	${CC} ${TESTDIR}tests.cpp -L ./lib -lconfigmanager -lcpptest -o configmanagerTest.exe ${OPTIONS} -Wl,-R./lib
 	
+test: Testing
+	echo "--------- TESTING ----------"; ./configmanagerTest.exe
