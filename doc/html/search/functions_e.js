@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['_7eabstractoptionproxy',['~AbstractOptionProxy',['../class_config_manager_1_1_abstract_option_proxy.html#ac82c93ad6f86967d8d5d82b7f3a84f44',1,'ConfigManager::AbstractOptionProxy']]],
-  ['_7econfigurationfile',['~ConfigurationFile',['../class_config_manager_1_1_configuration_file.html#ab58c1860cb0d3b502f674975000736a5',1,'ConfigManager::ConfigurationFile']]]
+  ['unsignedspecifier',['UnsignedSpecifier',['../class_config_manager_1_1_unsigned_specifier.html#a123ab9e22e0757e91505222ca792ab56',1,'ConfigManager::UnsignedSpecifier::UnsignedSpecifier()'],['../class_config_manager_1_1_unsigned_specifier.html#afb1ea2b4ea04fa083b22fc4ebdd763df',1,'ConfigManager::UnsignedSpecifier::UnsignedSpecifier(uint64_t range_start, uint64_t range_end)']]]
 ];

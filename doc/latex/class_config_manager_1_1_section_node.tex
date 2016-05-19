@@ -1,32 +1,104 @@
 \hypertarget{class_config_manager_1_1_section_node}{}\section{Config\+Manager\+:\+:Section\+Node Class Reference}
 \label{class_config_manager_1_1_section_node}\index{Config\+Manager\+::\+Section\+Node@{Config\+Manager\+::\+Section\+Node}}
+
+
+{\ttfamily \#include $<$sectionnode.\+h$>$}
+
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
-{\bfseries Section\+Node} (const \hyperlink{class_config_manager_1_1_section_node}{Section\+Node} \&other)=delete\hypertarget{class_config_manager_1_1_section_node_a29c0bba247577ba6d163c07d54dcbe17}{}\label{class_config_manager_1_1_section_node_a29c0bba247577ba6d163c07d54dcbe17}
-
+\hyperlink{class_config_manager_1_1_section_node_a29c0bba247577ba6d163c07d54dcbe17}{Section\+Node} (const \hyperlink{class_config_manager_1_1_section_node}{Section\+Node} \&other)=delete
 \item 
-\hyperlink{class_config_manager_1_1_section_node}{Section\+Node} \& {\bfseries operator=} (const \hyperlink{class_config_manager_1_1_section_node}{Section\+Node} \&other)=delete\hypertarget{class_config_manager_1_1_section_node_ab4b00644db1b2b7fda5f7c3a331280be}{}\label{class_config_manager_1_1_section_node_ab4b00644db1b2b7fda5f7c3a331280be}
-
+\hyperlink{class_config_manager_1_1_section_node}{Section\+Node} \& \hyperlink{class_config_manager_1_1_section_node_ab4b00644db1b2b7fda5f7c3a331280be}{operator=} (const \hyperlink{class_config_manager_1_1_section_node}{Section\+Node} \&other)=delete
 \item 
-\hyperlink{class_config_manager_1_1_option_node}{Option\+Node} \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (const std\+::string \&option\+\_\+name)\hypertarget{class_config_manager_1_1_section_node_a8516cbcb01048e0509f4cee76555aa43}{}\label{class_config_manager_1_1_section_node_a8516cbcb01048e0509f4cee76555aa43}
-
+\hyperlink{class_config_manager_1_1_option_node}{Option\+Node} \& \hyperlink{class_config_manager_1_1_section_node_a8516cbcb01048e0509f4cee76555aa43}{operator\mbox{[}$\,$\mbox{]}} (const std\+::string \&option\+\_\+name)
 \item 
-const \hyperlink{class_config_manager_1_1_option_node}{Option\+Node} \& {\bfseries operator\mbox{[}$\,$\mbox{]}} (const std\+::string \&option\+\_\+name) const \hypertarget{class_config_manager_1_1_section_node_a4ccb40813d717b21708254ace493cc26}{}\label{class_config_manager_1_1_section_node_a4ccb40813d717b21708254ace493cc26}
-
+const \hyperlink{class_config_manager_1_1_option_node}{Option\+Node} \& \hyperlink{class_config_manager_1_1_section_node_a4ccb40813d717b21708254ace493cc26}{operator\mbox{[}$\,$\mbox{]}} (const std\+::string \&option\+\_\+name) const 
 \item 
-const std\+::string \& {\bfseries Name} () const \hypertarget{class_config_manager_1_1_section_node_ad8bec497af34b75f26128136a0342699}{}\label{class_config_manager_1_1_section_node_ad8bec497af34b75f26128136a0342699}
-
+const std\+::string \& \hyperlink{class_config_manager_1_1_section_node_ad8bec497af34b75f26128136a0342699}{Name} () const 
 \item 
-bool {\bfseries Is\+Loaded} () const \hypertarget{class_config_manager_1_1_section_node_ac557fc56f6d2cca4919949795c34abde}{}\label{class_config_manager_1_1_section_node_ac557fc56f6d2cca4919949795c34abde}
-
+bool \hyperlink{class_config_manager_1_1_section_node_ac557fc56f6d2cca4919949795c34abde}{Is\+Loaded} () const 
 \end{DoxyCompactItemize}
 
 
 \subsection{Detailed Description}
+Trida pro interni reprezentaci sekce, se kterymi komunikuji \hyperlink{class_config_manager_1_1_section}{Section} a Option. Neni urceno pro pouziti uzivatelem. 
+
+Definition at line 19 of file sectionnode.\+h.
 
 
-Definition at line 16 of file sectionnode.\+h.
+
+\subsection{Constructor \& Destructor Documentation}
+\index{Config\+Manager\+::\+Section\+Node@{Config\+Manager\+::\+Section\+Node}!Section\+Node@{Section\+Node}}
+\index{Section\+Node@{Section\+Node}!Config\+Manager\+::\+Section\+Node@{Config\+Manager\+::\+Section\+Node}}
+\subsubsection[{\texorpdfstring{Section\+Node(const Section\+Node \&other)=delete}{SectionNode(const SectionNode &other)=delete}}]{\setlength{\rightskip}{0pt plus 5cm}Config\+Manager\+::\+Section\+Node\+::\+Section\+Node (
+\begin{DoxyParamCaption}
+\item[{const {\bf Section\+Node} \&}]{other}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [delete]}}\hypertarget{class_config_manager_1_1_section_node_a29c0bba247577ba6d163c07d54dcbe17}{}\label{class_config_manager_1_1_section_node_a29c0bba247577ba6d163c07d54dcbe17}
+Zakazany copy-\/constructor. 
+
+\subsection{Member Function Documentation}
+\index{Config\+Manager\+::\+Section\+Node@{Config\+Manager\+::\+Section\+Node}!Is\+Loaded@{Is\+Loaded}}
+\index{Is\+Loaded@{Is\+Loaded}!Config\+Manager\+::\+Section\+Node@{Config\+Manager\+::\+Section\+Node}}
+\subsubsection[{\texorpdfstring{Is\+Loaded() const }{IsLoaded() const }}]{\setlength{\rightskip}{0pt plus 5cm}bool Config\+Manager\+::\+Section\+Node\+::\+Is\+Loaded (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\hypertarget{class_config_manager_1_1_section_node_ac557fc56f6d2cca4919949795c34abde}{}\label{class_config_manager_1_1_section_node_ac557fc56f6d2cca4919949795c34abde}
+Je tato sekce nactena ze vstupnich dat? 
+
+Definition at line 10 of file sectionnode.\+cpp.
+
+\index{Config\+Manager\+::\+Section\+Node@{Config\+Manager\+::\+Section\+Node}!Name@{Name}}
+\index{Name@{Name}!Config\+Manager\+::\+Section\+Node@{Config\+Manager\+::\+Section\+Node}}
+\subsubsection[{\texorpdfstring{Name() const }{Name() const }}]{\setlength{\rightskip}{0pt plus 5cm}const std\+::string \& Config\+Manager\+::\+Section\+Node\+::\+Name (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}\hypertarget{class_config_manager_1_1_section_node_ad8bec497af34b75f26128136a0342699}{}\label{class_config_manager_1_1_section_node_ad8bec497af34b75f26128136a0342699}
+Zpristupnuje jmeno sekce ke cteni. 
+
+Definition at line 5 of file sectionnode.\+cpp.
+
+\index{Config\+Manager\+::\+Section\+Node@{Config\+Manager\+::\+Section\+Node}!operator=@{operator=}}
+\index{operator=@{operator=}!Config\+Manager\+::\+Section\+Node@{Config\+Manager\+::\+Section\+Node}}
+\subsubsection[{\texorpdfstring{operator=(const Section\+Node \&other)=delete}{operator=(const SectionNode &other)=delete}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Section\+Node}\& Config\+Manager\+::\+Section\+Node\+::operator= (
+\begin{DoxyParamCaption}
+\item[{const {\bf Section\+Node} \&}]{other}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [delete]}}\hypertarget{class_config_manager_1_1_section_node_ab4b00644db1b2b7fda5f7c3a331280be}{}\label{class_config_manager_1_1_section_node_ab4b00644db1b2b7fda5f7c3a331280be}
+Zakazany assign-\/constructor. \index{Config\+Manager\+::\+Section\+Node@{Config\+Manager\+::\+Section\+Node}!operator\mbox{[}$\,$\mbox{]}@{operator[]}}
+\index{operator\mbox{[}$\,$\mbox{]}@{operator[]}!Config\+Manager\+::\+Section\+Node@{Config\+Manager\+::\+Section\+Node}}
+\subsubsection[{\texorpdfstring{operator[](const std\+::string \&option\+\_\+name)}{operator[](const std::string &option_name)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Option\+Node} \& Config\+Manager\+::\+Section\+Node\+::operator\mbox{[}$\,$\mbox{]} (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{option\+\_\+name}
+\end{DoxyParamCaption}
+)}\hypertarget{class_config_manager_1_1_section_node_a8516cbcb01048e0509f4cee76555aa43}{}\label{class_config_manager_1_1_section_node_a8516cbcb01048e0509f4cee76555aa43}
+Operator pro pohodlny pristup k reprezentacim option v datech. 
+\begin{DoxyParams}{Parameters}
+{\em Jmeno} & pozadovaneho optionu. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 15 of file sectionnode.\+cpp.
+
+\index{Config\+Manager\+::\+Section\+Node@{Config\+Manager\+::\+Section\+Node}!operator\mbox{[}$\,$\mbox{]}@{operator[]}}
+\index{operator\mbox{[}$\,$\mbox{]}@{operator[]}!Config\+Manager\+::\+Section\+Node@{Config\+Manager\+::\+Section\+Node}}
+\subsubsection[{\texorpdfstring{operator[](const std\+::string \&option\+\_\+name) const }{operator[](const std::string &option_name) const }}]{\setlength{\rightskip}{0pt plus 5cm}const {\bf Option\+Node} \& Config\+Manager\+::\+Section\+Node\+::operator\mbox{[}$\,$\mbox{]} (
+\begin{DoxyParamCaption}
+\item[{const std\+::string \&}]{option\+\_\+name}
+\end{DoxyParamCaption}
+) const}\hypertarget{class_config_manager_1_1_section_node_a4ccb40813d717b21708254ace493cc26}{}\label{class_config_manager_1_1_section_node_a4ccb40813d717b21708254ace493cc26}
+Operator pro konstantni pristup k reprezentacim option v datech. 
+\begin{DoxyParams}{Parameters}
+{\em Jmeno} & pozadovaneho optionu. \\
+\hline
+\end{DoxyParams}
+
+
+Definition at line 21 of file sectionnode.\+cpp.
 
 
 

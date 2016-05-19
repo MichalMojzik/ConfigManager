@@ -26,11 +26,6 @@ namespace ConfigManager
 		*/
 		const std::string& GetSectionName();
 
-		// /**
-		// * Vraci objekt Configuration do ktereho option prislusi. 
-		// */
-		///Configuration& getConfiguration();
-
 	protected:
 		/**
 		*Zakladní konstruktor.
@@ -60,19 +55,23 @@ namespace ConfigManager
 		~AbstractOptionProxy();
 
 		/**
-		* Metoda pro komunikaci s Configuration slouzici pro vyvolani prepsani aktualni hodnoty v Configuration retezcovou reprezentaci hodnoty v OptionProxyu (lze tim zapsat default), iniciovane v Configuration.
-		* Muze vyhodit WrongFormatException vyjimku.
+		* Metoda pro komunikaci s Configuration slouzici pro vyvolani prepsani 
+		* aktualni hodnoty v Configuration retezcovou reprezentaci hodnoty v 
+		* OptionProxyu  (lze tim zapsat default), iniciovane v Configuration.
 		*/
 		virtual void RegenerateValueData() = 0;
 		/**
-		* Metoda pro komunikaci s Configuration slouzici k aktualizaci hodnoty v OptionProxyu dle retezcove hodnoty v Configuration, iniciovane v Configuration (pripadne Section).
-		* Muze vyhodit WrongFormatException vyjimku.
+		* Metoda pro komunikaci s Configuration slouzici k aktualizaci hodnoty v
+		* OptionProxyu dle retezcove hodnoty v Configuration, iniciovane v 
+		* Configuration (pripadne Section).
 		* \param data Text ze ktereho ma byt hodnota prectena.
 		*/
 		virtual void ProcessValueData(const std::string& data) = 0;
+
 		/**
-		* Metoda pro komunikaci s Configuration slouzici k nastaveni hodnoty z OptionProxyu do retezcove hodnoty v Configuration, iniciovane v potomcich OptionProxyu.
-		* Muze vyhodit WrongFormatException vyjimku (kvuli existenci referenci).
+		* Metoda pro komunikaci s Configuration slouzici k nastaveni hodnoty z
+		* OptionProxyu do retezcove hodnoty v Configuration, iniciovane v 
+		* potomcich OptionProxyu. 
 		* \param Textova data ktera maji prepsat retezcove hodnoty v Configuration.
 		*/
 		void AssignValueData(const std::string& data);
@@ -108,13 +107,12 @@ namespace ConfigManager
 		*
 		*/
 		OptionProxy& operator=(OptionProxy&& other);
-		/** Metoda vracejici nastavenou hodnotu.
-		*
+		/** 
+		* Metoda vracejici nastavenou hodnotu.
 		*/
 		const ValueType& Get() const;
 		/**
 		* Metoda pro nastaveni nove hodnoty volby.
-		* Muze vyhodit WrongFormatException vyjimku (kvuli existenci referenci).
 		* \param value nova hodnota.
 		*/
 		void Set(const ValueType& value);
@@ -150,7 +148,6 @@ namespace ConfigManager
 
 	/**
 	* Tato trida realizuje volbu tvorenou seznamem elementu.
-	*
 	*/
 	template<typename TypeSpecifier>
 	class ListOptionProxy : public AbstractOptionProxy
@@ -197,7 +194,6 @@ namespace ConfigManager
 			const ValueType& Get() const;
 			/**
 			* Metoda pro nastavovani nove hodnoty.
-			* Muze vyhodit WrongFormatException vyjimku (kvuli existenci referenci).
 			* \param value Nova hodnota.
 			*/
 			void Set(const ValueType& value);
@@ -222,7 +218,6 @@ namespace ConfigManager
 
 		/**
 		* Metoda vracejici pocet voleb v seznamu.
-		*
 		*/
 		std::size_t Count();
 		/**
@@ -240,28 +235,24 @@ namespace ConfigManager
 
 		/**
 		* Metoda pro pridani nove volby do seznamu.
-		* Muze vyhodit WrongFormatException vyjimku (kvuli existenci referenci).
 		* \param value Nova volba.
 		*/
 		Item Add(const ValueType& value);
 
 		/**
 		* Metoda pro pridani nove volby do seznamu.
-		* Muze vyhodit WrongFormatException vyjimku (kvuli existenci referenci).
 		* \param value Nova volba.
 		*/
 		Item Insert(std::size_t index, const ValueType& value);
 
 		/**
 		* Metoda pro odstraneni volby ze seznamu.
-		* Muze vyhodit WrongFormatException vyjimku (kvuli existenci referenci).
 		*/
 		void Remove(std::size_t index);
 
 	protected:
 		/**
 		* \copydoc AbstractOptionProxy::RegenerateValueData()
-		* Muze vyhodit WrongFormatException vyjimku (kvuli existenci referenci).
 		*/
 		virtual void RegenerateValueData() override;
 		/**

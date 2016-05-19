@@ -8,11 +8,24 @@
 
 namespace ConfigManager
 {
+	/**
+	* Sablonova trida umoznujici sndanou kontrolu rozsahu hodnot. 
+	*/
 	template<typename TResult>
 	class RangeConstraint
 	{
 	public:
+		/**
+		* Konstruktor s maximalnim rozsahem.
+		*/
 		RangeConstraint();
+		/**
+		* Konstruktor s omezenym rozsahem. (Neostre nerovnosti.)
+		* Vyhazuje InvalidOperationException 
+		* (v pripade ze je minimalni hodnota vetsi nez maximalni).
+		* \param Minimalni povolena hodnota. 
+		* \param Maximalni povolenta hodnota. 
+		*/
 		RangeConstraint(const TResult& range_start, const TResult& range_end);
 
 		/**

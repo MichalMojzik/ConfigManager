@@ -120,7 +120,6 @@ Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a892c7a737516fc69c7fd01440bfb2fa7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_config_manager_1_1_abstract_option_proxy.html#a892c7a737516fc69c7fd01440bfb2fa7">AbstractOptionProxy</a> ()</td></tr>
-<tr class="memdesc:a892c7a737516fc69c7fd01440bfb2fa7"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="class_config_manager_1_1_configuration.html">Configuration</a>&amp; getConfiguration();.  <a href="#a892c7a737516fc69c7fd01440bfb2fa7">More...</a><br /></td></tr>
 <tr class="separator:a892c7a737516fc69c7fd01440bfb2fa7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af60007dcca013f8619f9500b0a8316bf"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="af60007dcca013f8619f9500b0a8316bf"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>AbstractOptionProxy</b> (<a class="el" href="class_config_manager_1_1_option_node.html">OptionNode</a> &amp;option_node)</td></tr>
@@ -179,9 +178,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>OptionNode</b></td><
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p><a class="el" href="class_config_manager_1_1_configuration.html">Configuration</a>&amp; getConfiguration();. </p>
-<p>Vraci objekt <a class="el" href="class_config_manager_1_1_configuration.html">Configuration</a> do ktereho option prislusi. Zakladní konstruktor. </p>
+<p>Zakladní konstruktor. </p>
 
 <p>Definition at line <a class="el" href="option_8cpp_source.html#l00008">8</a> of file <a class="el" href="option_8cpp_source.html">option.cpp</a>.</p>
 
@@ -287,7 +284,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>OptionNode</b></td><
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Metoda pro komunikaci s <a class="el" href="class_config_manager_1_1_configuration.html">Configuration</a> slouzici k nastaveni hodnoty z OptionProxyu do retezcove hodnoty v <a class="el" href="class_config_manager_1_1_configuration.html">Configuration</a>, iniciovane v potomcich OptionProxyu. Muze vyhodit <a class="el" href="class_config_manager_1_1_wrong_format_exception.html">WrongFormatException</a> vyjimku (kvuli existenci referenci). </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Metoda pro komunikaci s <a class="el" href="class_config_manager_1_1_configuration.html">Configuration</a> slouzici k nastaveni hodnoty z OptionProxyu do retezcove hodnoty v <a class="el" href="class_config_manager_1_1_configuration.html">Configuration</a>, iniciovane v potomcich OptionProxyu. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">Textova</td><td>data ktera maji prepsat retezcove hodnoty v <a class="el" href="class_config_manager_1_1_configuration.html">Configuration</a>. </td></tr>
   </table>
@@ -409,7 +406,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>OptionNode</b></td><
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Metoda pro komunikaci s <a class="el" href="class_config_manager_1_1_configuration.html">Configuration</a> slouzici k aktualizaci hodnoty v OptionProxyu dle retezcove hodnoty v <a class="el" href="class_config_manager_1_1_configuration.html">Configuration</a>, iniciovane v <a class="el" href="class_config_manager_1_1_configuration.html">Configuration</a> (pripadne <a class="el" href="class_config_manager_1_1_section.html">Section</a>). Muze vyhodit <a class="el" href="class_config_manager_1_1_wrong_format_exception.html">WrongFormatException</a> vyjimku. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Metoda pro komunikaci s <a class="el" href="class_config_manager_1_1_configuration.html">Configuration</a> slouzici k aktualizaci hodnoty v OptionProxyu dle retezcove hodnoty v <a class="el" href="class_config_manager_1_1_configuration.html">Configuration</a>, iniciovane v <a class="el" href="class_config_manager_1_1_configuration.html">Configuration</a> (pripadne <a class="el" href="class_config_manager_1_1_section.html">Section</a>). </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">data</td><td>Text ze ktereho ma byt hodnota prectena. </td></tr>
   </table>
@@ -440,7 +437,7 @@ class&#160;</td><td class="memItemRight" valign="bottom"><b>OptionNode</b></td><
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Metoda pro komunikaci s <a class="el" href="class_config_manager_1_1_configuration.html">Configuration</a> slouzici pro vyvolani prepsani aktualni hodnoty v <a class="el" href="class_config_manager_1_1_configuration.html">Configuration</a> retezcovou reprezentaci hodnoty v OptionProxyu (lze tim zapsat default), iniciovane v <a class="el" href="class_config_manager_1_1_configuration.html">Configuration</a>. Muze vyhodit <a class="el" href="class_config_manager_1_1_wrong_format_exception.html">WrongFormatException</a> vyjimku. </p>
+<p>Metoda pro komunikaci s <a class="el" href="class_config_manager_1_1_configuration.html">Configuration</a> slouzici pro vyvolani prepsani aktualni hodnoty v <a class="el" href="class_config_manager_1_1_configuration.html">Configuration</a> retezcovou reprezentaci hodnoty v OptionProxyu (lze tim zapsat default), iniciovane v <a class="el" href="class_config_manager_1_1_configuration.html">Configuration</a>. </p>
 
 <p>Implemented in <a class="el" href="class_config_manager_1_1_list_option_proxy.html#ab7d04f2f12da920861c6cef6d8dca501">ConfigManager::ListOptionProxy&lt; TypeSpecifier &gt;</a>, <a class="el" href="class_config_manager_1_1_list_option_proxy.html#ab7d04f2f12da920861c6cef6d8dca501">ConfigManager::ListOptionProxy&lt; ConfigManager::TypeSpecifier &gt;</a>, and <a class="el" href="class_config_manager_1_1_option_proxy.html#a6f0f8c517701e7f55c2572e2deae6ad9">ConfigManager::OptionProxy&lt; TypeSpecifier &gt;</a>.</p>
 

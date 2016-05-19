@@ -88,6 +88,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="class_config_manager_1_1_configuration-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -124,9 +125,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a15b0d2b3943be1672ca025034562b19c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Trida spravujici soubory s nastavenim. Vzhledem k tomu, ze soubory maji format ".ini" a jejich format tedy neni uplne specifikovany, uchovava tato trida puvodni retezcove hodnoty. Umoznuje pristupovat k sekcim a hodnotam daneho souboru pomoci metody SpecifySection. V destruktoru jsou pripadne zmeny zapsany zpet do souboru. </p>
+<div class="textblock"><p>Trida spravujici soubory s nastavenim. Vzhledem k tomu, ze soubory maji format ".ini" a jejich format tedy neni uplne specifikovany, uchovava tato trida puvodni retezcove hodnoty. Umoznuje pristupovat k sekcim a hodnotam daneho souboru pomoci metody SpecifySection. </p>
 
-<p>Definition at line <a class="el" href="configuration_8h_source.html#l00021">21</a> of file <a class="el" href="configuration_8h_source.html">configuration.h</a>.</p>
+<p>Definition at line <a class="el" href="configuration_8h_source.html#l00020">20</a> of file <a class="el" href="configuration_8h_source.html">configuration.h</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="aaaddf3eebe988ca26ecc4b9d85f798ea"></a>
 <div class="memitem">
@@ -142,7 +143,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Zakladni kontruktor. </p>
 
-<p>Definition at line <a class="el" href="configuration_8cpp_source.html#l00008">8</a> of file <a class="el" href="configuration_8cpp_source.html">configuration.cpp</a>.</p>
+<p>Definition at line <a class="el" href="configuration_8cpp_source.html#l00017">17</a> of file <a class="el" href="configuration_8cpp_source.html">configuration.cpp</a>.</p>
 
 </div>
 </div>
@@ -159,9 +160,9 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Metoda pro kontrolu, zda vstup odpovida jiz striktne specifikovanemu formatu. Muze vyhodit <a class="el" href="class_config_manager_1_1_strict_exception.html">StrictException</a> vyjimku. </p>
+<p>Metoda pro kontrolu, zda vstup odpovida jiz striktne specifikovanemu formatu. Muze vyhodit <a class="el" href="class_config_manager_1_1_strict_exception.html">StrictException</a> vyjimku, pokud format nesedi. </p>
 
-<p>Definition at line <a class="el" href="configuration_8cpp_source.html#l00091">91</a> of file <a class="el" href="configuration_8cpp_source.html">configuration.cpp</a>.</p>
+<p>Definition at line <a class="el" href="configuration_8cpp_source.html#l00289">289</a> of file <a class="el" href="configuration_8cpp_source.html">configuration.cpp</a>.</p>
 
 </div>
 </div>
@@ -179,7 +180,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <p>Metoda vracejici, zda je v aktualne nactena nejaka konfigurace. </p>
 
-<p>Definition at line <a class="el" href="configuration_8cpp_source.html#l00206">206</a> of file <a class="el" href="configuration_8cpp_source.html">configuration.cpp</a>.</p>
+<p>Definition at line <a class="el" href="configuration_8cpp_source.html#l00485">485</a> of file <a class="el" href="configuration_8cpp_source.html">configuration.cpp</a>.</p>
 
 </div>
 </div>
@@ -196,14 +197,14 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Metoda pro nastaveni vstupniho streamu. Muze vyhodit <a class="el" href="class_config_manager_1_1_malformed_input_exception.html">MalformedInputException</a>, <a class="el" href="class_config_manager_1_1_io_exception.html">IoException</a>, <a class="el" href="class_config_manager_1_1_wrong_format_exception.html">WrongFormatException</a>, <a class="el" href="class_config_manager_1_1_mandatory_missing_exception.html">MandatoryMissingException</a> vyjimky. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Metoda pro nastaveni vstupniho streamu. Muze vyhodit: <a class="el" href="class_config_manager_1_1_malformed_input_exception.html">MalformedInputException</a> (spatny format vstupnich dat - section, ci option), <a class="el" href="class_config_manager_1_1_io_exception.html">IoException</a> (problem pri ziskavani vstupu), <a class="el" href="class_config_manager_1_1_wrong_format_exception.html">WrongFormatException</a> (pokud hodnota nejakeho option nesedi do specifikovaneho typu), <a class="el" href="class_config_manager_1_1_mandatory_missing_exception.html">MandatoryMissingException</a> (pokud chybi jiz specifikovana povinna sekce nebo hodnota). </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">input_stream</td><td>Vstupni istream. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="configuration_8cpp_source.html#l00013">13</a> of file <a class="el" href="configuration_8cpp_source.html">configuration.cpp</a>.</p>
+<p>Definition at line <a class="el" href="configuration_8cpp_source.html#l00250">250</a> of file <a class="el" href="configuration_8cpp_source.html">configuration.cpp</a>.</p>
 
 </div>
 </div>
@@ -227,7 +228,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="configuration_8cpp_source.html#l00194">194</a> of file <a class="el" href="configuration_8cpp_source.html">configuration.cpp</a>.</p>
+<p>Definition at line <a class="el" href="configuration_8cpp_source.html#l00473">473</a> of file <a class="el" href="configuration_8cpp_source.html">configuration.cpp</a>.</p>
 
 </div>
 </div>
@@ -261,7 +262,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="configuration_8cpp_source.html#l00120">120</a> of file <a class="el" href="configuration_8cpp_source.html">configuration.cpp</a>.</p>
+<p>Definition at line <a class="el" href="configuration_8cpp_source.html#l00372">372</a> of file <a class="el" href="configuration_8cpp_source.html">configuration.cpp</a>.</p>
 
 </div>
 </div>
@@ -294,7 +295,7 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Metoda specifikujici dalsi sekci. Muze vyhodit <a class="el" href="class_config_manager_1_1_mandatory_missing_exception.html">MandatoryMissingException</a> vyjimku. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Metoda specifikujici dalsi sekci. Muze vyhodit <a class="el" href="class_config_manager_1_1_mandatory_missing_exception.html">MandatoryMissingException</a> vyjimku (v pripade ze nenase MANDATORY sekci). </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">section_name</td><td>Jmeno sekce. </td></tr>
     <tr><td class="paramname">requirement</td><td>Povinnost dane sekce. </td></tr>
@@ -303,7 +304,7 @@ Public Member Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p>Definition at line <a class="el" href="configuration_8cpp_source.html#l00178">178</a> of file <a class="el" href="configuration_8cpp_source.html">configuration.cpp</a>.</p>
+<p>Definition at line <a class="el" href="configuration_8cpp_source.html#l00457">457</a> of file <a class="el" href="configuration_8cpp_source.html">configuration.cpp</a>.</p>
 
 </div>
 </div>

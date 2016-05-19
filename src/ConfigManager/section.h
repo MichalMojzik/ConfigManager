@@ -19,7 +19,8 @@ namespace ConfigManager
 	public:
 		/**
 		* Metoda urcujici novou volbu v dane sekci.
-		* Muze vyhodit WrongFormatException, MandatoryMissingException vyjimky.
+		* Muze vyhodit MandatoryMissingException (pokud neni odpovidajici 
+		* sekce ve vstupnich datech) vyjimky.
 		*   \param name Jmeno nove volby.
 		*   \param type_specifier Trida pro preklad volby z a  do retezce.
 		*   \param default_value Prednastavena hodnota.
@@ -37,7 +38,7 @@ namespace ConfigManager
 
 		/**
 		* \copydoc Section::SpecifyOption(std::string name, const TypeSpecifier& type_specifier, const typename TypeSpecifier::ValueType& default_value, Requirement optional = Requirement::OPTIONAL, const std::string comments = "")
-		* Muze vyhodit WrongFormatException, MandatoryMissingException vyjimky.
+		* Muze vyhodit MandatoryMissingException() vyjimky.
 		*/
 		template<typename TypeSpecifier>
 		ListOptionProxy<TypeSpecifier> SpecifyListOption(

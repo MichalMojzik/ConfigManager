@@ -5,6 +5,9 @@
 
 namespace ConfigManager
 {
+	/**
+	* Privatni metody pro interni pouziti. 
+	*/
 	std::string escape(const std::string& value);
 	std::string unescape(const std::string& value);
 	std::string trim_nonescaped(std::string value);
